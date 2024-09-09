@@ -1,0 +1,31 @@
+/* styles.css */
+
+/* Custom Tailwind Colors */
+:root {
+    --primario: #5D3FD3;
+    --secundario: #7B6FE7;
+    --texto: #E8EAF6;
+    --acento: #9F88FF;
+    --fondo: #333366;
+}
+
+/* Opcional: Personalizar clases para cursos */
+.curso-tarjeta {
+    @apply bg-[#7B6FE7] rounded-lg shadow-lg p-6;
+}
+
+.curso-imagen {
+    @apply bg-[#9F88FF] h-36 md:h-48 lg:h-48 rounded-lg mb-4;
+}
+
+.curso-titulo {
+    @apply text-2xl font-bold text-[#5D3FD3] mb-2;
+}
+
+.curso-descripcion {
+    @apply text-base mb-4;
+}
+
+.curso-boton {
+    @apply bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold;
+}
