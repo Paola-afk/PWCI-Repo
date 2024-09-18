@@ -7,7 +7,7 @@ body {
     color: #E8EAF6;
     margin: 0;
     padding: 0;
-    background-color: #333366;
+    background-color: #232346;
 }
 
 /* General */
@@ -15,7 +15,7 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #333366;
+    background-color: #232346;
     color: #E8EAF6;
 }
 
@@ -172,89 +172,217 @@ body {
 }
 
 
-
-/* Sección Hero */
+/* Hero section */
 .hero {
-    background-image: url('/Multimedia/Fondo1.jpeg'); 
-    background-size: cover;
-    background-position: center;
+    background: linear-gradient(135deg, #9F88FF 0%, #8A76F1 100%); /* Fondo con degradado */
     color: #E8EAF6;
-    text-align: center;
     padding: 100px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 40vh; /* Altura mínima de la sección */
 }
 
-.hero .hero-content {
-    max-width: 800px;
-    margin: 0 auto;
+.hero .container {
+    max-width: 1200px;
+    width: 100%;
 }
 
 .hero h1 {
-    font-size: 3em;
-    margin-bottom: 10px;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
 .hero p {
-    font-size: 1.2em;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    line-height: 1.5;
 }
 
 .hero .btn-primary {
-    background-color: #5D3FD3;
-    color: #E8EAF6;
+    background-color: #E8EAF6;
+    color: #9F88FF;
     padding: 15px 30px;
-    border-radius: 5px;
+    font-size: 1.2rem;
+    border-radius: 8px;
     text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
 }
+
+.hero .btn-primary:hover {
+    background-color: #a9a0ff; /* Cambiar color al pasar el mouse */
+    color: #E8EAF6;
+}
+
 
 /* Cursos Destacados */
 .courses-section {
-    padding: 50px 20px;
-    background-color: #7B6FE7;
+    padding: 50px 40px;
+    background-color: #232346; /* Color de fondo actualizado */
     color: #E8EAF6;
     text-align: center;
 }
 
 .courses-section h2 {
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #9F88FF; /* Color de acento */
 }
 
 .course-cards {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between; /* Para ajustar mejor las tarjetas */
+    flex-wrap: wrap; /* Permite que las tarjetas se ajusten en varias filas si es necesario */
+    gap: 20px; /* Espacio reducido entre tarjetas */
 }
 
 .course-card {
     background-color: #333366;
-    color: #E8EAF6;
-    padding: 20px;
     border-radius: 10px;
-    margin: 10px;
-    width: calc(33% - 20px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    flex: 1 1 30%; /* Cada tarjeta ocupa el 30% del contenedor */
+    max-width: 30%; /* Máximo ancho para asegurar que no se estiren */
+    min-width: 280px; /* Mínimo para que no se hagan muy pequeñas */
+}
+
+.course-card:hover {
+    transform: translateY(-10px);
 }
 
 .course-card img {
     width: 100%;
-    border-radius: 5px;
+    height: 180px;
+    object-fit: cover;
 }
 
 .course-card h3 {
-    margin: 10px 0;
+    font-size: 1.5rem;
+    margin: 15px 0;
+    color: #E8EAF6;
 }
 
-.course-card .btn-primary {
+.course-card p {
+    padding: 0 15px;
+    font-size: 1rem;
+    color: #B0B3E3;
+}
+
+.course-card .btn {
+    display: inline-block;
+    margin: 15px 0;
+    padding: 10px 20px;
     background-color: #5D3FD3;
     color: #E8EAF6;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.course-card .btn:hover {
+    background-color: #7B6FE7;
+}
+
+/*Estilos de beneficios*/
+.benefits-section {
+    padding: 60px 0;
+    background-color: #232346;
+    color: #E8EAF6;
+    text-align: center;
+}
+
+.benefits-section h2 {
+    font-size: 2.5rem;
+    margin-top: 40px;
+}
+
+.benefit-items {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.benefit-item {
+    width: 220px;
+    margin: 15px;
+    text-align: center;
+}
+
+.benefit-item i {
+    font-size: 3rem;
+    color: #9F88FF;
+    margin-bottom: 15px;
+}
+
+.benefit-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.benefit-item p {
+    font-size: 1rem;
+}
+
+/*Estilos cursos populares*/
+.popular-courses-section {
+    padding: 60px 0;
+    background-color: #333366; /* Fondo oscuro */
+    color: #E8EAF6;
+}
+
+.popular-courses-section h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.popular-course-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.popular-course-card {
+    background-color: #232346; /* Fondo de las tarjetas */
+    width: 280px;
+    margin: 15px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.popular-course-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.popular-course-card h3 {
+    font-size: 1.5rem;
+    margin: 15px 0 10px 0;
+}
+
+.popular-course-card p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.popular-course-card .btn {
     padding: 10px 20px;
+    background-color: #9F88FF; /* Botón de acento */
+    color: white;
     border-radius: 5px;
     text-decoration: none;
 }
 
+
 /* Pie de Página */
 .footer {
-    background-color: #333366;
+    background-color: #101021;
     color: #E8EAF6;
     padding: 20px;
     text-align: center;
