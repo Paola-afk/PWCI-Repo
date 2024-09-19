@@ -170,7 +170,11 @@ main-nav ul li {
     background-color: #9F88FF;
 }
 
-/*Estilos administrador*/
+
+
+/* Estilos generales */
+/* Contenedor principal */
+
 .admin-container, .container {
     width: 1500px;
 }
@@ -181,34 +185,35 @@ main-nav ul li {
     padding: 0;
 }
 
-.admin-container {
-    margin: 0 auto;
-    width: 100vw;
+.row {
     padding-top: 100px;
 }
 
-.content {
-    background-color: #232346;
+.admin-container {
+    margin: 0 auto;
+    width: 100vw;
 }
 
 .wrapper {
     display: flex;
     height: 100vh;
     width: 100vw;
+    background-color: #232346; /* Fondo oscuro general */
 }
 
 .sidebar {
-    background-color: #232346; /* Color principal */
+    background-color: #322A6A;
     padding: 20px;
-    border-right: 1px solid #7B6FE7; /* Color secundario */
+    border-right: 1px solid #27254F;
     display: flex;
     flex-direction: column;
     height: 600px;
+    /*justify-content: space-between;*/
 }
 
 .sidebar h3 {
     margin-top: 0;
-    color: #E8EAF6; /* Color de texto */
+    color: #E8EAF6;
 }
 
 .sidebar .nav {
@@ -220,33 +225,39 @@ main-nav ul li {
 }
 
 .sidebar .nav-link {
-    color: #E8EAF6; /* Color de texto */
+    color: #E8EAF6;
     text-decoration: none;
     display: block;
 }
 
 .sidebar .nav-link.active {
     font-weight: 600;
-    background-color: #7B6FE7; /* Color secundario */
-    color: #E8EAF6; /* Color de texto */
+    background-color: #9F88FF;
+    color: #232346;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #456382;
+    background-color: #322A6A;
+    border-color: #322A6A #322A6A #322A6A;
 }
 
 .sidebar a {
-    color: #E8EAF6; /* Color de texto */
+    color: #E8EAF6;
     text-decoration: none;
-    padding: 10px 0;
+    padding: 10px 0; 
     display: block;
 }
 
 .sidebar a:hover {
-    background-color: #9F88FF; /* Color de acento */
+    background-color: #7B6FE7;
     padding-left: 10px;
     transition: 0.3s;
 }
 
 /* Sidebar active link */
 .sidebar a.active {
-    background-color: #7B6FE7; /* Color secundario */
+    background-color: #9F88FF;
     padding-left: 10px;
 }
 
@@ -255,33 +266,45 @@ main-nav ul li {
     padding: 0;
     margin: 0;
     overflow-y: auto;
-    background-color: #232346; /* Color de fondo */
+    background-color: #232346; /* Mantener fondo oscuro en el contenido principal */
+    color: #E8EAF6;
 }
 
 .content {
     padding: 20px;
     width: 100%;
-    color: #E8EAF6; /* Color de texto */
+    background-color: #232346;
 }
 
 .admin-section {
     margin-bottom: 2rem;
 }
 
+.admin-section button .btn-primary{
+    background-color: #9F88FF;
+    border: solid 1px #9F88FF;
+}
+
+.admin-section button .btn-primary:hover {
+    background-color: #9276ff;
+    border: solid 1px #9F88FF;
+}
+
 .admin-section h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: #E8EAF6; /* Color de texto */
+    color: #E8EAF6;
 }
 
 .table {
     margin-bottom: 1rem;
     width: 100%;
+    background-color: #232346; /* Fondo de tablas con color principal */
+    color: #E8EAF6;
 }
 
 .table th, .table td {
     text-align: center;
-    color: #E8EAF6; /* Color de texto */
 }
 
 .table .btn {
@@ -293,35 +316,43 @@ main-nav ul li {
 }
 
 .modal-header {
-    background-color: #5D3FD3; /* Color principal */
-    color: #E8EAF6; /* Color de texto */
+    background-color: #5D3FD3;
+    color: #E8EAF6;
 }
 
 .modal-header .close {
-    color: #E8EAF6; /* Color de texto */
+    color: #E8EAF6;
 }
 
+
+
 /* Estilo general para las tablas de reportes */
+h3 {
+    color: #E8EAF6;
+}
+
 .table {
     width: 100%;
     margin-bottom: 20px;
     border-collapse: collapse;
-    background-color: #232346; /* Color de fondo */
+    background-color: #232346;
+    color: #E8EAF6;
 }
 
 .table th, .table td {
     padding: 12px;
     text-align: left;
-    border: 1px solid #7B6FE7; /* Color secundario */
+    /*border: 1px solid #101021;*/
+    color: #E8EAF6;
 }
 
 .table th {
     background-color: #5D3FD3; /* Color principal para las cabeceras */
-    color: #E8EAF6; /* Color de texto */
+    color: #E8EAF6;
 }
 
 .table tbody tr:hover {
-    background-color: #9F88FF; /* Color de acento, resaltar filas al pasar sobre ellas */
+    background-color: #7463E2; /* Resaltar filas al pasar sobre ellas */
 }
 
 .table td button {
@@ -333,17 +364,18 @@ main-nav ul li {
 }
 
 .table td button.btn-info {
-    background-color: #7B6FE7; /* Color secundario */
-    color: #E8EAF6; /* Color de texto */
+    background-color: #9F88FF; /* Color de acento */
+    color: white;
 }
 
 .table td button.btn-info:hover {
-    background-color: #9F88FF; /* Hover en botón de detalles */
+    background-color: #9276ff; /* Hover en botón de detalles */
 }
 
 
-/* Pie de Página */
+/*Footer*/
 .footer {
+    bottom: 0;
     background-color: #101021;
     color: #E8EAF6;
     padding: 20px;
