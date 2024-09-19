@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - SkillHub</title>
+    <link rel="stylesheet" href="signIn.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-left">
+            <div class="overlay"></div>
+            <div class="slogan">
+                <h1>¡Únete a SkillHub!</h1>
+                <p>Explora una amplia gama de cursos para llevar tus habilidades al siguiente nivel.</p>
+            </div>
+        </div>
+
+        <div class="register-right">
+            <div class="form-container">
+                <!-- Logo de la página -->
+                <div class="logo-container">
+                    <img class="logo-image" src="/Multimedia/LogoSkillHubM.png" alt="SkillHub Logo">
+                    <img class="logo-name" src="/Multimedia/LogoNombreM.png" alt="SkillHub">
+                </div>
+
+                <h3 class="register-text">Registrarse</h3>
+                <form class="register-form" action="#" method="POST">
+                    <!-- Nombre completo -->
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" placeholder="Nombre completo">
+                        <span class="error-message" id="name-error"></span>
+                    </div>
+
+                    <!-- Correo electrónico -->
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Correo electrónico">
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="Contraseña">
+                        <span class="error-message" id="password-error"></span>
+                    </div>
+
+                    <!-- Género -->
+                    <div class="input-group">
+                        <i class="fas fa-venus-mars"></i>
+                        <select id="genero" name="genero" required>
+                            <option value="" disabled selected>Selecciona tu género</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        <span class="error-message" id="gender-error"></span>
+                    </div>
+
+                    <!-- Fecha de nacimiento -->
+                    <div class="input-group">
+                        <i class="fas fa-calendar-alt"></i>
+                        <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+                        <span class="error-message" id="birthdate-error"></span>
+                    </div>
+
+                    <!-- Avatar (foto de perfil) -->
+                    <div class="input-group">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" id="avatar" name="avatar" accept="image/*" required>
+                    </div>
+
+                    <!-- Rol -->
+                    <div class="input-group">
+                        <i class="fas fa-user-tag"></i>
+                        <select id="role" name="role" required>
+                            <option value="" disabled selected>Selecciona tu rol</option>
+                            <option value="student">Estudiante</option>
+                            <option value="instructor">Instructor</option>
+                        </select>
+                        <span class="error-message" id="rol-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+
+                    <p class="login-prompt">¿Ya tienes una cuenta? <a href="/logIn/logIn.html" class="login-link">Inicia sesión aquí</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="signIn.js"></script>
+</body>
+</html>
+

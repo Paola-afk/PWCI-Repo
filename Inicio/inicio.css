@@ -245,9 +245,9 @@ body {
     overflow: hidden;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    flex: 1 1 30%; /* Cada tarjeta ocupa el 30% del contenedor */
-    max-width: 30%; /* Máximo ancho para asegurar que no se estiren */
-    min-width: 280px; /* Mínimo para que no se hagan muy pequeñas */
+    flex: 1 1 30%; 
+    max-width: 30%; 
+    min-width: 280px; 
 }
 
 .course-card:hover {
@@ -396,4 +396,78 @@ body {
 
 .footer a:hover {
     text-decoration: underline;
+}
+
+/*Resposividad*/
+/* Para pantallas pequeñas (móviles) */
+@media only screen and (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-nav ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+
+    .search-bar {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .auth-buttons {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero .btn-primary {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .course-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .course-card {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+/* Para tablets (pantallas medianas) */
+@media only screen and (max-width: 1024px) {
+    .container {
+        padding: 30px;
+    }
+
+    .course-card {
+        width: 45%;
+    }
+
+    .benefits-section, .best-sellers-section {
+        padding: 50px 0;
+    }
+
+    .benefit-card, .best-seller-card {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }
