@@ -1,0 +1,311 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    color: #E8EAF6;
+    margin: 0;
+    padding: 0;
+    background-color: #232346;
+}
+
+html {
+    background-color: #232346;
+}
+
+header{
+    width: 100%;
+    background-color: #5D3FD3;
+    padding: 20px 0;
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 1000; 
+}
+
+.header .container{
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    height: 70px;
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.logo-image {
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.logo-name {
+    height: 40px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between; 
+    gap: 25px;
+}
+
+main-nav ul li {
+    position: relative;
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #E8EAF6; 
+    font-weight: 400;
+    font-size: 18px;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.main-nav ul li a:hover {
+    color: #9F88FF; 
+}
+
+.main-nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 3px; 
+    width: 0;
+    height: 3px;
+    background-color: #9F88FF; 
+    transition: width 0.3s ease;
+}
+
+
+.main-nav ul li a:hover::after {
+    width: 100%;
+}
+
+/*Barra de busqueda*/
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #7B6FE7; 
+    padding: 5px 20px;
+    border-radius: 30px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.3s ease;
+}
+
+.search-bar:hover {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); 
+}
+
+.search-bar input {
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+    color: #E8EAF6; 
+    outline: none;
+    font-size: 16px; 
+    width: 250px;
+    transition: width 0.4s ease; 
+}
+
+.search-bar input:focus {
+    width: 350px; /* Hacer mas ancha la barra al darle clic*/
+}
+
+.search-bar input::placeholder {
+    color: #E8EAF6; 
+    opacity: 0.7; 
+    font-size: 14px; 
+}
+
+.search-icon {
+    color: #E8EAF6; 
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.search-icon:hover {
+    color: #FFFFFF; 
+    transition: color 0.2s ease;
+}
+
+/*Estilos botones principales*/
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #E8EAF6;
+    background-color: #9F88FF; 
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #bfafff; 
+    transition: background-color 0.3s ease;
+}
+
+.auth-buttons .btn-login {
+    border: solid 2px #9F88FF;
+    background-color: transparent;
+    color: #E8EAF6;
+}
+
+.auth-buttons .btn-signin {
+    background-color: #9F88FF;
+}
+
+/*Estilos de MiPerfil*/
+h2 {
+    display: flex;
+    padding-top: 130px;
+    padding-left: 30px;
+    padding-bottom: 40px;
+    margin-left: 25px;
+    color: #E8EAF6; /* Color de texto */
+    background-color: #232346;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #232346; /* Color de fondo */
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding-top: 150px;
+}
+
+.profile-container .profile-info {
+    flex: 2;
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-info {
+    background-color: #232346; /* Color secundario */
+    border-radius: 8px;
+    border: 1px solid #232346; /* Color principal */
+    width: 25%;
+}
+
+.profile-details {
+    width: 75%;
+}
+
+.btn-change-photo {
+    text-align: center;
+}
+
+.btn-change-photo,
+.btn-edit-profile,
+.btn-save {
+    display: block;
+    width: 100%;
+    margin: 10px auto;
+    margin-bottom: 10px;
+}
+
+.profile-container .profile-info img.avatar {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.profile-container .profile-info .btn-change-photo,
+.profile-container .profile-info .btn-edit-profile {
+    background-color: transparent; /* Color principal */
+    color: #E8EAF6; /* Color de texto */
+    border: 1.5px solid #9378ff; /* Color de acento */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 400;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-container .profile-info .btn-change-photo:hover,
+.profile-container .profile-info .btn-edit-profile:hover {
+    background-color: #9378ff; /* Color secundario */
+}
+
+.profile-container .profile-details {
+    flex: 3;
+    padding: 20px;
+}
+
+.profile-container .profile-details form {
+    margin: 0;
+}
+
+.profile-container .profile-details form .form-group {
+    margin-bottom: 15px;
+}
+
+.profile-container .profile-details form label {
+    font-weight: 600;
+    color: #E8EAF6; /* Color de texto */
+}
+
+.profile-container .profile-details form input, 
+.profile-container .profile-details form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #5D3FD3; /* Color principal */
+    border-radius: 5px;
+    background-color: #E8EAF6; /* Color de texto */
+    color: #232346; /* Color de fondo */
+}
+
+.profile-container .profile-details form .btn-save {
+    background-color: #5D3FD3; /* Color principal */
+    color: #E8EAF6; /* Color de texto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.profile-container .profile-details form .btn-save:hover {
+    background-color: #7B6FE7; /* Color de acento */
+}
+
+
+
+/* Pie de Página */
+.footer {
+    background-color: #101021;
+    color: #E8EAF6;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer a {
+    color: #9F88FF;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
