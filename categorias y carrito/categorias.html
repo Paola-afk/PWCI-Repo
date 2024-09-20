@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias - SkillHub</title>
+    <link rel="stylesheet" href="Categorias.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    
+
+</head>
+<body>
+    <!--pendiente-->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img class="logo-image" src="../Multimedia/LogoPS.png" alt="SkillHub Logo">
+                <img class="logo-name" src="../Multimedia/LogoNombreS.png" alt="SkillHub">
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Cursos</a></li>
+                    <li><a href="#">Categorías</a></li>
+                </ul>
+            </nav>
+    
+            <div class="search-bar">
+                <input type="text" placeholder="Busca aquí...">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+            
+                <!-- Icono del carrito de compras -->
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <!-- Mostrar el número de artículos en el carrito -->
+                <span class="cart-count">3</span>
+            </div>
+            
+            <div class="auth-buttons">
+                <!--pendiente-->
+                <a href="#" class="btn btn-login">Iniciar sesión</a>
+                <a href="#" class="btn btn-signin">Registrarse</a>
+            </div>
+    
+        </div>
+    </header>
+
+    <div class="prueba">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-bold text-center text-white mb-8">Explorar Categorías de Cursos</h1>
+    
+            <!-- Carrusel de Categoría 1 -->
+            <section class="category">
+                <div class="category-header">Desarrollo Web</div>
+                <div class="slider">
+                    <!-- Botón izquierdo -->
+                    <button class="nav-btn left-btn" onclick="scrollLeft('slider1')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+    
+                    <div id="slider1" class="slider-content">
+                        <div class="slider-item">
+                            <img src="https://via.placeholder.com/300x200" alt="Curso HTML5">
+                            <p class="text-white text-center">Curso HTML5</p>
+                        </div>
+                        <div class="slider-item">
+                            <img src="https://via.placeholder.com/300x200" alt="Curso CSS Avanzado">
+                            <p class="text-white text-center">Curso CSS Avanzado</p>
+                        </div>
+                        <div class="slider-item">
+                            <img src="https://via.placeholder.com/300x200" alt="Curso JavaScript">
+                            <p class="text-white text-center">Curso JavaScript</p>
+                        </div>
+                        <!-- Más tarjetas de curso aquí -->
+                    </div>
+    
+                    <!-- Botón derecho -->
+                    <button class="nav-btn right-btn" onclick="scrollRight('slider1')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </section>
+                    <!-- Carrusel de Categoría 3: Diseño 2D -->
+        <section class="category">
+            <div class="category-header">Diseño 2D</div>
+            <div class="slider">
+                <button class="nav-btn left-btn" onclick="scrollLeft('slider3')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div id="slider3" class="slider-content">
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso Photoshop">
+                        <p class="text-white text-center">Curso Photoshop</p>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso Illustrator">
+                        <p class="text-white text-center">Curso Illustrator</p>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso InDesign">
+                        <p class="text-white text-center">Curso InDesign</p>
+                    </div>
+                </div>
+
+                <button class="nav-btn right-btn" onclick="scrollRight('slider3')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Carrusel de Categoría 4: Modelado 3D -->
+        <section class="category">
+            <div class="category-header">Modelado 3D</div>
+            <div class="slider">
+                <button class="nav-btn left-btn" onclick="scrollLeft('slider4')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div id="slider4" class="slider-content">
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso Blender">
+                        <p class="text-white text-center">Curso Blender</p>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso 3DS Max">
+                        <p class="text-white text-center">Curso 3DS Max</p>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso Cinema 4D">
+                        <p class="text-white text-center">Curso Cinema 4D</p>
+                    </div>
+                </div>
+
+                <button class="nav-btn right-btn" onclick="scrollRight('slider4')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+        <section class="category">
+            <div class="category-header">Inteligencia Artificial</div>
+            <div class="slider">
+                <!-- Botón izquierdo -->
+                <button class="nav-btn left-btn" onclick="scrollLeft('slider2')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div id="slider2" class="slider-content">
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso Machine Learning">
+                        <p class="text-white text-center">Curso Machine Learning</p>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://via.placeholder.com/300x200" alt="Curso Deep Learning">
+                        <p class="text-white text-center">Curso Deep Learning</p>
+                    </div>
+                    <!-- Más tarjetas de curso aquí -->
+                </div>
+
+                <!-- Botón derecho -->
+                <button class="nav-btn right-btn" onclick="scrollRight('slider2')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+        </div>
+    </div>
+    <script>
+        let scrollAmount = 0;
+
+        function slide(direction) {
+            const slider = document.getElementById('slider');
+            const sliderWidth = slider.scrollWidth - slider.clientWidth;
+            const scrollStep = 300; // Ajustar el valor según el tamaño de las tarjetas
+
+            if (direction === 'left') {
+                scrollAmount -= scrollStep;
+                if (scrollAmount < 0) scrollAmount = 0;
+            } else {
+                scrollAmount += scrollStep;
+                if (scrollAmount > sliderWidth) scrollAmount = sliderWidth;
+            }
+
+            slider.style.transform = `translateX(-${scrollAmount}px)`;
+        }
+    </script>
+
+
+</body>
+</html>

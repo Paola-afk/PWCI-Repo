@@ -1,0 +1,297 @@
+body {
+    color: #E8EAF6;
+    margin: 0;
+    padding: 0;
+    background-color: #232346 !important;
+    margin-top: 120px;
+}
+
+html {
+    background-color: #232346 !important;
+}
+
+header{
+    width: 100%;
+    background-color: #5D3FD3;
+    padding: 20px 0;
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 1000;
+    top: 0; 
+    height: 120px; /* Ajusta la altura del header según sea necesario */
+}
+
+.header .container{
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    height: 70px;
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.logo-image {
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.logo-name {
+    height: 40px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between; 
+    gap: 25px;
+}
+
+main-nav ul li {
+    position: relative;
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #E8EAF6; 
+    font-weight: 400;
+    font-size: 18px;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.main-nav ul li a:hover {
+    color: #9F88FF; 
+}
+
+.main-nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 3px; 
+    width: 0;
+    height: 3px;
+    background-color: #9F88FF; 
+    transition: width 0.3s ease;
+}
+
+
+.main-nav ul li a:hover::after {
+    width: 100%;
+}
+/*Barra de busqueda*/
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #7B6FE7; 
+    padding: 5px 20px;
+    border-radius: 30px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.3s ease;
+}
+
+.search-bar:hover {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); 
+}
+
+.search-bar input {
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+    color: #E8EAF6; 
+    outline: none;
+    font-size: 16px; 
+    width: 250px;
+    transition: width 0.4s ease; 
+}
+
+.search-bar input:focus {
+    width: 350px; /* Hacer mas ancha la barra al darle clic*/
+}
+
+.search-bar input::placeholder {
+    color: #E8EAF6; 
+    opacity: 0.7; 
+    font-size: 14px; 
+}
+
+.search-icon {
+    color: #E8EAF6; 
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.search-icon:hover {
+    color: #FFFFFF; 
+    transition: color 0.2s ease;
+}
+
+/*Estilos botones principales*/
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #E8EAF6;
+    background-color: #9F88FF; 
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #bfafff; 
+    transition: background-color 0.3s ease;
+}
+
+.auth-buttons .btn-login {
+    border: solid 2px #9F88FF;
+    background-color: transparent;
+    color: #E8EAF6;
+}
+
+.auth-buttons .btn-signin {
+    background-color: #9F88FF;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #322A6A; /* Color de fondo oscuro */
+    padding: 20px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    color: #E8EAF6; /* Color de texto */
+
+}
+
+.sidebar .nav-link {
+    color: #E8EAF6; /* Color de texto */
+    font-size: 18px;
+    margin-bottom: 10px;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar .nav-link.active {
+    background-color: #5D3FD3; /* Color principal */
+    color: #FFFFFF; /* Blanco */
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* categorias  */
+
+.category-header {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+/* Estilo para las tarjetas del curso */
+.slider-item {
+    min-width: 200px;
+    margin-right: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.slider-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: opacity 0.3s ease-in-out; /* Transición suave de opacidad */
+}
+
+/* Efecto hover en las imágenes del curso */
+.slider-item:hover img {
+    transform: scale(1.1); /* Efecto de zoom */
+    opacity: 0.7; /* Imagen más opaca al hacer hover */
+}
+
+.slider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.slider-content {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+
+.slider-item img {
+    width: 95%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.slider-item:hover {
+    transform: scale(1.1);
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: #333366;
+}
+
+.left-btn {
+    left: 10px;
+}
+
+.right-btn {
+    right: 10px;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* Estilo para el carrito */
+.cart-icon {
+    position: relative;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #E8EAF6;
+}
+
+.cart-icon .cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #9F88FF;
+    color: white;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
