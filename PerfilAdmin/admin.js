@@ -1,3 +1,4 @@
+//Acciones al picar la foto del usuario en header
 document.addEventListener("DOMContentLoaded", function() {
     const profileMenuToggle = document.getElementById('profileMenuToggle');
     const profileMenu = document.getElementById('profileMenu');

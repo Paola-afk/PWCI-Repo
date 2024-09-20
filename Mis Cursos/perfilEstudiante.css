@@ -6,11 +6,11 @@ body {
     color: #E8EAF6;
     margin: 0;
     padding: 0;
-    background-color: #232346 !important;
+    background-color: #232346;
 }
 
 html {
-    background-color: #232346 !important;
+    background-color: #232346;
 }
 
 header{
@@ -19,8 +19,8 @@ header{
     padding: 20px 0;
     box-sizing: border-box;
     position: fixed;
-    z-index: 1000;
-    top: 0; 
+    z-index: 1000; 
+    top: 0;
 }
 
 .header .container{
@@ -43,6 +43,17 @@ header{
 .logo-image {
     height: 60px;
     margin-bottom: 10px;
+}
+
+.logo .logo-image {
+    max-height: 60px;
+    margin-right: 10px;
+    margin-bottom: 1px;
+}
+
+.logo .logo-name {
+    max-height: 40px;
+    margin-right: 10px;
 }
 
 .logo-name {
@@ -107,10 +118,117 @@ main-nav ul li {
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); 
 }
 
+.search-bar input {
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+    color: #E8EAF6; 
+    outline: none;
+    font-size: 16px; 
+    width: 250px;
+    transition: width 0.4s ease; 
+}
+
+.search-bar input:focus {
+    width: 350px; /* Hacer mas ancha la barra al darle clic*/
+}
+
+.search-bar input::placeholder {
+    color: #E8EAF6; 
+    opacity: 0.7; 
+    font-size: 14px; 
+}
+
+.search-icon {
+    color: #E8EAF6; 
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.search-icon:hover {
+    color: #FFFFFF; 
+    transition: color 0.2s ease;
+}
+
+/*Estilos botones principales*/
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #E8EAF6;
+    background-color: #9F88FF; 
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #bfafff; 
+    transition: background-color 0.3s ease;
+}
+
+.auth-buttons .btn-login {
+    border: solid 2px #9F88FF;
+    background-color: transparent;
+    color: #E8EAF6;
+}
+
+.auth-buttons .btn-signin {
+    background-color: #9F88FF;
+}
+
+/*Estilos foto de usuario*/
+.user-profile {
+    position: relative;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 150px;
+}
+
+.profile-menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.profile-menu a:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
+
+
 /* Main content */
 
 main {
-    margin-top: 70px;
+    margin-top: 80px;
+    margin-left: 120px;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
 .profile-instructor {
