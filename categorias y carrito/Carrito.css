@@ -1,0 +1,172 @@
+body {
+    color: #E8EAF6;
+    margin: 0;
+    padding: 0;
+    background-color: #232346 !important;
+    margin-top: 120px;
+}
+
+html {
+    background-color: #232346 !important;
+}
+
+header{
+    width: 100%;
+    background-color: #5D3FD3;
+    padding: 20px 0;
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 1000;
+    top: 0; 
+    height: 120px; /* Ajusta la altura del header según sea necesario */
+}
+
+.header .container{
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    height: 70px;
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.logo-image {
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.logo-name {
+    height: 40px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between; 
+    gap: 25px;
+}
+
+main-nav ul li {
+    position: relative;
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #E8EAF6; 
+    font-weight: 400;
+    font-size: 18px;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.main-nav ul li a:hover {
+    color: #9F88FF; 
+}
+
+.main-nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 3px; 
+    width: 0;
+    height: 3px;
+    background-color: #9F88FF; 
+    transition: width 0.3s ease;
+}
+
+
+.main-nav ul li a:hover::after {
+    width: 100%;
+}
+/*Barra de busqueda*/
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #7B6FE7; 
+    padding: 5px 20px;
+    border-radius: 30px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.3s ease;
+}
+
+.search-bar:hover {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); 
+}
+
+.search-bar input {
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+    color: #E8EAF6; 
+    outline: none;
+    font-size: 16px; 
+    width: 250px;
+    transition: width 0.4s ease; 
+}
+
+.search-bar input:focus {
+    width: 350px; /* Hacer mas ancha la barra al darle clic*/
+}
+
+.search-bar input::placeholder {
+    color: #E8EAF6; 
+    opacity: 0.7; 
+    font-size: 14px; 
+}
+
+.search-icon {
+    color: #E8EAF6; 
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.search-icon:hover {
+    color: #FFFFFF; 
+    transition: color 0.2s ease;
+}
+
+
+/*Estilos botones principales*/
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #E8EAF6;
+    background-color: #9F88FF; 
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #bfafff; 
+    transition: background-color 0.3s ease;
+}
+
+.auth-buttons .btn-login {
+    border: solid 2px #9F88FF;
+    background-color: transparent;
+    color: #E8EAF6;
+}
+
+.auth-buttons .btn-signin {
+    background-color: #9F88FF;
+}
+
+
