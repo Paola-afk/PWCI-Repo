@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis cursos - SkillHub</title>
+    <link rel="stylesheet" href="perfilEstudiante.css">
+
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img class="logo-image" src="../Multimedia/LogoPS.png" alt="SkillHub Logo">
+                <img class="logo-name" src="../Multimedia/LogoNombreS.png" alt="SkillHub">
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Cursos</a></li>
+                    <li><a href="#">Categorías</a></li>
+                </ul>
+            </nav>
+    
+            <div class="search-bar">
+                <input type="text" placeholder="Busca aquí...">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+    
+            <div class="auth-buttons">
+                <!--pendiente-->
+                <a href="#" class="btn btn-login">Iniciar sesión</a>
+                <a href="#" class="btn btn-signin">Registrarse</a>
+            </div>
+    
+        </div>
+    </header>
+
+    <main class="profile-instructor">
+        <div class="container-fluid">
+            <div class="row">
+
+
+                <!-- Contenido principal -->
+                <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <h2>Mis cursos</h2>
+
+                    <!-- Resumen visual -->
+                    <div class="course-list">
+                        <!-- Curso 1 -->
+                        <div class="course" onclick="openCourse('Curso de Desarrollo Web')">
+                            <img src="https://via.placeholder.com/500x150" alt="Curso Desarrollo Web">
+                            <h3>Curso de Desarrollo Web</h3>
+                            <p>Progreso: 50%</p>
+                        </div>
+        
+                        <!-- Curso 2 -->
+                        <div class="course" onclick="openCourse('Curso de Diseño Gráfico')">
+                            <img src="https://via.placeholder.com/500x150" alt="Curso Diseño Gráfico">
+                            <h3>Curso de Diseño Gráfico</h3>
+                            <p>Progreso: 80%</p>
+                        </div>
+        
+                        <!-- Curso 3 -->
+                        <div class="course" onclick="openCourse('Curso de Marketing Digital')">
+                            <img src="https://via.placeholder.com/500x150" alt="Curso Marketing Digital">
+                            <h3>Curso de Marketing Digital</h3>
+                            <p>Progreso: 30%</p>
+                        </div>
+                         <!-- Curso 4 -->
+                         <div class="course" onclick="openCourse('Curso de Marketing Digital')">
+                            <img src="https://via.placeholder.com/500x150" alt="Curso Marketing Digital">
+                            <h3>Curso 100% real</h3>
+                            <p>Progreso: 0%</p>
+                        </div>
+                    </div>
+                </div>
+                   
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkillHub. Todos los derechos reservados.</p>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Términos de Servicio</a>
+            <a href="#">Contacto</a>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="perfilInstructor.js"></script>
+</body>
+</html>

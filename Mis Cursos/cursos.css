@@ -1,0 +1,279 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    color: #E8EAF6;
+    margin: 0;
+    padding: 0;
+    background-color: #232346 !important;
+}
+
+html {
+    background-color: #232346 !important;
+}
+
+header{
+    width: 100%;
+    background-color: #5D3FD3;
+    padding: 20px 0;
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 1000;
+    top: 0; 
+}
+
+.header .container{
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    height: 70px;
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.logo-image {
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.logo-name {
+    height: 40px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between; 
+    gap: 25px;
+}
+
+main-nav ul li {
+    position: relative;
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #E8EAF6; 
+    font-weight: 400;
+    font-size: 18px;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.main-nav ul li a:hover {
+    color: #9F88FF; 
+}
+
+.main-nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 3px; 
+    width: 0;
+    height: 3px;
+    background-color: #9F88FF; 
+    transition: width 0.3s ease;
+}
+
+
+.main-nav ul li a:hover::after {
+    width: 100%;
+}
+
+/*Barra de busqueda*/
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #7B6FE7; 
+    padding: 5px 20px;
+    border-radius: 30px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.3s ease;
+}
+
+.search-bar:hover {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); 
+}
+
+.search-bar input {
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+    color: #E8EAF6; 
+    outline: none;
+    font-size: 16px; 
+    width: 250px;
+    transition: width 0.4s ease; 
+}
+
+.search-bar input:focus {
+    width: 350px; /* Hacer mas ancha la barra al darle clic*/
+}
+
+.search-bar input::placeholder {
+    color: #E8EAF6; 
+    opacity: 0.7; 
+    font-size: 14px; 
+}
+
+.search-icon {
+    color: #E8EAF6; 
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.search-icon:hover {
+    color: #FFFFFF; 
+    transition: color 0.2s ease;
+}
+
+/*Estilos botones principales*/
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #E8EAF6;
+    background-color: #9F88FF; 
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #bfafff; 
+    transition: background-color 0.3s ease;
+}
+
+.auth-buttons .btn-login {
+    border: solid 2px #9F88FF;
+    background-color: transparent;
+    color: #E8EAF6;
+}
+
+.auth-buttons .btn-signin {
+    background-color: #9F88FF;
+}
+
+
+
+/* Main content */
+
+main {
+    margin-top: 70px;
+}
+
+/*Forms*/
+::placeholder {
+    color: #9F88FF; /* Color de Acento */
+    opacity: 1; /* Asegura que el color sea visible */
+}
+
+/* Inputs y Textareas */
+.form-group input[type="text"],
+.form-group input[type="date"], 
+.form-group textarea, 
+.form-group select {
+    background-color: #232346 !important;
+    border: 1px solid #5D3FD3 !important; 
+    color: #E8EAF6 !important;
+}
+
+label {
+    color: #E8EAF6;
+}
+
+
+
+
+
+/* styles.css */
+
+/* Custom Tailwind Colors */
+
+:root {
+    --primario: #5D3FD3;
+    --secundario: #7B6FE7;
+    --texto: #E8EAF6;
+    --acento: #9F88FF;
+    --fondo: #333366;
+}
+
+/* Opcional: Personalizar clases para cursos */
+.curso-tarjeta {
+    @apply bg-[#7B6FE7] rounded-lg shadow-lg p-6;
+}
+
+.curso-imagen {
+    @apply bg-[#9F88FF] h-36 md:h-48 lg:h-48 rounded-lg mb-4;
+}
+
+.curso-titulo {
+    @apply text-2xl font-bold text-[#5D3FD3] mb-2;
+}
+
+.curso-descripcion {
+    @apply text-base mb-4;
+}
+
+.curso-boton {
+    @apply bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold;
+}
+
+/*Footer*/
+.footer {
+    bottom: 0;
+    background-color: #101021;
+    color: #E8EAF6;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer a {
+    color: #9F88FF;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.chat-window {
+    display: none;
+}
+
+.chat-open {
+    display: block;
+    animation: slideUp 0.3s ease-out forwards;
+}
+
+.chat-close {
+    animation: slideDown 0.3s ease-in forwards;
+}
+
+@keyframes slideUp {
+    0% { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(100%); }
+}

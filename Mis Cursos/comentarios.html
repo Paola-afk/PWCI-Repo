@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos los Comentarios</title>
+    <!-- Incluyendo Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="cursos.css">
+</head>
+<body class="bg-[#333366] text-[#E8EAF6] min-h-screen flex items-center justify-center p-4">
+    
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img class="logo-image" src="../Multimedia/LogoPS.png" alt="SkillHub Logo">
+                <img class="logo-name" src="../Multimedia/LogoNombreS.png" alt="SkillHub">
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Cursos</a></li>
+                    <li><a href="#">Categorías</a></li>
+                </ul>
+            </nav>
+    
+            <div class="search-bar">
+                <input type="text" placeholder="Busca aquí...">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+    
+            <div class="auth-buttons">
+                <!--pendiente-->
+                <a href="#" class="btn btn-login">Iniciar sesión</a>
+                <a href="#" class="btn btn-signin">Registrarse</a>
+            </div>
+    
+        </div>
+    </header>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="container max-w-3xl mx-auto bg-[#7B6FE7] rounded-lg shadow-lg p-6">
+
+    <br>
+    <br>
+    <br>
+    <br>
+        <h2 class="text-2xl font-bold text-[#5D3FD3] mb-6">Todos los Comentarios</h2>
+
+        <div id="average-rating" class="text-yellow-400 text-lg font-semibold mb-4">
+            Promedio de calificación: ⭐⭐⭐⭐⭐
+        </div>
+        
+        <div class="space-y-4">
+            <!-- Comentario -->
+            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
+                <div>
+                    <p class="font-semibold text-[#9F88FF]">Juan Pérez</p>
+                    <p class="text-yellow-400">⭐⭐⭐⭐⭐</p>
+                    <p>Excelente curso, me ayudó muchísimo a entender los conceptos básicos.</p>
+                </div>
+                <!-- Botón para bloquear comentario (solo visible para instructores) -->
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
+                    Bloquear
+                </button>
+            </div>
+
+            <!-- Otro Comentario -->
+            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
+                <div>
+                    <p class="font-semibold text-[#9F88FF]">paola_idk</p>
+                    <p class="text-yellow-400">⭐⭐⭐⭐</p>
+                    <p>Muy completo, aunque podría profundizar un poco más en algunos temas.</p>
+                </div>
+                <!-- Botón para bloquear comentario (solo visible para instructores) -->
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
+                    Bloquear
+                </button>
+            </div>
+
+            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
+                <div>
+                    <p class="font-semibold text-[#9F88FF]">soiio</p>
+                    <p class="text-yellow-400">⭐⭐⭐⭐⭐</p>
+                    <p>Excelente curso, me ayudó muchísimo a entender los conceptos básicos.</p>
+                </div>
+                <!-- Botón para bloquear comentario (solo visible para instructores) -->
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
+                    Bloquear
+                </button>
+            </div>
+
+            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
+                <div>
+                    <p class="font-semibold text-[#9F88FF]">mattArile</p>
+                    <p class="text-yellow-400">⭐</p>
+                    <p>lo compre creyendo que era un curso de comida</p>
+                </div>
+                <!-- Botón para bloquear comentario (solo visible para instructores) -->
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
+                    Bloquear
+                </button>
+            </div>
+
+            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
+                <div>
+                    <p class="font-semibold text-[#9F88FF]">Rulove</p>
+                    <p class="text-yellow-400">⭐⭐</p>
+                    <p>no me gusto, las tareas son muy complejas</p>
+                </div>
+                <!-- Botón para bloquear comentario (solo visible para instructores) -->
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
+                    Bloquear
+                </button>
+            </div>
+
+            <!-- Más comentarios... -->
+        </div>
+        <div class="mt-6"></div>
+            <button onclick="window.location.href='cursoNA.html';" class="bg-[#9F88FF] text-white px-6 py-3 rounded-lg hover:bg-[#E8EAF6] hover:text-[#333366] transition duration-300">
+                Regresar
+            </button>
+        </div>
+    </div>
+
+    <!-- Script para manejar el bloqueo de comentarios -->
+    <script>
+        function bloquearComentario(button) {
+            // Simulación de bloqueo del comentario
+            button.parentElement.style.display = 'none';  // Oculta el comentario tras "bloquearlo"
+            alert('Comentario bloqueado con éxito');
+        }
+
+
+        function calcularPromedioCalificaciones() {
+        // Obtener todas las calificaciones (estrellas en formato ⭐)
+        const estrellasElementos = document.querySelectorAll('.text-yellow-400');
+        let totalEstrellas = 0;
+        let cantidadComentarios = estrellasElementos.length;
+
+        // Si no hay comentarios, evitar el cálculo
+        if (cantidadComentarios === 0) {
+            document.getElementById('average-rating').textContent = "No hay calificaciones disponibles.";
+            return;
+        }
+
+        // Contar cuántas estrellas tiene cada comentario
+        estrellasElementos.forEach(estrellasElemento => {
+            let numeroEstrellas = estrellasElemento.textContent.trim().length; // Contar número de estrellas
+            totalEstrellas += numeroEstrellas;
+        });
+
+        // Calcular el promedio
+        let promedio = (totalEstrellas / cantidadComentarios).toFixed(1); // Redondear a 1 decimal
+
+        // Asegurar que el promedio no supere 5
+        promedio = Math.min(promedio, 5);
+
+        // Mostrar el promedio de calificación
+        document.getElementById('average-rating').textContent = `Promedio de calificación: ${'⭐'.repeat(Math.round(promedio))} (${promedio} de 5)`;
+    }
+
+    // Llamar a la función para calcular el promedio cuando cargue la página
+    calcularPromedioCalificaciones();
+
+    </script>
+
+
+
+</body>
+</html>

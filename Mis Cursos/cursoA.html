@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Adquirido</title>
+    <!-- Incluyendo Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="cursos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img class="logo-image" src="../Multimedia/LogoPS.png" alt="SkillHub Logo">
+                <img class="logo-name" src="../Multimedia/LogoNombreS.png" alt="SkillHub">
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Cursos</a></li>
+                    <li><a href="#">Categorías</a></li>
+                </ul>
+            </nav>
+    
+            <div class="search-bar">
+                <input type="text" placeholder="Busca aquí...">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+    
+            <div class="auth-buttons">
+                <!--pendiente-->
+                <a href="#" class="btn btn-login">Iniciar sesión</a>
+                <a href="#" class="btn btn-signin">Registrarse</a>
+            </div>
+    
+        </div>
+    </header>
+
+
+    <div class="container max-w-5xl mx-auto grid grid-cols-1 gap-6">
+        
+        <!-- Tarjeta del curso (Encabezado) -->
+         <br>
+         <br>
+         <br>
+        <div class="curso-tarjeta">
+            <div class="bg-[#7B6FE7] rounded-lg shadow-lg p-6">
+                <div class="bg-[#9F88FF] h-48 rounded-lg mb-4">
+                    <!-- Imagen del curso -->
+                </div>
+                <h2 class="text-2xl font-bold text-[#5D3FD3] mb-2">Título del Curso</h2>
+                <p class="text-base mb-4">
+                    Aprende desde lo básico hasta técnicas avanzadas sobre [tema del curso]. ¡Mejora tus habilidades con este curso completo y detallado!
+                </p>
+                <button class="bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold">
+                    Empezar curso
+                </button>
+            </div>
+        </div>
+        <div class="bg-[#7B6FE7] rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-[#E8EAF6] mb-4">Progreso del Curso</h2>
+            <div class="w-full bg-[#9F88FF] rounded-full h-4 mb-4">
+                <!-- Barra de Progreso Dinámica -->
+                <div class="bg-green-500 h-4 rounded-full" style="width: 50%;"></div> <!-- Cambia el porcentaje para reflejar el progreso -->
+            </div>
+            <p class="text-sm text-[#E8EAF6]">Has completado el 50% del curso</p>
+        </div>
+
+
+        <!-- Secciones de Niveles -->
+        <div class="bg-[#7B6FE7] rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-[#5D3FD3] mb-4">Contenido del Curso</h2>
+            
+            <!-- Nivel 1 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-[#E8EAF6] mb-2">Nivel 1: Introducción</h3>
+                <ul class="space-y-4">
+                    <!-- Video -->
+                    <li class="bg-[#9F88FF] p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#333366]">Video 1: Conceptos Básicos</h4>
+                        <a href="#" class="text-[#5D3FD3] underline">Ver Video</a>
+                    </li>
+                    <!-- Material Extra -->
+                    <li class="bg-[#9F88FF] p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#333366]">Material Extra: Guía en PDF</h4>
+                        <a href="#" class="text-[#5D3FD3] underline">Descargar PDF</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Nivel 2 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-[#E8EAF6] mb-2">Nivel 2: Intermedio</h3>
+                <ul class="space-y-4">
+                    <!-- Video -->
+                    <li class="bg-[#9F88FF] p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#333366]">Video 2: Técnicas Avanzadas</h4>
+                        <a href="#" class="text-[#5D3FD3] underline">Ver Video</a>
+                    </li>
+                    <!-- Material Extra -->
+                    <li class="bg-[#9F88FF] p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#333366]">Material Extra: Ejercicios</h4>
+                        <a href="#" class="text-[#5D3FD3] underline">Descargar Ejercicios</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Nivel 3 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-[#E8EAF6] mb-2">Nivel 3: Avanzado</h3>
+                <ul class="space-y-4">
+                    <!-- Video -->
+                    <li class="bg-[#9F88FF] p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#333366]">Video 3: Proyecto Final</h4>
+                        <a href="#" class="text-[#5D3FD3] underline">Ver Video</a>
+                    </li>
+                    <!-- Material Extra -->
+                    <li class="bg-[#9F88FF] p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#333366]">Material Extra: Plantillas</h4>
+                        <a href="#" class="text-[#5D3FD3] underline">Descargar Plantillas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat  -->
+    <div class="fixed bottom-4 right-4">
+        <button id="chatButton" class="bg-[var(--primario)] text-[var(--texto)] p-3 rounded-full shadow-lg hover:bg-[var(--acento)] transition duration-300">
+            💬
+        </button>
+    </div>
+
+     <!-- Chat desplegable -->
+     <div id="chatWindow" class="chat-window fixed bottom-16 right-4 w-80 bg-[var(--secundario)] rounded-lg shadow-lg">
+        <header class="bg-[var(--primario)] text-center p-2 text-[var(--texto)] rounded-t-lg">
+            Instructor
+        </header>
+        <div class="p-3 h-64 overflow-y-auto">
+            <!-- Mensajes -->
+            <div class="bg-[var(--primario)] p-2 mb-2 rounded-lg">
+                <p><strong>Instructor:</strong> ¿En qué puedo ayudarte?</p>
+                <span class="text-sm text-gray-300">10:30 AM</span>
+            </div>
+            <div class="bg-[var(--acento)] p-2 mb-2 rounded-lg text-[var(--fondo)]">
+                <p><strong>Estudiante:</strong> Tengo una pregunta sobre el curso.</p>
+                <span class="text-sm text-gray-300">10:32 AM</span>
+            </div>
+        </div>
+        <!-- Input de mensaje -->
+        <form class="p-2 bg-[var(--fondo)] rounded-b-lg">
+            <textarea class="w-full p-2 bg-[var(--fondo)] text-[var(--texto)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--acento)]" rows="2" placeholder="Escribe tu mensaje..."></textarea>
+            <div class="flex justify-between items-center mt-2">
+                <label class="text-sm text-[var(--texto)]">
+                    <input type="file" class="hidden">
+                    <span class="underline cursor-pointer">Adjuntar archivo</span>
+                </label>
+                <button class="bg-[var(--primario)] text-[var(--texto)] px-3 py-1 rounded-lg hover:bg-[var(--acento)] transition ease-in-out duration-300">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkillHub. Todos los derechos reservados.</p>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Términos de Servicio</a>
+            <a href="#">Contacto</a>
+        </div>
+    </footer>
+    
+       <!-- Script para abrir/cerrar el chat -->
+       <script>
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+
+        chatButton.addEventListener('click', () => {
+            if (chatWindow.classList.contains('chat-open')) {
+                chatWindow.classList.remove('chat-open');
+                chatWindow.classList.add('chat-close');
+                setTimeout(() => {
+                    chatWindow.classList.remove('chat-close');
+                    chatWindow.style.display = 'none';
+                }, 300); // Espera que termine la animación
+            } else {
+                chatWindow.style.display = 'block';
+                chatWindow.classList.add('chat-open');
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
