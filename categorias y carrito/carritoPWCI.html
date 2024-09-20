@@ -1,66 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de compras - SkillHub</title>
-    <link rel="stylesheet" href="carrito.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Menú de Compras - Cursos</title>
+    <link rel="stylesheet" href="Carrito.css">
+    
+    <!-- Incluir SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <section class="cart-section">
+
+<body class="bg-gray-100 text-gray-800">
+    <!-- Contenedor Principal -->
+
+    <header class="header">
         <div class="container">
-            <h2>Carrito de Compras</h2>
-            
-            <!-- Lista de cursos -->
-            <div class="cart-items">
-                <div class="cart-item">
-                    <img src="ruta-imagen-curso" alt="Imagen del curso">
-                    <div class="course-details">
-                        <h3>Título del Curso</h3>
-                        <p>Descripción breve del curso.</p>
-                        <p><strong>Precio:</strong> $123.45</p> <!-- Formato correcto para precios -->
-                    </div>
-                    <button class="btn btn-remove">
-                        <i class="fas fa-trash-alt"></i> Eliminar
-                    </button>
-                </div>
-                <!-- Repite para más cursos -->
+            <div class="logo">
+                <img class="logo-image" src="../Multimedia/LogoPS.png" alt="SkillHub Logo">
+                <img class="logo-name" src="../Multimedia/LogoNombreS.png" alt="SkillHub">
             </div>
-            
-            <!-- Resumen del carrito -->
-            <div class="cart-summary">
-                <h3>Resumen</h3>
-                <p>Total de cursos: 3</p>
-                <p><strong>Total a pagar:</strong> $370.50</p> <!-- Precio con formato -->
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Cursos</a></li>
+                    <li><a href="#">Categorías</a></li>
+                </ul>
+            </nav>
+    
+            <div class="search-bar">
+                <input type="text" placeholder="Busca aquí...">
+                <i class="fa fa-search search-icon"></i>
             </div>
     
-            <!-- Método de pago -->
-            <div class="payment-method">
-                <h3>Método de Pago</h3>
-                <form action="procesar_pago.php" method="POST">
-                    <label for="card-number">Número de Tarjeta:</label>
-                    <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9123 4567" required>
-                    
-                    <label for="expiry-date">Fecha de Expiración (MM/AA):</label>
-                    <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/AA" required pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
-                    
-                    <label for="cvv">CVV:</label>
-                    <input type="text" id="cvv" name="cvv" placeholder="123" required pattern="[0-9]{3}">
-                    
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-credit-card"></i> Completar Compra
-                    </button>
-                </form>
+            <div class="auth-buttons">
+                <!--pendiente-->
+                <a href="#" class="btn btn-login">Iniciar sesión</a>
+                <a href="#" class="btn btn-signin">Registrarse</a>
             </div>
     
-            <!-- Mensaje de éxito al completar compra -->
-            <div id="success-message" style="display: none;">
-                <p>Compra completada exitosamente.</p>
-            </div>
         </div>
-    </section>
+    </header>
+
+        <div class="container mx-auto p-6">
+            <!-- Título del Menú de Compras -->
+            <h1 class="text-4xl font-bold text-center text-[#4821ea] mb-8">Menú de Compras</h1>
     
+
+            <img src="../templateCourse/images/" alt="">
+            <!-- Carrito de Compras -->
+            <main class="w-auto flex justify-between ">
+                <method class="w-full mt-12 bg-white shadow-lg rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-[#4821ea] mb-4">Tu Carrito de Compras</h2>
+                    <ul class="divide-y divide-gray-300">
+                        <!-- Elemento del Carrito -->
+                        <li class="flex justify-between items-center py-4">
+                            <div class="flex flex-col items-start gap-2">
+                                <h3 class="text-lg font-bold text-gray-700">Curso de Desarrollo Web Completo</h3>
+                                <p class="  text-gray-500">Nivel: Intermedio</p>
+                                <div class="bg-gray-400 rounded-lg p-2 shadow-lg flex flex-wrap max-w-[350px]">
+                                    <p class="text-gray-900 text-xs	font-semibold">Tecnologia</p>
+                                </div>
+                                <button id="" class="mt-4 bg-[#4821ea] text-white py-2 px-4 rounded hover:bg-[#3d1bc8]" onclick="agregarAlCarrito()">
+                                    Ver Curso
+                                </button>                                
+                            </div>
+                            <p class="text-lg font-bold text-[#4821ea]">$<span class="price">49.99</span></p>
+                            <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="eliminarDelCarrito()">
+                                Eliminar
+                            </button>
+                        </li>
+                        <li class="flex justify-between items-center py-4">
+                            <div class="flex flex-col items-start">
+                                <h3 class="text-lg font-bold text-gray-700">Curso de Desarrollo Web Completo</h3>
+                                <p class="text-gray-500">Nivel: Intermedio</p>
+                                <button class="mt-4 bg-[#4821ea] text-white py-2 px-4 rounded hover:bg-[#3d1bc8]">
+                                    Ver Curso
+                                </button>
+                            </div>
+                            <p class="text-lg font-bold text-[#4821ea]">$<span class="price">49.99</span></p>
+                            <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">
+                                Eliminar
+                            </button>
+                        </li>
+                        <!-- Agrega más elementos del carrito según sea necesario -->
+                    </ul>
+                    <div class="flex justify-between items-center mt-6">
+                        <span class="text-xl font-bold">Total:</span>
+                        <p class="text-2xl font-bold text-[#4821ea]S">$<span id="totalDisplay" class="total">49.99</span></p>
+                    </div>
+        
+                    <!-- Verificación del Método de Pago -->
+                    <div class="mt-8">
+                        <h2 class="text-2xl font-bold text-[#4821ea] mb-4">Método de Pago</h2>
+                        <form id="payment-form" name="form">
+                            <div class="mb-4">
+                                <label for="payment-method" class="block text-lg font-semibold text-gray-700">Selecciona un método de pago:</label>
+                                <select id="payment-method" class="w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded mt-2" >
+                                    <option value="">-- Selecciona una opción --</option>
+                                    <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                    <option value="paypal">PayPal</option>
+                                    <option value="transferencia">Transferencia Bancaria</option>
+                                </select>
+                            </div>
+        
+                            <!-- Formulario para Tarjeta de Crédito/Débito -->
+                            <div id="form-tarjeta" class="hidden">
+                                <h3 class="text-xl font-bold text-[#4821ea] mb-2">Detalles de Tarjeta de Crédito/Débito</h3>
+                                <div class="mb-4">
+                                    <input id="nombreTarjeta" type="text" placeholder="Nombre en la tarjeta" class="w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded" >
+                                </div>
+                                <div class="mb-4">
+                                    <input id="numeroTarjeta" type="text" placeholder="Número de tarjeta" class="w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded" >
+                                </div>
+                                <div class="flex space-x-4 mb-4">
+                                    <input id="fechaExpiracion" type="text" placeholder="MM/AA" class="w-1/2 bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded" >
+                                    <input id="cvv" type="text" placeholder="CVC" class="w-1/2 bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded" >
+                                </div>
+                            </div>
+        
+                            <!-- Formulario para PayPal -->
+                            <div id="form-paypal" class="hidden">
+                                <h3 class="text-xl font-bold text-[#4821ea] mb-2">Detalles de PayPal</h3>
+                                <div class="mb-4">
+                                    <input id="emailPaypal" type="email" placeholder="Correo Electrónico de PayPal" class="w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded" >
+                                </div>
+                            </div>
+        
+                            <!-- Formulario para Transferencia Bancaria -->
+                            <div id="form-transferencia" class="hidden">
+                                <h3 class="text-xl font-bold text-[#4821ea] mb-2">Detalles de Transferencia Bancaria</h3>
+                                <div class="mb-4">
+                                    <input id="nombreBanco" type="text" placeholder="Nombre del Banco" class="w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded" >
+                                </div>
+                                <div class="mb-4">
+                                    <input id="numCuenta" type="text" placeholder="Número de Cuenta" class="w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-4 rounded" >
+                                </div>
+                            </div>
+        
+                            <div class="mb-4">
+                                <input  type="checkbox" id="terms" class="mr-2 leading-tight" >
+                                <label for="terms" class="text-gray-700">Acepto los <a href="#" class="text-[#4821ea]">términos y condiciones</a></label>
+                            </div>
+                            <button id="proceed-payment" type="button" class="mt-6 w-full bg-[#4821ea] text-white py-2 px-4 rounded hover:bg-[#3d1bc8]" onclick="agregarAlCarrito(event)">
+                                Proceder al Pago
+                            </button>
+                            <button onclick="window.location.href='categorias.html';" type="button" class="mt-6 w-full bg-[#4821ea] text-white py-2 px-4 rounded hover:bg-[#3d1bc8]">
+                                Regresar
+                            </button>
+                        </form>
+                    </div>
+                </method>
+            </main>
+        </div>
+        <script src="carrito.js" ></script>
 </body>
+
 </html>
