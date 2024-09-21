@@ -1,0 +1,36 @@
+
+        :root {
+            --primario: #5D3FD3;
+            --secundario: #7B6FE7;
+            --texto: #E8EAF6;
+            --acento: #9F88FF;
+            --fondo: #333366;
+        }
+
+        body {
+            background-color: var(--fondo);
+            color: var(--texto);
+        }
+
+        .chat-window {
+            display: none;
+        }
+
+        .chat-open {
+            display: block;
+            animation: slideUp 0.3s ease-out forwards;
+        }
+
+        .chat-close {
+            animation: slideDown 0.3s ease-in forwards;
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(100%); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(100%); }
+        }

@@ -5,43 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Estilo Messenger</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --primario: #5D3FD3;
-            --secundario: #7B6FE7;
-            --texto: #E8EAF6;
-            --acento: #9F88FF;
-            --fondo: #333366;
-        }
-
-        body {
-            background-color: var(--fondo);
-            color: var(--texto);
-        }
-
-        .chat-window {
-            display: none;
-        }
-
-        .chat-open {
-            display: block;
-            animation: slideUp 0.3s ease-out forwards;
-        }
-
-        .chat-close {
-            animation: slideDown 0.3s ease-in forwards;
-        }
-
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(100%); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideDown {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(100%); }
-        }
-    </style>
+    <link rel="stylesheet" href="chat.css">
 </head>
 <body class="flex justify-end items-end min-h-screen p-4">
     <!-- Botón para abrir/cerrar el chat -->
@@ -80,24 +44,6 @@
         </form>
     </div>
 
-    <!-- Script para abrir/cerrar el chat -->
-    <script>
-        const chatButton = document.getElementById('chatButton');
-        const chatWindow = document.getElementById('chatWindow');
-
-        chatButton.addEventListener('click', () => {
-            if (chatWindow.classList.contains('chat-open')) {
-                chatWindow.classList.remove('chat-open');
-                chatWindow.classList.add('chat-close');
-                setTimeout(() => {
-                    chatWindow.classList.remove('chat-close');
-                    chatWindow.style.display = 'none';
-                }, 300); // Espera que termine la animación
-            } else {
-                chatWindow.style.display = 'block';
-                chatWindow.classList.add('chat-open');
-            }
-        });
-    </script>
+    <script src="chat.js"></script>
 </body>
 </html>

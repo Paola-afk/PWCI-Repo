@@ -6,6 +6,8 @@
     <title>Curso No Adquirido</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="cursos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <body class="bg-[#333366] text-[#E8EAF6] min-h-screen flex items-center justify-center p-4">
@@ -28,10 +30,17 @@
                 <input type="text" placeholder="Busca aquí...">
                 <i class="fa fa-search search-icon"></i>
             </div>
+
+            <!-- Icono del carrito de compras -->
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <!-- Mostrar el número de artículos en el carrito -->
+                <span class="cart-count">3</span>
+            </div>
     
             <div class="auth-buttons">
-                <a href="#" class="btn btn-login">Iniciar sesión</a>
-                <a href="#" class="btn btn-signin">Registrarse</a>
+                <a href="/logIn/logIn.html" class="btn btn-login">Iniciar sesión</a>
+                <a href="/SignIn/signIn.html" class="btn btn-signin">Registrarse</a>
             </div>
 
             <!-- Perfil del Usuario -->
@@ -46,10 +55,6 @@
         </div>
     </header>
 
-    <br>
-    <br>
-    <br>
-    <br>
     <div class="container max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     
         <!-- Tarjeta del curso -->
@@ -141,5 +146,7 @@
             </div>
         </div>
     </div>
+
+    <script src="cursos.js"></script>
 </body>
 </html>

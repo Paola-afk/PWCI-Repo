@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todos los Comentarios</title>
-    <!-- Incluyendo Tailwind CSS -->
+    <title>Comentarios - SkillHub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="cursos.css">
+    <link rel="stylesheet" href="comentarios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="bg-[#333366] text-[#E8EAF6] min-h-screen flex items-center justify-center p-4">
     
@@ -19,7 +20,7 @@
 
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#">Inicio</a></li>
+                    <li><a href="/Inicio/inicio.html">Inicio</a></li>
                     <li><a href="#">Cursos</a></li>
                     <li><a href="#">Categorías</a></li>
                 </ul>
@@ -32,9 +33,19 @@
     
             <div class="auth-buttons">
                 <!--pendiente-->
-                <a href="#" class="btn btn-login">Iniciar sesión</a>
-                <a href="#" class="btn btn-signin">Registrarse</a>
+                <a href="/logIn/logIn.html" class="btn btn-login">Iniciar sesión</a>
+                <a href="/SignIn/signIn.html" class="btn btn-signin">Registrarse</a>
             </div>
+
+            <!-- Perfil del Usuario -->
+            <!-- <div class="user-profile" id="userProfile" style="display: none;"> -->
+                <div class="user-profile" id="userProfile">
+                    <img src="../ZIcons/ICON5.jpg" alt="Avatar" class="avatar" id="profileMenuToggle">
+                    <div class="profile-menu" id="profileMenu">
+                        <a href="/PerfilUser/perfilUser.html">Ver Perfil</a>
+                        <a href="/logIn/logIn.html">Cerrar sesión</a>
+                    </div>
+                </div>
     
         </div>
     </header>
@@ -132,49 +143,18 @@
         </div>
     </div>
 
-    <!-- Script para manejar el bloqueo de comentarios -->
-    <script>
-        function bloquearComentario(button) {
-            // Simulación de bloqueo del comentario
-            button.parentElement.style.display = 'none';  // Oculta el comentario tras "bloquearlo"
-            alert('Comentario bloqueado con éxito');
-        }
+    <!--
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkillHub. Todos los derechos reservados.</p>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Términos de Servicio</a>
+            <a href="#">Contacto</a>
+        </div>
+    </footer>
+-->
 
 
-        function calcularPromedioCalificaciones() {
-        // Obtener todas las calificaciones (estrellas en formato ⭐)
-        const estrellasElementos = document.querySelectorAll('.text-yellow-400');
-        let totalEstrellas = 0;
-        let cantidadComentarios = estrellasElementos.length;
-
-        // Si no hay comentarios, evitar el cálculo
-        if (cantidadComentarios === 0) {
-            document.getElementById('average-rating').textContent = "No hay calificaciones disponibles.";
-            return;
-        }
-
-        // Contar cuántas estrellas tiene cada comentario
-        estrellasElementos.forEach(estrellasElemento => {
-            let numeroEstrellas = estrellasElemento.textContent.trim().length; // Contar número de estrellas
-            totalEstrellas += numeroEstrellas;
-        });
-
-        // Calcular el promedio
-        let promedio = (totalEstrellas / cantidadComentarios).toFixed(1); // Redondear a 1 decimal
-
-        // Asegurar que el promedio no supere 5
-        promedio = Math.min(promedio, 5);
-
-        // Mostrar el promedio de calificación
-        document.getElementById('average-rating').textContent = `Promedio de calificación: ${'⭐'.repeat(Math.round(promedio))} (${promedio} de 5)`;
-    }
-
-    // Llamar a la función para calcular el promedio cuando cargue la página
-    calcularPromedioCalificaciones();
-
-    </script>
-
-
-
+    <script src="comentarios.js"></script>
 </body>
 </html>

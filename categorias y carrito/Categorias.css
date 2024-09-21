@@ -22,7 +22,7 @@ header{
     position: fixed;
     z-index: 1000;
     top: 0; 
-    height: 120px; /* Ajusta la altura del header según sea necesario */
+    height: 110px; /* Ajusta la altura del header según sea necesario */
 }
 
 .header .container{
@@ -33,7 +33,7 @@ header{
     max-width: 1400px;
     margin: 0 auto;
     width: 100%;
-    height: 70px;
+    height: 30px;
 }
 
 .header .logo {
@@ -44,7 +44,7 @@ header{
 
 .logo-image {
     height: 60px;
-    margin-bottom: 10px;
+    margin-bottom: 1px;
 }
 
 .logo-name {
@@ -172,6 +172,45 @@ main-nav ul li {
     background-color: #9F88FF;
 }
 
+/*Estilos foto de usuario*/
+.user-profile {
+    position: relative;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 150px;
+}
+
+.profile-menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.profile-menu a:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
+
 /* Sidebar */
 .sidebar {
     background-color: #322A6A; /* Color de fondo oscuro */
@@ -287,6 +326,7 @@ main-nav ul li {
     font-size: 1.5rem;
     cursor: pointer;
     color: #E8EAF6;
+    margin-bottom: 5px;
 }
 
 .cart-icon .cart-count {
