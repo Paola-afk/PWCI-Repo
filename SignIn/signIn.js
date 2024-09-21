@@ -1,67 +1,90 @@
+document.querySelector('form').addEventListener('submit', validateForm);
+
 function validateForm(event) {
     event.preventDefault(); // Evita el envío del formulario para validar primero
 
-    // Limpia mensajes de error previos
-    document.getElementById('name-error').textContent = '';
-    document.getElementById('email-error').textContent = '';
-    document.getElementById('birthdate-error').textContent = '';
-    document.getElementById('password-error').textContent = '';
-
     let isValid = true;
+    let errorMessages = [];
 
     // Validación del nombre (campo obligatorio)
-    const name = document.getElementById('name').value;
+    const name = document.getElementById('name').value.trim();
     const nameRegex = /^[a-zA-Z\s]+$/;
     if (!name) {
-        document.getElementById('name-error').textContent = 'El nombre es obligatorio.';
+        errorMessages.push('El nombre es obligatorio.');
         isValid = false;
     } else if (!nameRegex.test(name)) {
-        document.getElementById('name-error').textContent = 'El nombre solo debe contener letras y espacios.';
+        errorMessages.push('El nombre solo debe contener letras y espacios.');
         isValid = false;
     }
 
-    // Validación del email (campo obligatorio)
-    const email = document.getElementById('email').value;
+    // Validación del correo electrónico (campo obligatorio)
+    const email = document.getElementById('email').value.trim();
     if (!email) {
-        document.getElementById('email-error').textContent = 'El correo electrónico es obligatorio.';
+        errorMessages.push('El correo electrónico es obligatorio.');
         isValid = false;
     } else if (!validateEmail(email)) {
-        document.getElementById('email-error').textContent = 'Ingresa un correo electrónico válido.';
+        errorMessages.push('Ingresa un correo electrónico válido.');
         isValid = false;
     }
 
-    // Validación de la fecha de nacimiento (campo obligatorio y no puede ser fecha actual o futura)
-    const fechaNacimiento = document.getElementById('fecha-nacimiento').value;
+    // Validación de la fecha de nacimiento (no puede ser futura)
+    const birthdate = document.getElementById('fecha-nacimiento').value;
     const today = new Date().toISOString().split('T')[0]; // Fecha actual en formato yyyy-mm-dd
-    if (!fechaNacimiento) {
-        document.getElementById('birthdate-error').textContent = 'La fecha de nacimiento es obligatoria.';
+    if (!birthdate) {
+        errorMessages.push('La fecha de nacimiento es obligatoria.');
         isValid = false;
-    } else if (fechaNacimiento >= today) {
-        document.getElementById('birthdate-error').textContent = 'La fecha de nacimiento no puede ser la actual o una fecha futura.';
+    } else if (birthdate >= today) {
+        errorMessages.push('La fecha de nacimiento no puede ser la actual o una fecha futura.');
         isValid = false;
     }
 
-    // Validación de la contraseña (campo obligatorio y debe cumplir con los requisitos)
+    // Validación de la contraseña (mínimo 8 caracteres, 1 mayúscula, 1 especial, 1 número)
     const password = document.getElementById('password').value;
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d)[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
     if (!password) {
-        document.getElementById('password-error').textContent = 'La contraseña es obligatoria.';
+        errorMessages.push('La contraseña es obligatoria.');
         isValid = false;
     } else if (!passwordRegex.test(password)) {
-        document.getElementById('password-error').textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, un carácter especial y un número.';
+        errorMessages.push('La contraseña debe tener al menos 8 caracteres, una mayúscula, un carácter especial y un número.');
         isValid = false;
     }
 
-    // Si todas las validaciones pasan
-    if (isValid) {
-        alert('Registro exitoso (simulado).');
-        return true;
+    // Validación del género (campo obligatorio)
+    const gender = document.getElementById('genero').value;
+    if (!gender) {
+        errorMessages.push('Selecciona un género.');
+        isValid = false;
+    }
+
+    // Validación del rol (campo obligatorio)
+    const role = document.getElementById('role').value;
+    if (!role) {
+        errorMessages.push('Selecciona un rol.');
+        isValid = false;
+    }
+
+    // Si hay errores, muestra los mensajes con SweetAlert
+    if (!isValid) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Errores en el formulario',
+            html: errorMessages.join('<br>'),
+            confirmButtonText: 'Corregir'
+        });
     } else {
-        return false;
+        // Si todo está correcto, muestra mensaje de éxito y envía el formulario
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: '¡Te has registrado correctamente!',
+            confirmButtonText: 'Continuar'
+        }).then(() => {
+            document.querySelector('form').submit(); // Envía el formulario si es válido
+        });
     }
 }
 
-// Función para validar el formato del email
+// Función para validar el formato del correo electrónico
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);

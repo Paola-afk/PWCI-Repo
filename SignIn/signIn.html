@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="signIn.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="register-container">
@@ -27,7 +28,7 @@
                 </div>
 
                 <h3 class="register-text">Registrarse</h3>
-                <form class="register-form" action="#" method="POST">
+                <form class="register-form" action="#" method="POST" novalidate>
                     <!-- Nombre completo -->
                     <div class="input-group">
                         <i class="fas fa-user"></i>
@@ -85,7 +86,7 @@
                         <span class="error-message" id="rol-error"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                    <button  class="btn btn-primary">Registrarse</button>
 
                     <p class="login-prompt">¿Ya tienes una cuenta? <a href="/logIn/logIn.html" class="login-link">Inicia sesión aquí</a></p>
                 </form>
