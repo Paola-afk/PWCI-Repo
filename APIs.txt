@@ -1,0 +1,8 @@
+Propuesta de APIs
+
+1-  Gravatar API: mostrar avatares automáticamente basados en los correos electrónicos de los usuarios.
+2-  SendGrid API: Para enviar correos electrónicos a los usuarios, como correos de verificación, recuperación de contraseña, notificaciones, etc.
+3- API para Generar e Imprimir Diploma:
+    Endpoint:
+    POST /api/diploma/generar
+    Este endpoint genera un diploma para un estudiante que ha completado un curso. una API que imprima un diploma en formato PDF.

@@ -1,3 +1,8 @@
+/*Estilos generales*/
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 body {
     color: #E8EAF6;
     margin: 0;
@@ -168,5 +173,44 @@ main-nav ul li {
 .auth-buttons .btn-signin {
     background-color: #9F88FF;
 }
+
+/*Estilos foto de usuario*/
+.user-profile {
+    position: relative;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 150px;
+}
+
+.profile-menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.profile-menu a:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
 
 
