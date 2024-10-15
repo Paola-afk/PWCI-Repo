@@ -1,4 +1,4 @@
-document.querySelector('form').addEventListener('submit', validateForm);
+document.querySelector('form').adEventListener('submit', validateForm);
 
 function validateForm(event) {
     event.preventDefault(); // Evita el envío del formulario para validar primero
