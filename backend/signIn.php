@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fecha_nacimiento = mysqli_real_escape_string($conn, $_POST['fecha-nacimiento']);
     $rol = (int)$_POST['role']; // Convertir a entero para ID_Rol
 
-    // Validaciones del servidor (medida de seguridad adicional)
+    // Validaciones del servidor
     if (empty($nombre_completo) || empty($email) || empty($contrasena) || empty($genero) || empty($fecha_nacimiento) || empty($rol)) {
         die("Todos los campos son obligatorios.");
     }
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
         $avatar = $_FILES['avatar']['name'];
         $avatar_tmp = $_FILES['avatar']['tmp_name'];
-        $avatar_destino = 'backend/uploads/' . basename($avatar); // Carpeta donde se guardará el avatar
+        $avatar_destino = 'uploads/' . basename($avatar); // Carpeta donde se guardará el avatar
         if (!move_uploaded_file($avatar_tmp, $avatar_destino)) {
             die("Error al subir el avatar.");
         }
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Ejecutar y manejar errores
     if ($stmt->execute()) {
         echo "Registro exitoso.";
-        header('Location: ../signIn/signIn.html');
+        header('Location: ../SignIn/signIn.html');
     } else {
         echo "Error al registrar usuario: " . $stmt->error;
     }
