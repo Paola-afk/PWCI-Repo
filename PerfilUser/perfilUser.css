@@ -273,6 +273,7 @@ h2 {
 
 .btn-change-photo,
 .btn-edit-profile,
+.btn-delete, 
 .btn-save {
     display: block;
     width: 100%;
@@ -288,7 +289,8 @@ h2 {
 }
 
 .profile-container .profile-info .btn-change-photo,
-.profile-container .profile-info .btn-edit-profile {
+.profile-container .profile-info .btn-edit-profile,
+.profile-container .profile-info .btn-delete {
     background-color: transparent; /* Color principal */
     color: #E8EAF6; /* Color de texto */
     border: 1.5px solid #9378ff; /* Color de acento */
@@ -296,14 +298,15 @@ h2 {
     border-radius: 5px;
     cursor: pointer;
     font-weight: 400;
-    margin: 5px 0;
+    margin: 6px 0;
     display: flex;
     align-items: center;
     text-align: center;
 }
 
 .profile-container .profile-info .btn-change-photo:hover,
-.profile-container .profile-info .btn-edit-profile:hover {
+.profile-container .profile-info .btn-edit-profile:hover, 
+.profile-container .profile-info .btn-delete:hover {
     background-color: #9378ff; /* Color secundario */
 }
 

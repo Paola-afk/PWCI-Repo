@@ -1,6 +1,5 @@
-
 document.querySelector('.login-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar el envío automático del formulario
+    event.preventDefault(); // Evita el envío automático del formulario
 
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -36,15 +35,15 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
         return;
     }
 
-    // Si pasa todas las validaciones, redirige al usuario
+    // Si todas las validaciones son correctas, permite el envío del formulario
     Swal.fire({
         icon: 'success',
         title: 'Inicio de sesión exitoso',
-        text: 'Serás redirigido a la página principal.',
+        text: 'Procesando...',
         timer: 2000,
         showConfirmButton: false
     }).then(() => {
-        // Aquí puedes redirigir a la página de inicio
-        window.location.href = '/Inicio/inicio.html';
+        // Ahora permite el envío del formulario (se enviará al archivo PHP)
+        //document.querySelector('.login-form').submit();
     });
 });
