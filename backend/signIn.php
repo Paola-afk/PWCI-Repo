@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     text: 'Te has registrado correctamente',
                     confirmButtonText: 'Continuar'
                 }).then(function() {
-                    window.location.href = '../SignIn/signIn.html';
+                    window.location.href = '../logIn/logIn.html';
                 });
             };
         </script>";

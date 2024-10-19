@@ -3,43 +3,56 @@ session_start();
 include 'conexion.php'; // Conexión a la base de datos
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Obtener los datos del formulario
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $contrasena = mysqli_real_escape_string($conn, $_POST['password']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // Llamar al Stored Procedure
-    $sql = "CALL sp_iniciar_sesion(?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $email, $contrasena);
+    // Variables para almacenar los resultados del Stored Procedure
+    $rol = null;
+    $id_usuario = null;
+
+    // Preparar el Stored Procedure
+    $stmt = $conn->prepare("CALL sp_iniciar_sesion(?, @p_rol, @p_id_usuario)");
+    $stmt->bind_param("s", $email); // Pasamos solo el email porque la contraseña se validará en PHP
     $stmt->execute();
-    $result = $stmt->get_result();
-    $usuario = $result->fetch_assoc();
-    
-    if ($usuario['Rol'] != -1) {
-        // Guardar el rol en la sesión
-        $_SESSION['id_usuario'] = $usuario['ID_Usuario']; // Suponiendo que ID_Usuario se obtiene en el procedimiento
-        $_SESSION['rol'] = $usuario['Rol']; // Guardar el rol del usuario
+    $stmt->close();
 
-        // Redirigir a una página específica según el rol
-        switch ($usuario['Rol']) {
-            case 1: // Administrador
-                header('Location: admin_dashboard.php');
-                break;
-            case 2: // Instructor
-                header('Location: instructor_dashboard.php');
-                break;
-            case 3: // Estudiante
-                header('Location: estudiante_dashboard.php');
-                break;
-            default:
-                header('Location: general_dashboard.php'); // Página general para todos
-                break;
+    // Obtener los resultados del Stored Procedure
+    $result = $conn->query("SELECT @p_rol AS rol, @p_id_usuario AS id_usuario");
+    $row = $result->fetch_assoc();
+
+    $rol = $row['rol'];
+    $id_usuario = $row['id_usuario'];
+
+    // Si el usuario existe y está activo
+    if ($id_usuario !== null) {
+        // Obtener la contraseña almacenada en la base de datos
+        $stmt = $conn->prepare("SELECT Contrasena FROM Usuarios WHERE Email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->bind_result($contrasena_hash);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Verificar la contraseña
+        if (password_verify($password, $contrasena_hash)) {
+            // Inicio de sesión exitoso
+            $_SESSION['id_usuario'] = $id_usuario;
+            $_SESSION['rol'] = $rol;
+
+            // Redirigir al usuario a la página de inicio
+            header("Location: http://localhost/PWCI-Repo/Inicio/inicio.html");
+            exit();
+        } else {
+            // Contraseña incorrecta
+            echo "Contraseña incorrecta.";
         }
-        exit();
     } else {
-        echo "Correo o contraseña incorrectos.";
+        // Usuario no encontrado o inactivo
+        echo "Usuario no encontrado o inactivo.";
     }
 
-    $stmt->close();
+    // Cerrar la conexión
     $conn->close();
 }
 ?>
