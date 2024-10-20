@@ -1,5 +1,5 @@
 document.querySelector('.login-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar el envío automático del formulario para validar primero
+    event.preventDefault(); // Evitar el envío automático del formulario
 
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -35,62 +35,59 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
         return;
     }
 
-    // Enviar los datos del formulario al servidor usando AJAX
+    // Crear un FormData para enviar los datos al servidor
     const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
 
-    // Agrega mensajes de depuración en consola
-    console.log("Enviando solicitud al servidor...");
-
-    fetch('http://localhost/PWCI-Repo/backend/logIn.php', {
+    // Enviar la solicitud al servidor
+    fetch('/PWCI-Repo/backend/logIn.php', {
         method: 'POST',
         body: formData
     })
-    .then(response => {
-        console.log("Respuesta recibida:", response);
-        return response.text(); // Convertir la respuesta a texto
-    })
-    .then(result => {
-        console.log("Resultado procesado:", result); // Mostrar el resultado devuelto por PHP
-        if (result === 'success') {
+    .then(response => response.text()) // Obtener la respuesta como texto
+    .then(data => {
+        console.log("Respuesta del servidor:", data); // Ver la respuesta en la consola
+
+        // Limpiar la respuesta y manejar los resultados
+        const trimmedData = data.trim(); // Elimina espacios en blanco
+
+        if (trimmedData === "success") {
             Swal.fire({
                 icon: 'success',
                 title: 'Inicio de sesión exitoso',
-                text: 'Redirigiendo...',
+                text: 'Serás redirigido a la página principal.',
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
                 window.location.href = 'http://localhost/PWCI-Repo/Inicio/inicio.html';
             });
-        } else if (result === 'password_incorrect') {
+        } else if (trimmedData === "password_incorrect") {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Contraseña incorrecta.'
+                text: 'La contraseña es incorrecta.',
             });
-        } else if (result === 'user_not_found') {
+        } else if (trimmedData === "user_not_found") {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Usuario no encontrado.'
+                text: 'No se encontró el usuario.',
             });
         } else {
-            console.log("Error inesperado:", result);
             Swal.fire({
                 icon: 'error',
-                title: 'Error',
-                text: 'Ocurrió un error inesperado.'
+                title: 'Error inesperado',
+                text: 'Ocurrió un error inesperado, por favor intenta de nuevo.',
             });
         }
     })
     .catch(error => {
-        console.error('Error en la solicitud:', error); // Mostrar cualquier error de red
+        console.error('Error:', error);
         Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'Ocurrió un error en el servidor.'
+            title: 'Error de red',
+            text: 'No se pudo conectar con el servidor. Intenta de nuevo más tarde.',
         });
     });
 });
-
