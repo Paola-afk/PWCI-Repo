@@ -1,5 +1,5 @@
 document.querySelector('.login-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evita el envío automático del formulario
+    event.preventDefault(); // Evitar el envío automático del formulario para validar primero
 
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -35,15 +35,62 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
         return;
     }
 
-    // Si todas las validaciones son correctas, permite el envío del formulario
-    Swal.fire({
-        icon: 'success',
-        title: 'Inicio de sesión exitoso',
-        text: 'Procesando...',
-        timer: 2000,
-        showConfirmButton: false
-    }).then(() => {
-        // Ahora permite el envío del formulario (se enviará al archivo PHP)
-        //document.querySelector('.login-form').submit();
+    // Enviar los datos del formulario al servidor usando AJAX
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    // Agrega mensajes de depuración en consola
+    console.log("Enviando solicitud al servidor...");
+
+    fetch('http://localhost/PWCI-Repo/backend/logIn.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        console.log("Respuesta recibida:", response);
+        return response.text(); // Convertir la respuesta a texto
+    })
+    .then(result => {
+        console.log("Resultado procesado:", result); // Mostrar el resultado devuelto por PHP
+        if (result === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Inicio de sesión exitoso',
+                text: 'Redirigiendo...',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = 'http://localhost/PWCI-Repo/Inicio/inicio.html';
+            });
+        } else if (result === 'password_incorrect') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Contraseña incorrecta.'
+            });
+        } else if (result === 'user_not_found') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Usuario no encontrado.'
+            });
+        } else {
+            console.log("Error inesperado:", result);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error inesperado.'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error); // Mostrar cualquier error de red
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ocurrió un error en el servidor.'
+        });
     });
 });
+

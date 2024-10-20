@@ -29,7 +29,7 @@ body {
 
 .login-left {
     width: 60%;
-    background-image: url('ruta-a-tu-imagen');
+    /*background-image: url('ruta-a-tu-imagen');*/
     background-size: cover;
     background-position: center;
     /*flex: 1;*/
