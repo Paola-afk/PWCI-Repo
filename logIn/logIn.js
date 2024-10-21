@@ -68,6 +68,12 @@ document.querySelector('.login-form').addEventListener('submit', function(event)
                 title: 'Error',
                 text: 'La contraseña es incorrecta.',
             });
+        } else if (trimmedData === "user_blocked") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Cuenta bloqueada',
+                text: 'Has sido bloqueado por múltiples intentos fallidos. Contacta al soporte.',
+            });
         } else if (trimmedData === "user_not_found") {
             Swal.fire({
                 icon: 'error',
