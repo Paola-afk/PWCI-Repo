@@ -11,21 +11,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_usuario = null;
     $contrasena_hash = null;
     $estado = null;
+    $avatar = null;
 
     // Llamar al Stored Procedure para obtener los datos del usuario
-    if ($stmt = $conn->prepare("CALL sp_iniciar_sesion(?, @p_rol, @p_id_usuario, @p_contrasena_hash, @p_estado)")) {
+    if ($stmt = $conn->prepare("CALL sp_iniciar_sesion(?, @p_rol, @p_id_usuario, @p_contrasena_hash, @p_estado, @p_avatar)")) {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->close();
 
         // Obtener los resultados del Stored Procedure
-        $result = $conn->query("SELECT @p_rol AS rol, @p_id_usuario AS id_usuario, @p_contrasena_hash AS contrasena_hash, @p_estado AS estado");
+        $result = $conn->query("SELECT @p_rol AS rol, @p_id_usuario AS id_usuario, @p_contrasena_hash AS contrasena_hash, @p_estado AS estado, @p_avatar AS avatar");
         $row = $result->fetch_assoc();
 
         $rol = $row['rol'];
         $id_usuario = $row['id_usuario'];
         $contrasena_hash = $row['contrasena_hash'];
         $estado = $row['estado'];
+        $avatar = $row['avatar'];
 
         if ($estado === 'Inactivo') {
             echo "user_blocked";
@@ -35,8 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Inicio de sesión exitoso, resetear intentos fallidos
                 $conn->query("UPDATE Usuarios SET intentos_fallidos = 0 WHERE Email = '$email'");
                 
+                // Asignar las variables de sesión correctamente
                 $_SESSION['id_usuario'] = $id_usuario;
                 $_SESSION['rol'] = $rol;
+                $_SESSION['avatar'] = $avatar;
+
                 echo "success";
             } else {
                 // Contraseña incorrecta, incrementar intentos fallidos
