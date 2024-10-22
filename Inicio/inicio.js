@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById('userProfile').style.display = 'block';
 
                 // Establecer avatar del usuario
-                document.querySelector('.avatar').src = data.avatar;
+                document.querySelector('.avatar').src = 'http://localhost/PWCI-Repo/backend/' + data.avatar;
 
                 // Filtrar el menú por rol de usuario
                 const profileMenu = document.getElementById('profileMenu');
@@ -35,17 +35,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Mostrar elementos según el rol del usuario
                 if (data.rol == 1) {  // Estudiante
-                    profileMenu.innerHTML += '<a href="/PerfilUser/perfilUser.html">Ver Perfil</a>';
-                    profileMenu.innerHTML += '<a href="/MisCursos/perfilEstudiante.html">Ver mis cursos</a>';
-                    profileMenu.innerHTML += '<a href="/logIn/logIn.html">Cerrar sesión</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/MisCursos/perfilEstudiante.html">Ver mis cursos</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
                 } else if (data.rol == 2) {  // Instructor
-                    profileMenu.innerHTML += '<a href="/PerfilUser/perfilUser.html">Ver Perfil</a>';
-                    profileMenu.innerHTML += '<a href="/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>';
-                    profileMenu.innerHTML += '<a href="/logIn/logIn.html">Cerrar sesión</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
                 } else if (data.rol == 3) {  // Administrador
-                    profileMenu.innerHTML += '<a href="/PerfilUser/perfilUser.html">Ver Perfil</a>';
-                    profileMenu.innerHTML += '<a href="/PerfilAdmin/admin.html">Ver reportes</a>';
-                    profileMenu.innerHTML += '<a href="/logIn/logIn.html">Cerrar sesión</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilAdmin/admin.html">Ver reportes</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
                 }
             }
         })
