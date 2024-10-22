@@ -22,7 +22,7 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="/Inicio/inicio.html">Inicio</a></li>
-                    <li><a href="/Mis Cursos/cursoA.html">Cursos</a></li>
+                    <li><a href="/MisCursos/cursoA.html">Cursos</a></li>
                     <li><a href="/categorias y carrito/categorias.html">Categorías</a></li>
                 </ul>
             </nav>
@@ -42,7 +42,7 @@
                             
                             <!-- Enlaces según el rol del usuario -->
                             <?php if ($_SESSION['rol_usuario'] == 1): // Estudiante ?>
-                                <a href="/MisCursos/cursoA.html">Ver mis cursos</a>
+                                <a href="/MisCursos/perfilEstudiante.html">Ver mis cursos</a>
                             <?php elseif ($_SESSION['rol_usuario'] == 2): // Instructor ?>
                                 <a href="/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>
                             <?php elseif ($_SESSION['rol_usuario'] == 3): // Administrador ?>
@@ -50,7 +50,7 @@
                             <?php endif; ?>
                             
                             <!-- Cerrar sesión debería redirigir a un script PHP que destruya la sesión -->
-                            <a href="/logIn/logout.php">Cerrar sesión</a>
+                            <a href="/logIn/logIn.html">Cerrar sesión</a>
                         </div>
                     </div>
                     <?php endif; ?>
