@@ -2,7 +2,7 @@
 $host = '127.0.0.1'; 
 $db = 'CapaWepa'; 
 $user = 'root';
-$pass = '123456789';
+$pass = '';
 
 // Crear conexión
 $conn = new mysqli($host, $user, $pass, $db);
