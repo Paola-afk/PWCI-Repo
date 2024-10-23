@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Establecer avatar del usuario
                 document.querySelector('.avatar').src = 'http://localhost/PWCI-Repo/backend/' + data.avatar;
+                
 
                 // Filtrar el menú por rol de usuario
                 const profileMenu = document.getElementById('profileMenu');
@@ -47,10 +48,20 @@ document.addEventListener("DOMContentLoaded", function() {
                     profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
                 }
 
-                document.getElementById('fullName').value = data.nombreCompleto;
-                document.getElementById('email').value = data.email;
-                document.getElementById('gender').value = data.genero.toLowerCase(); // Ajustar si tienes valores como 'male', 'female', 'other'
-                document.getElementById('dob').value = data.fechaNacimiento;
+            // Asignar los datos al formulario de perfil
+            document.getElementById('fullName').value = data.Nombre;
+            document.getElementById('email').value = data.Correo;
+            const fechaFormateada = new Date(data.Cumple).toISOString().split('T')[0];
+            document.getElementById('dob').value = fechaFormateada;
+            document.getElementById('profile-avatar').src = '/PWCI-Repo/backend/uploads/' + data.avatar;
+
+            // Mapeo de género
+            let generoMap = {
+                1: 'masculino',
+                2: 'femenino',
+                3: 'otro'
+            };
+            document.getElementById('gender').value = generoMap[data.Genero];
             }
         })
         .catch(error => console.error('Error:', error));
