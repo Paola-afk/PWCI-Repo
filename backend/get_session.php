@@ -9,6 +9,7 @@ if (isset($_SESSION['id_usuario'])) {
         'rol' => $_SESSION['rol'],
         'avatar' => $_SESSION['avatar'],
         'Cumple' => $_SESSION['fecha_nacimiento'],
+        //'Genero' => $_SESSION['genero_nombre']
         'Genero' => $_SESSION['genero']
     ]);
 } else {

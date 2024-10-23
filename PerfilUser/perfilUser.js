@@ -48,20 +48,30 @@ document.addEventListener("DOMContentLoaded", function() {
                     profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
                 }
 
-            // Asignar los datos al formulario de perfil
-            document.getElementById('fullName').value = data.Nombre;
-            document.getElementById('email').value = data.Correo;
-            const fechaFormateada = new Date(data.Cumple).toISOString().split('T')[0];
-            document.getElementById('dob').value = fechaFormateada;
-            document.getElementById('profile-avatar').src = '/PWCI-Repo/backend/uploads/' + data.avatar;
+                // Asignar los datos al formulario de perfil
+                document.getElementById('fullName').value = data.Nombre;
+                document.getElementById('email').value = data.Correo;
+                const fechaFormateada = new Date(data.Cumple).toISOString().split('T')[0];
+                document.getElementById('dob').value = fechaFormateada;
 
-            // Mapeo de género
-            let generoMap = {
-                1: 'masculino',
-                2: 'femenino',
-                3: 'otro'
-            };
-            document.getElementById('gender').value = generoMap[data.Genero];
+
+
+                if (data.avatar && data.avatar !== '') {
+                    document.getElementById('profile-avatar').src = 'http://localhost/PWCI-Repo/backend/' + data.avatar;
+                }
+
+                if (data.Genero && data.Genero !== '') {
+                    let genero = data.Genero.trim().toLowerCase(); // Normaliza el valor
+                
+                    // Compara el valor normalizado con las opciones disponibles
+                    if (genero === 'masculino' || genero === 'femenino' || genero === 'otro') {
+                        document.getElementById('gender').value = genero; // Asignar valor al select
+                    } else {
+                        console.error('Valor de género no reconocido:', genero);
+                    }
+                }
+                
+
             }
         })
         .catch(error => console.error('Error:', error));
