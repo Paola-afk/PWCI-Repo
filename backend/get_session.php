@@ -8,8 +8,8 @@ if (isset($_SESSION['id_usuario'])) {
         'Correo' => $_SESSION['email'],
         'rol' => $_SESSION['rol'],
         'avatar' => $_SESSION['avatar'],
-        'Cumple' => $_SESSION['fecha_nacimiento']
-
+        'Cumple' => $_SESSION['fecha_nacimiento'],
+        'Genero' => $_SESSION['genero']
     ]);
 } else {
     echo json_encode(['loggedIn' => false]);
