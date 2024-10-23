@@ -90,55 +90,94 @@ document.addEventListener("DOMContentLoaded", function() {
         saveChangesBtn.style.display = 'block';
     });
 
-    saveChangesBtn.addEventListener("click", function() {
-        const nombreCompleto = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const genero = document.getElementById('gender').value;
-        const fechaNacimiento = document.getElementById('dob').value;
-        const contrasena = document.getElementById('password').value;
 
-         // Validaciones
-        if (nombreCompleto.trim() === "") {
-            alert("El nombre completo es obligatorio.");
+
+// Función para validar el formato del email
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Función para validar contraseña con los requisitos
+function validatePassword(password) {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return passwordRegex.test(password);
+}
+
+// Evento para guardar los cambios en el perfil
+saveChangesBtn.addEventListener("click", function() {
+    const nombreCompleto = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const genero = document.getElementById('gender').value;
+    const fechaNacimiento = document.getElementById('dob').value;
+    const contrasena = document.getElementById('password').value;
+
+    // Validaciones
+    if (nombreCompleto.trim() === "") {
+        alert("El nombre completo es obligatorio.");
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        alert("Por favor, ingresa un correo electrónico válido.");
+        return;
+    }
+
+    // Validar la contraseña solo si se está modificando
+    if (contrasena.trim() !== "") {
+        if (!validatePassword(contrasena)) {
+            alert("La contraseña debe tener al menos 8 caracteres, incluir un número, una letra mayúscula y un carácter especial.");
             return;
         }
+    }
 
-        if (!validateEmail(email)) {
-            alert("Por favor, ingresa un correo electrónico válido.");
-            return;
-        }
+    // Enviar la contraseña como null si está vacía
+    const contrasenaFinal = contrasena.trim() === "" ? null : contrasena;
 
-        if (contrasena.trim() !== "" && contrasena.length < 8) {
-            alert("La contraseña debe tener al menos 8 caracteres.");
-            return;
-        }
-
-        fetch('update_profile.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                nombreCompleto,
-                email,
-                genero,
-                fechaNacimiento,
-                contrasena
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Perfil actualizado con éxito");
-                disableEditing(); // Llama a la función para deshabilitar la edición
-            } else {
-                alert("Error al actualizar el perfil: " + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    // Registro para comprobar datos que se envían
+    console.log({
+        nombreCompleto,
+        email,
+        genero,
+        fechaNacimiento,
+        contrasena: contrasenaFinal
     });
+
+    fetch('/PWCI-Repo/backend/update_user.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            nombreCompleto,
+            email,
+            genero,
+            fechaNacimiento,
+            contrasena: contrasenaFinal
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Respuesta del servidor: ", data); // Verificar la respuesta del servidor
+        if (data.success) {
+            alert("Perfil actualizado con éxito");
+            disableEditing(); // Llama a la función para deshabilitar la edición
+        } else {
+            alert("Error al actualizar el perfil: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Error al comunicarse con el servidor.");
+    });
+});
+
+
 
     changePhotoBtn.addEventListener("click", function() {
         alert("Cambiar foto de perfil.");

@@ -1,50 +1,59 @@
 <?php
 session_start();
-require 'conexion.php'; // Asegúrate de incluir tu archivo de conexión a la base de datos
+require 'conexion.php';
+header('Content-Type: application/json');
 
-// Verifica si el usuario está logueado
+// Verificar si el usuario está logueado
 if (!isset($_SESSION['id_usuario'])) {
-    header('Location: /logIn/logIn.html'); // Redirige si no está logueado
+    echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
     exit();
 }
-else {
-    echo "Wepa";
-}
-// Obtén los datos del formulario
+
+// Obtener los datos del cuerpo de la solicitud
+$input = json_decode(file_get_contents('php://input'), true);
 $id_usuario = $_SESSION['id_usuario'];
-$nombre_completo = $_POST['full_name'];
-$email = $_POST['email'];
-$genero = $_POST['gender'];
-$fecha_nacimiento = $_POST['dob'];
-$contrasena = $_POST['password'];
+$nombre_completo = $input['nombreCompleto'];
+$email = $input['email'];
+$genero = $input['genero'];
+$fecha_nacimiento = $input['fechaNacimiento'];
+$contrasena = $input['contrasena'];
 
-// Opcional: encriptar la contraseña si es necesario
-$contrasena_encriptada = password_hash($contrasena, PASSWORD_BCRYPT);
+// Validar datos
+if (empty($nombre_completo) || empty($email) || empty($genero) || empty($fecha_nacimiento)) {
+    echo json_encode(['success' => false, 'message' => 'Faltan datos obligatorios']);
+    exit();
+}
 
-// Conectar a la base de datos
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
-
-// Verifica si hay algún error en la conexión
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
+// Si la contraseña es nula, no actualizar la contraseña
+$contrasena_encriptada = null;
+if ($contrasena !== null) {
+    $contrasena_encriptada = password_hash($contrasena, PASSWORD_BCRYPT);
 }
 
 // Preparar el procedimiento almacenado
-$sql = "CALL UpdateUsuario(?, ?, ?, ?, ?, ?)";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("isssss", $id_usuario, $nombre_completo, $email, $genero, $fecha_nacimiento, $contrasena_encriptada);
-
-// Ejecutar la consulta
-if ($stmt->execute()) {
-    echo "Perfil actualizado correctamente";
-    // Redirigir o mostrar un mensaje de éxito
-    header('Location: perfilUser.html?update=success');
-} else {
-    echo "Error al actualizar el perfil: " . $stmt->error;
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+if ($conn->connect_error) {
+    echo json_encode(['success' => false, 'message' => 'Error de conexión a la base de datos']);
+    exit();
 }
 
-// Cerrar la conexión
+if ($contrasena_encriptada) {
+    $sql = "CALL UpdateUsuario(?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isssss", $id_usuario, $nombre_completo, $email, $genero, $fecha_nacimiento, $contrasena_encriptada);
+} else {
+    $sql = "CALL UpdateUsuarioSinPassword(?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issss", $id_usuario, $nombre_completo, $email, $genero, $fecha_nacimiento);
+}
+
+if ($stmt->execute()) {
+    echo json_encode(['success' => true, 'message' => 'Perfil actualizado correctamente']);
+} else {
+    echo json_encode(['success' => false, 'message' => 'Error al actualizar el perfil: ' . $stmt->error]);
+}
+
+// Cerrar conexiones
 $stmt->close();
 $conn->close();
 ?>
