@@ -42,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (password_verify($password, $contrasena_hash)) {
                 // Inicio de sesión exitoso, resetear intentos fallidos
                 $conn->query("UPDATE Usuarios SET intentos_fallidos = 0 WHERE Email = '$email'");
+
+                $_SESSION['email'] = $email;
                 
                 // Asignar las variables de sesión correctamente
                 $_SESSION['id_usuario'] = $id_usuario;

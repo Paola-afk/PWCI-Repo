@@ -5,7 +5,7 @@ if (isset($_SESSION['id_usuario'])) {
         'loggedIn' => true,
         'ID Usuario'  => $_SESSION['id_usuario'],
         'Nombre' => $_SESSION['nombre_completo'],
-        //'Correo' => $_SESSION['email_usuario'],
+        'Correo' => $_SESSION['email'],
         'rol' => $_SESSION['rol'],
         'avatar' => $_SESSION['avatar'],
         'Cumple' => $_SESSION['fecha_nacimiento']
