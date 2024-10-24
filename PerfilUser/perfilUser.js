@@ -105,8 +105,6 @@ function validatePassword(password) {
 }
 
 
-
-
     changePhotoBtn.addEventListener("click", function() {
         alert("Cambiar foto de perfil.");
     });
@@ -145,6 +143,16 @@ function disableEditing() {
     document.getElementById('saveChangesBtn').style.display = 'none';
 }
 
+// Función para validar el formato del email
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+// Función para validar la contraseña
+function validatePassword(password) {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return passwordRegex.test(password);
+}
 
 ///editar ususario este es el bueno
  
@@ -155,21 +163,37 @@ saveChangesBtn.addEventListener("click", function() {
     const fechaNacimiento = document.getElementById('dob').value;
     const contrasena = document.getElementById('password').value;
 
-    // Validaciones
-    if (nombreCompleto.trim() === "") {
-        alert("El nombre completo es obligatorio.");
-        return;
-    }
+// Validaciones
+if (nombreCompleto.trim() === "") {
+    Swal.fire({
+        title: 'Campo obligatorio',
+        text: 'El nombre completo es obligatorio.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+    });
+    return;
+}
 
-    if (!validateEmail(email)) {
-        alert("Por favor, ingresa un correo electrónico válido.");
-        return;
-    }
+if (!validateEmail(email)) {
+    Swal.fire({
+        title: 'Correo inválido',
+        text: 'Por favor, ingresa un correo electrónico válido.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+    });
+    return;
+}
 
-    if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
-        alert("La contraseña debe tener al menos 8 caracteres, incluir un número, una letra mayúscula y un carácter especial.");
-        return;
-    }
+if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
+    Swal.fire({
+        title: 'Contraseña no válida',
+        text: 'La contraseña debe tener al menos 8 caracteres, incluir un número, una letra mayúscula y un carácter especial.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+    });
+    return;
+}
+
 
     // Crear un objeto FormData para enviar los datos
     const formData = new FormData();
@@ -180,15 +204,38 @@ saveChangesBtn.addEventListener("click", function() {
     formData.append('contrasena', contrasena);
 
     // Realizar la petición AJAX
+        // Realizar la petición AJAX
     fetch('/PWCI-Repo/backend/EditarUsu.php', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => response.json()) // Asegúrate de que el backend responda con JSON
     .then(data => {
-        alert(data); // Mostrar la respuesta del servidor
+        if (data.success) {
+            Swal.fire({
+                title: '¡Perfil actualizado!',
+                text: data.message, // Mensaje del servidor
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: data.message, // Mensaje del servidor en caso de error
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
     })
     .catch(error => {
         console.error('Error:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al intentar actualizar tu perfil.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
     });
+
+
 });
