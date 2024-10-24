@@ -105,9 +105,46 @@ function validatePassword(password) {
 }
 
 
-    changePhotoBtn.addEventListener("click", function() {
-        alert("Cambiar foto de perfil.");
+changePhotoBtn.addEventListener('click', function() {
+    // Crear un input de tipo 'file' para seleccionar la nueva foto
+    const inputFile = document.createElement('input');
+    inputFile.type = 'file';
+    inputFile.accept = 'image/*'; // Aceptar solo imágenes
+
+    // Abrir el explorador de archivos cuando el usuario haga clic en 'Cambiar Foto'
+    inputFile.click();
+
+    // Escuchar cuando el usuario seleccione una imagen
+    inputFile.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            // Crear un objeto FormData para enviar la imagen
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            // Realizar la petición AJAX para subir la imagen
+            fetch('/PWCI-Repo/backend/EditarUsu.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Actualizar la imagen del avatar en el perfil
+                    profileAvatar.src = `/PWCI-Repo/backend/uploads/${data.avatarFilename}`;
+                    alert('Foto de perfil actualizada con éxito');
+                } else {
+                    alert('Error al actualizar la foto: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar la foto');
+            });
+        }
     });
+});
 
     // Lógica para eliminar la cuenta
     const deleteAccountBtn = document.getElementById("deleteAccountBtn");
