@@ -104,78 +104,6 @@ function validatePassword(password) {
     return passwordRegex.test(password);
 }
 
-// Evento para guardar los cambios en el perfil
-saveChangesBtn.addEventListener("click", function() {
-    const nombreCompleto = document.getElementById('fullName').value;
-    const email = document.getElementById('email').value;
-    const genero = document.getElementById('gender').value;
-    const fechaNacimiento = document.getElementById('dob').value;
-    const contrasena = document.getElementById('password').value;
-
-    // Validaciones
-    if (nombreCompleto.trim() === "") {
-        alert("El nombre completo es obligatorio.");
-        return;
-    }
-
-    if (!validateEmail(email)) {
-        alert("Por favor, ingresa un correo electrónico válido.");
-        return;
-    }
-
-    // Validar la contraseña solo si se está modificando
-    if (contrasena.trim() !== "") {
-        if (!validatePassword(contrasena)) {
-            alert("La contraseña debe tener al menos 8 caracteres, incluir un número, una letra mayúscula y un carácter especial.");
-            return;
-        }
-    }
-
-    // Enviar la contraseña como null si está vacía
-    const contrasenaFinal = contrasena.trim() === "" ? null : contrasena;
-
-    // Registro para comprobar datos que se envían
-    console.log({
-        nombreCompleto,
-        email,
-        genero,
-        fechaNacimiento,
-        contrasena: contrasenaFinal
-    });
-
-    fetch('/PWCI-Repo/backend/update_user.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            nombreCompleto,
-            email,
-            genero,
-            fechaNacimiento,
-            contrasena: contrasenaFinal
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Respuesta del servidor: ", data); // Verificar la respuesta del servidor
-        if (data.success) {
-            alert("Perfil actualizado con éxito");
-            disableEditing(); // Llama a la función para deshabilitar la edición
-        } else {
-            alert("Error al actualizar el perfil: " + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("Error al comunicarse con el servidor.");
-    });
-});
 
 
 
@@ -216,3 +144,51 @@ function disableEditing() {
     });
     document.getElementById('saveChangesBtn').style.display = 'none';
 }
+
+
+///editar ususario este es el bueno
+ 
+saveChangesBtn.addEventListener("click", function() {
+    const nombreCompleto = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const genero = document.getElementById('gender').value;
+    const fechaNacimiento = document.getElementById('dob').value;
+    const contrasena = document.getElementById('password').value;
+
+    // Validaciones
+    if (nombreCompleto.trim() === "") {
+        alert("El nombre completo es obligatorio.");
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        alert("Por favor, ingresa un correo electrónico válido.");
+        return;
+    }
+
+    if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
+        alert("La contraseña debe tener al menos 8 caracteres, incluir un número, una letra mayúscula y un carácter especial.");
+        return;
+    }
+
+    // Crear un objeto FormData para enviar los datos
+    const formData = new FormData();
+    formData.append('nombre', nombreCompleto);
+    formData.append('email', email);
+    formData.append('genero', genero);
+    formData.append('fechaNacimiento', fechaNacimiento);
+    formData.append('contrasena', contrasena);
+
+    // Realizar la petición AJAX
+    fetch('/PWCI-Repo/backend/EditarUsu.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Mostrar la respuesta del servidor
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
