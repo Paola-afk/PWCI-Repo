@@ -155,7 +155,7 @@ function validatePassword(password) {
 }
 
 ///editar ususario este es el bueno
- 
+
 saveChangesBtn.addEventListener("click", function() {
     const nombreCompleto = document.getElementById('fullName').value;
     const email = document.getElementById('email').value;
