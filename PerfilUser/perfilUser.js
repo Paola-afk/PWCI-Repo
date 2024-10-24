@@ -105,8 +105,6 @@ function validatePassword(password) {
 }
 
 
-
-
     changePhotoBtn.addEventListener("click", function() {
         alert("Cambiar foto de perfil.");
     });
@@ -145,9 +143,19 @@ function disableEditing() {
     document.getElementById('saveChangesBtn').style.display = 'none';
 }
 
+// Función para validar el formato del email
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+// Función para validar la contraseña
+function validatePassword(password) {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return passwordRegex.test(password);
+}
 
 ///editar ususario este es el bueno
- 
+
 saveChangesBtn.addEventListener("click", function() {
     const nombreCompleto = document.getElementById('fullName').value;
     const email = document.getElementById('email').value;
