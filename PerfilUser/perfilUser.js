@@ -181,6 +181,7 @@ if (!validateEmail(email)) {
 }
 
 if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
+    console.log(Swal);
     Swal.fire({
         title: 'Contraseña no válida',
         text: 'La contraseña debe tener al menos 8 caracteres, incluir un número, una letra mayúscula y un carácter especial.',
@@ -214,6 +215,7 @@ if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
+            disableEditing();
         } else {
             Swal.fire({
                 title: 'Error',
