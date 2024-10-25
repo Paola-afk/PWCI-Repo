@@ -105,47 +105,6 @@ function validatePassword(password) {
 }
 
 
-changePhotoBtn.addEventListener('click', function() {
-    // Crear un input de tipo 'file' para seleccionar la nueva foto
-    const inputFile = document.createElement('input');
-    inputFile.type = 'file';
-    inputFile.accept = 'image/*'; // Aceptar solo imágenes
-
-    // Abrir el explorador de archivos cuando el usuario haga clic en 'Cambiar Foto'
-    inputFile.click();
-
-    // Escuchar cuando el usuario seleccione una imagen
-    inputFile.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-
-        if (file) {
-            // Crear un objeto FormData para enviar la imagen
-            const formData = new FormData();
-            formData.append('avatar', file);
-
-            // Realizar la petición AJAX para subir la imagen
-            fetch('/PWCI-Repo/backend/EditarUsu.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Actualizar la imagen del avatar en el perfil
-                    profileAvatar.src = `/PWCI-Repo/backend/uploads/${data.avatarFilename}`;
-                    alert('Foto de perfil actualizada con éxito');
-                } else {
-                    alert('Error al actualizar la foto: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al actualizar la foto');
-            });
-        }
-    });
-});
-
     // Lógica para eliminar la cuenta
     const deleteAccountBtn = document.getElementById("deleteAccountBtn");
     deleteAccountBtn.addEventListener("click", function() {
@@ -222,7 +181,6 @@ if (!validateEmail(email)) {
 }
 
 if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
-    console.log(Swal);
     Swal.fire({
         title: 'Contraseña no válida',
         text: 'La contraseña debe tener al menos 8 caracteres, incluir un número, una letra mayúscula y un carácter especial.',
@@ -256,7 +214,6 @@ if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
-            disableEditing();
         } else {
             Swal.fire({
                 title: 'Error',
@@ -277,4 +234,41 @@ if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
     });
 
 
+});
+
+
+ //editar foto
+// Obtener userId desde el campo oculto en el HTML
+const userId = document.getElementById('userId').value;
+
+document.getElementById('changePhotoBtn').addEventListener('click', function() {
+    document.getElementById('avatarInput').click();
+});
+
+document.getElementById('avatarInput').addEventListener('change', function() {
+    const fileInput = document.getElementById('avatarInput');
+    const file = fileInput.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append('avatar', file);
+        formData.append('user_id', userId);  // Ahora estamos usando el userId correcto
+
+        fetch('/PWCI-Repo/backend/update_avatar.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire('¡Éxito!', 'Avatar actualizado correctamente.', 'success');
+                document.getElementById('profile-avatar').src = data.new_avatar_url;
+            } else {
+                Swal.fire('Error', data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire('Error', 'Ocurrió un error al procesar la solicitud.', 'error');
+        });
+    }
 });
