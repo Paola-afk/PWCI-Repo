@@ -174,40 +174,83 @@
                     <!-- Crear curso -->
                     <div class="tab-pane fade" id="crear-curso" role="tabpanel" aria-labelledby="crear-curso-tab">
                         <h3>Crear Nuevo Curso</h3>
-                        <form id="create-course-form">
+                        <form id="create-course-form" enctype="multipart/form-data">
+                            <!-- Título del Curso -->
                             <div class="form-group">
                                 <label for="curso-titulo">Título del Curso</label>
-                                <input type="text" class="form-control" id="curso-titulo" placeholder="Nombre del curso">
+                                <input type="text" class="form-control" id="curso-titulo" name="Titulo" placeholder="Nombre del curso" required>
                             </div>
+
+                            <!-- Descripción del Curso -->
                             <div class="form-group">
                                 <label for="curso-descripcion">Descripción</label>
-                                <textarea class="form-control" id="curso-descripcion" rows="3" placeholder="Descripción del curso"></textarea>
+                                <textarea class="form-control" id="curso-descripcion" name="Descripcion" rows="3" placeholder="Descripción del curso" required></textarea>
                             </div>
+
+                            <!-- Imagen del Curso -->
                             <div class="form-group">
-                                <label for="curso-categoria">Selecciona la categoria del curso</label>
-                                <select id="curso-categoria" class="form-control">
+                                <label for="curso-imagen">Imagen del Curso</label>
+                                <input type="file" class="form-control" id="curso-imagen" name="Imagen" accept="image/*" required>
+                            </div>
+
+                            <!-- Costo del Curso -->
+                            <div class="form-group">
+                                <label for="curso-costo">Costo del Curso</label>
+                                <input type="number" class="form-control" id="curso-costo" name="Costo" placeholder="Costo del curso" step="0.01" min="0" required>
+                            </div>
+
+                            <!-- Nivel del Curso -->
+                            <div class="form-group">
+                                <label for="curso-nivel">Nivel del Curso</label>
+                                <input type="number" class="form-control" id="curso-nivel" name="Nivel" placeholder="Nivel del curso" min="1" required>
+                            </div>
+
+                            <!-- Estado del Curso -->
+                            <div class="form-group">
+                                <label for="curso-estado">Estado del Curso</label>
+                                <select id="curso-estado" class="form-control" name="Estado" required>
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            </div>
+
+                            <!-- Categoría del Curso -->
+                            <div class="form-group">
+                                <label for="curso-categoria">Selecciona la categoría del curso</label>
+                                <select id="curso-categoria" class="form-control" name="Categoria" required>
                                     <option>Marketing</option>
                                     <option>Diseño Gráfico</option>
                                     <option>IT & Software</option>
-                                    <option>Animacion digital</option>
-                                    <option>Programacion</option>
+                                    <option>Animación Digital</option>
+                                    <option>Programación</option>
                                 </select>
                             </div>
+
+                            <!-- Fecha de Inicio -->
                             <div class="form-group">
                                 <label for="curso-fecha-inicio">Fecha de Inicio</label>
-                                <input type="date" class="form-control" id="curso-fecha-inicio">
+                                <input type="date" class="form-control" id="curso-fecha-inicio" name="Fecha_Inicio" required>
                             </div>
+
+                            <!-- Fecha de Finalización -->
                             <div class="form-group">
                                 <label for="curso-fecha-fin">Fecha de Finalización</label>
-                                <input type="date" class="form-control" id="curso-fecha-fin">
+                                <input type="date" class="form-control" id="curso-fecha-fin" name="Fecha_Fin">
                             </div>
+
+                            <!-- Botón para Crear Curso -->
                             <button type="submit" id="create-course-btn" class="btn btn-primary">Crear Curso</button>
                         </form>
 
-                        <div id="success-message" class="alert alert-success" role="alert">
+                        <!-- Mensaje de Éxito -->
+                        <div id="success-message" class="alert alert-success" style="display: none;" role="alert">
                             ¡El curso ha sido creado exitosamente!
                         </div>
 
+                        <!-- Mensaje de Error -->
+                        <div id="error-message" class="alert alert-danger" style="display: none;" role="alert">
+                            Error al crear el curso. Por favor, inténtalo de nuevo.
+                        </div>
                     </div>
 
                     <!-- Eliminar curso -->

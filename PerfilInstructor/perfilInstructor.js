@@ -139,20 +139,69 @@ document.getElementById('aplicar-filtros').addEventListener('click', function() 
 
 });
 
+let instructorId = null; // Variable para almacenar el ID del instructor
 
+// Obtener datos de la sesión al cargar la página
+fetch('getsession.php')
+    .then(response => response.json())
+    .then(data => {
+        if (data.loggedIn) {
+            instructorId = data['ID Usuario']; // Almacenar el ID del instructor
+        } else {
+            // Redirigir al login si no está autenticado
+            window.location.href = "login.php";
+        }
+    })
+    .catch(error => console.error('Error al obtener la sesión:', error));
+
+// Evento para enviar el formulario
 document.getElementById("create-course-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Evitar el envío real del formulario
 
-    // Simulación de espera (por ejemplo, un proceso de creación de curso)
-    document.getElementById("create-course-btn").disabled = true; // Desactivar el botón
-    document.getElementById("create-course-btn").innerText = "Creando...";
+    const createButton = document.getElementById("create-course-btn");
+    createButton.disabled = true;
+    createButton.innerText = "Creando...";
 
-    setTimeout(function() {
-        // Mostrar mensaje de éxito después de 2 segundos
-        document.getElementById("create-course-btn").disabled = false;
-        document.getElementById("create-course-btn").innerText = "Crear Curso";
-        document.getElementById("success-message").style.display = "block";
-    }, 2000); // Simular un proceso de 2 segundos
+    const formData = new FormData();
+    formData.append("ID_Instructor", instructorId); // Usar el ID del instructor de la sesión
+    formData.append("Titulo", document.getElementById("curso-titulo").value);
+    formData.append("Descripcion", document.getElementById("curso-descripcion").value);
+    formData.append("Imagen", document.getElementById("curso-imagen").files[0]); 
+    formData.append("Costo", document.getElementById("curso-costo").value);
+    formData.append("Nivel", document.getElementById("curso-nivel").value);
+    formData.append("Estado", document.getElementById("curso-estado").value);
+
+    fetch('subir_curso.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Curso creado exitosamente!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear el curso',
+                text: data.message
+            });
+        }
+        createButton.disabled = false;
+        createButton.innerText = "Crear Curso";
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Hubo un error al intentar crear el curso.',
+            text: 'Por favor, inténtelo de nuevo más tarde.'
+        });
+        createButton.disabled = false;
+        createButton.innerText = "Crear Curso";
+    });
 });
-
-
