@@ -87,3 +87,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+async function fetchCourses() {
+    try {
+        const response = await fetch('http://localhost/api.php?action=getCourses'); 
+        if (!response.ok) { 
+            throw new Error('Error en la solicitud: ' + response.statusText); 
+        } 
+        const courses = await response.json();
+        displayCourses(courses);
+    } 
+    catch (error) { console.error('Error:', error); }
+}

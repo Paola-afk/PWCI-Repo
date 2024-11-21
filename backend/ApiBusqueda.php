@@ -1,6 +1,8 @@
 <?php
 session_start();
 include 'conexion.php'; // Archivo de conexión a la base de datos
+require(__DIR__ . "/vendor/autoload.php"); 
+use Algolia\AlgoliaSearch\SearchClient;
 header('Content-Type: application/json');
 
 function getCourses($pdo, $filters = []) {
