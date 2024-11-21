@@ -51,3 +51,39 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error:', error));
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/PWCI-Repo/backend/getCursos.php')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data); // Verifica la respuesta aquí
+        const coursesContainer = document.querySelector('.course-cards');
+        
+        if (data.length === 0) {
+            coursesContainer.innerHTML = '<p>No se encontraron cursos disponibles.</p>';
+        } else {
+            coursesContainer.innerHTML = ''; // Limpia cualquier contenido previo
+            data.forEach(curso => {
+                coursesContainer.innerHTML += `
+                    <div class="course-card">
+                        <img src="${curso.Imagen}" alt="${curso.Titulo}">
+                        <h3>${curso.Titulo}</h3>
+                        <p>${curso.Descripcion}</p>
+                        <a href="#" class="btn">Ver más</a>
+                    </div>
+                `;
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Hubo un problema con la solicitud:', error);
+    });
+
+});

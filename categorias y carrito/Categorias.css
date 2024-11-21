@@ -240,72 +240,51 @@ main-nav ul li {
 
 /* categorias  */
 
+/* Estilo de la cabecera de categoría */
 .category-header {
-    font-size: 1.5rem;
-    color: #fff;
-    margin-bottom: 10px;
-}
-/* Estilo para las tarjetas del curso */
-.slider-item {
-    min-width: 200px;
-    margin-right: 20px;
-    transition: transform 0.3s ease-in-out;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #9F88FF;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
-.slider-item img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-    transition: opacity 0.3s ease-in-out; /* Transición suave de opacidad */
-}
-
-/* Efecto hover en las imágenes del curso */
-.slider-item:hover img {
-    transform: scale(1.1); /* Efecto de zoom */
-    opacity: 0.7; /* Imagen más opaca al hacer hover */
-}
-
+/* Slider contenedor */
 .slider {
     position: relative;
     display: flex;
     align-items: center;
     overflow: hidden;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background-color: #1D1D35; /* Fondo para sliders */
 }
 
-.slider-content {
-    display: flex;
-    transition: transform 0.3s ease-in-out;
-}
-
-
-
-.slider-item img {
-    width: 95%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.slider-item:hover {
-    transform: scale(1.1);
-}
-
+/* Botones de navegación */
 .nav-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #5D3FD3;
     border: none;
-    padding: 10px;
     border-radius: 50%;
-    color: white;
+    color: #E8EAF6;
+    font-size: 1.5rem;
     cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    transition: all 0.3s ease-in-out;
 }
 
 .nav-btn:hover {
-    background-color: rgba(255, 255, 255, 0.7);
-    color: #333366;
+    background-color: #7B6FE7;
+    transform: scale(1.1);
 }
 
 .left-btn {
@@ -316,9 +295,48 @@ main-nav ul li {
     right: 10px;
 }
 
-.container {
-    padding: 20px;
+/* Contenido del slider */
+.slider-content {
+    display: flex;
+    gap: 15px;
+    transition: all 0.5s ease;
+    padding: 15px 0;
 }
+
+/* Cada tarjeta de curso */
+.slider-item {
+    min-width: 250px;
+    max-width: 300px;
+    background-color: #2E2E50;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.slider-item:hover {
+    transform: translateY(-10px);
+}
+
+/* Imágenes dentro de las tarjetas */
+.slider-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* Título de los cursos */
+.slider-item p {
+    margin: 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #E8EAF6;
+}
+
+
+
+
 
 /* Estilo para el carrito */
 .cart-icon {

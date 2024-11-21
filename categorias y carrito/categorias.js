@@ -34,3 +34,88 @@ document.addEventListener("DOMContentLoaded", function() {
 
             slider.style.transform = `translateX(-${scrollAmount}px)`;
         }
+
+
+
+// Función para cargar las categorías desde el backend
+async function cargarCategorias() {
+    try {
+        const response = await fetch("/PWCI-Repo/backend/getCategorias-Cursos.php")
+        // Cambia esta URL si es necesario
+        const data = await response.json();
+
+        console.log("Datos recibidos:", data);
+
+        // Selecciona el contenedor principal donde se agregarán las categorías
+        const container = document.querySelector(".container-category");
+
+        if (!container) {
+            console.error("No se encontró el contenedor principal en el DOM.");
+            return;
+        }
+
+        // Itera sobre cada categoría recibida
+        data.forEach(category => {
+            // Crea la sección para la categoría si no existe
+            const section = document.createElement("section");
+            section.classList.add("category");
+
+            section.innerHTML = `
+                <div class="category-header">${category.Nombre_Categoria}</div>
+                <div class="slider">
+                    <!-- Botón izquierdo -->
+                    <button class="nav-btn left-btn" onclick="scrollLeft('slider${category.ID_Categoria}')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <!-- Contenedor de los cursos -->
+                    <div id="slider${category.ID_Categoria}" class="slider-content">
+                        <!-- Cursos se añadirán aquí dinámicamente -->
+                    </div>
+
+                    <!-- Botón derecho -->
+                    <button class="nav-btn right-btn" onclick="scrollRight('slider${category.ID_Categoria}')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            `;
+
+            // Agrega la sección al contenedor principal
+            container.appendChild(section);
+
+            // Selecciona el slider recién creado
+            const sliderContent = document.getElementById(`slider${category.ID_Categoria}`);
+
+            // Añade los cursos de la categoría al slider
+            category.Cursos.forEach(course => {
+                const item = document.createElement("div");
+                item.classList.add("slider-item");
+                item.innerHTML = `
+                    <img src="${course.Imagen}" alt="${course.Titulo}">
+                    <p class="text-white text-center">${course.Titulo}</p>
+                `;
+                sliderContent.appendChild(item);
+            });
+        });
+    } catch (error) {
+        console.error("Error al cargar las categorías:", error);
+    }
+}
+
+// Funciones de scroll para los sliders
+function scrollLeft(sliderId) {
+    const slider = document.getElementById(sliderId);
+    if (slider) {
+        slider.scrollBy({ left: -300, behavior: "smooth" });
+    }
+}
+
+function scrollRight(sliderId) {
+    const slider = document.getElementById(sliderId);
+    if (slider) {
+        slider.scrollBy({ left: 300, behavior: "smooth" });
+    }
+}
+
+// Llama a la función para cargar las categorías al cargar la página
+document.addEventListener("DOMContentLoaded", cargarCategorias);
