@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Función para cargar las categorías
         function loadCategorias() {
             $.ajax({
-                url: '/PWCI-Repo/backend/addCategories.php', // Archivo PHP que traerá las categorías
+                url: '/PWCI-Repo/backend/loadCategories.php', // Archivo PHP que traerá las categorías
                 type: 'GET',
                 success: function(response) {
                     $('#categoriaTableBody').html(response); // Insertar los datos en la tabla
@@ -203,37 +203,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    $(document).ready(function() {
-        $('#addCategoryForm').on('submit', function(event) {
-            event.preventDefault(); // Prevenir el envío tradicional del formulario
+    $('#addCategoryForm').on('submit', function (event) {
+        event.preventDefault();
     
-            var nombreCategoria = $('#category-name').val();
-            var descripcion = $('#category-description').val();
-    
-            $.ajax({
-                url: 'http://localhost/pwci-repo/backend/addCategory.php', // Ruta del archivo PHP
-                type: 'POST',
-                data: {
-                    nombre_categoria: nombreCategoria,
-                    descripcion: descripcion
-                },
-                success: function(response) {
-                    var data = JSON.parse(response);
-                    if (data.status === 'success') {
-                        alert(data.message); // Mostrar mensaje de éxito
-                        location.reload(); // Recargar la página para ver la nueva categoría
-                    } else {
-                        alert(data.message); // Mostrar mensaje de error (por ejemplo, categoría duplicada)
-                    }
-                },
-                error: function() {
-                    alert('Error al realizar la solicitud');
+        $.ajax({
+            url: '/PWCI-Repo/backend/addCategory.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                console.log(response); // Verifica lo que devuelve el servidor
+                if (response.success) {
+                    alert(response.message);
+                    $('#addCategoryModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert("Error: " + response.message);
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error); // Muestra más detalles en la consola
+                console.log(xhr.responseText); // Muestra la respuesta completa del servidor
+            }
         });
+        
     });
-    
-    
     
 
 });

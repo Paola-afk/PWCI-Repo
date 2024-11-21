@@ -1,29 +1,32 @@
 <?php
-require_once 'conexion.php'; // Incluir la conexión a la base de datos
+require_once 'conexion.php'; // Incluye la conexión a la base de datos
+global $pdo;
+// Verificar si $pdo está definido
+if (isset($pdo)) {
+    echo "Conexión establecida.";
+} else {
+    die("Error: \$pdo no está definido.");
+}
 
 try {
-    // Ejecutar la consulta para obtener las categorías
-    $stmt = $pdo->query("SELECT * FROM Categorias");
+    // Preparar y ejecutar la llamada al procedimiento almacenado
+    $stmt = $pdo->prepare("CALL GetCategorias()");
+    $stmt->execute();
 
-    // Comprobar si la consulta se ejecutó correctamente
-    if ($stmt === false) {
-        throw new Exception('Error al ejecutar la consulta.');
-    }
-
-    // Mostrar los datos de las categorías
+    // Procesar los resultados
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         echo "<tr>";
-        echo "<td>" . htmlspecialchars($row['id_categoria']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['nombre_categoria']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['Nombre_Categoria']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['Descripcion']) . "</td>";
         echo "<td>
                 <button class='btn btn-secondary btn-sm'>Editar</button>
                 <button class='btn btn-danger btn-sm'>Eliminar</button>
-              </td>";
+                </td>";
         echo "</tr>";
     }
+
+    $stmt->closeCursor(); // Limpia la conexión para nuevas consultas
 } catch (PDOException $e) {
-    echo "<tr><td colspan='3' style='color: red;'>Error al cargar categorías: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
-} catch (Exception $e) {
-    echo "<tr><td colspan='3' style='color: red;'>Error: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+    echo "<tr><td colspan='4' style='color: red;'>Error al cargar categorías: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
 }
 ?>
