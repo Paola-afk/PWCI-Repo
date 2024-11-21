@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     */
 
+
     // Función que se ejecutará cuando el DOM esté listo
     $(document).ready(function() {
         // Función AJAX que se ejecuta al cargar la página
@@ -214,21 +215,32 @@ document.addEventListener("DOMContentLoaded", function () {
             success: function(response) {
                 console.log(response); // Verifica lo que devuelve el servidor
                 if (response.success) {
-                    alert(response.message);
-                    $('#addCategoryModal').modal('hide');
-                    location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: response.message
+                    }).then(() => {
+                        //loadCategorias(); // Actualiza las categorías en la tabla
+                        $('#addCategoryModal').modal('hide');
+                    });
                 } else {
-                    alert("Error: " + response.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message
+                    });
                 }
             },
             error: function(xhr, status, error) {
-                console.error("Error en la solicitud AJAX:", error); // Muestra más detalles en la consola
-                console.log(xhr.responseText); // Muestra la respuesta completa del servidor
+                console.error("Error en la solicitud AJAX:", xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error en la solicitud',
+                    text: `Hubo un problema al realizar la solicitud: ${error}`
+                });
             }
         });
-        
     });
     
 
 });
-
