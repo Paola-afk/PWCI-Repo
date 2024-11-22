@@ -335,3 +335,29 @@ document.getElementById("create-course-form").addEventListener("submit", functio
         });
 });
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php')
+        .then(response => response.json())
+    .then(data => {
+    const tbody = document.getElementById("cursos-impartidos-body");
+    let contenido = "";
+    data.cursosImpartidos.forEach(curso => {
+        contenido += `
+            <tr>
+                <td>${curso.Titulo}</td>
+                <td>${curso.Categoria}</td>
+                <td>${curso.Descripcion}</td>
+                <td>${curso.Estado}</td>
+                <td>
+                    <button class="btn btn-info editar-curso-btn" data-id="${curso.ID_Curso}">Editar</button>
+                    <button class="btn btn-danger eliminar-curso-btn" data-id="${curso.ID_Curso}">Eliminar</button>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = contenido;
+    })
+    .catch(error => console.error('Error al cargar los cursos:', error));
+});

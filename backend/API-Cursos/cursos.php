@@ -14,8 +14,12 @@ $request_method = $_SERVER["REQUEST_METHOD"];
 
 switch($request_method) {
     case 'GET':
-        getCursos($conn);
-        break;
+        $response = [
+            "cursosActivos" => getCursos($conn),
+            "cursosImpartidos" => getCursosImpartidos($conn)
+        ];
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        break;    
     case 'POST':
         createCurso($conn);
         break;
@@ -39,8 +43,45 @@ function getCursos($conn) {
         $cursos[] = $row;
     }
 
-    echo json_encode($cursos);
+    return $cursos; // Retorna los datos en lugar de imprimirlos
 }
+
+
+function getCursosImpartidos($conn) {
+    if (isset($_SESSION['id_usuario'])) {
+        $id_instructor = $_SESSION['id_usuario'];
+
+        $query = "SELECT 
+                        c.ID_Curso, 
+                        c.Titulo, 
+                        IFNULL(cat.Nombre_Categoria, 'Sin Categoría') AS Categoria, 
+                        c.Descripcion, 
+                        c.Estado
+                    FROM 
+                        Cursos c
+                    LEFT JOIN 
+                        Curso_categoria cc ON c.ID_Curso = cc.ID_Curso
+                    LEFT JOIN 
+                        Categorias cat ON cc.ID_Categoria = cat.ID_Categoria
+                    WHERE 
+                        c.ID_Instructor = ?";
+        
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('i', $id_instructor);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $cursos = [];
+        while ($row = $result->fetch_assoc()) {
+            $cursos[] = $row;
+        }
+
+        return $cursos; // Retorna los datos en lugar de imprimirlos
+    }
+
+    return []; // Retorna un arreglo vacío si no hay usuario
+}
+
 
 function createCurso($conn) {
     // Verificar que el usuario esté autenticado y sea un instructor
