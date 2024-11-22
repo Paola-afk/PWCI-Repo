@@ -283,6 +283,41 @@ document.getElementById('create-course-form').addEventListener('submit', functio
 */
 
 
+
+// Función para cargar las categorías en el formulario
+function cargarCategorias() {
+    fetch('/PWCI-Repo/backend/getCategorias.php')  // Cambia esta ruta si es necesario
+    .then(response => response.json())
+    .then(data => {
+        const selectCategoria = document.getElementById("curso-categoria");
+
+        // Limpiar las opciones anteriores (en caso de que haya)
+        selectCategoria.innerHTML = '<option value="">Seleccionar categoría</option>';
+
+        // Verificar si la respuesta contiene datos
+        if (data && Array.isArray(data)) {
+            data.forEach(categoria => {
+                const option = document.createElement("option");
+                option.value = categoria.ID_Categoria;
+                option.textContent = categoria.Nombre_Categoria;
+                selectCategoria.appendChild(option);
+            });
+        } else {
+            console.error("No se encontraron categorías.");
+        }
+    })
+    .catch(error => {
+        console.error("Error al cargar las categorías: ", error);
+    });
+}
+
+// Llamar a la función al cargar la página
+document.addEventListener("DOMContentLoaded", function() {
+    cargarCategorias();
+});
+
+
+
 document.getElementById("create-course-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita que se recargue la página al enviar el formulario
 
