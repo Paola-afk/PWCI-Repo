@@ -87,13 +87,14 @@ function createCurso($conn) {
     // Verificar que el usuario esté autenticado y sea un instructor
     if (isset($_SESSION['id_usuario']) && $_SESSION['rol'] == 2) { // Supongamos que '2' es el rol del instructor
         // Verificar que se reciban los datos necesarios
-        if (!empty($_POST['Titulo']) && !empty($_POST['Descripcion']) && isset($_POST['Costo'])) {
+        if (!empty($_POST['Titulo']) && !empty($_POST['Descripcion']) && isset($_POST['Costo']) && isset($_POST['Categoria'])) {
             // Obtener y validar los datos del formulario
             $titulo = trim($_POST['Titulo']);
             $descripcion = trim($_POST['Descripcion']);
             $costo = (float) $_POST['Costo']; // Asegúrate de que el costo sea un número válido
             $nivel = isset($_POST['Nivel']) ? (int) $_POST['Nivel'] : 1;
             $estado = isset($_POST['Estado']) ? trim($_POST['Estado']) : 'Activo';
+            $categoria = (int) $_POST['Categoria'];  // La categoría seleccionada
 
             // Preparar la consulta para insertar el curso
             $query = "INSERT INTO Cursos (ID_Instructor, Titulo, Descripcion, Costo, Nivel, Estado) VALUES (?, ?, ?, ?, ?, ?)";
@@ -106,6 +107,15 @@ function createCurso($conn) {
 
                     // Verificar si la inserción fue exitosa
                     if ($stmt->affected_rows > 0) {
+                        // Obtener el ID del curso recién creado
+                        $idCurso = $stmt->insert_id;
+
+                        // Ahora asociamos el curso con la categoría seleccionada
+                        $queryCategoria = "INSERT INTO Curso_categoria (ID_Curso, ID_Categoria) VALUES (?, ?)";
+                        $stmtCategoria = $conn->prepare($queryCategoria);
+                        $stmtCategoria->bind_param('ii', $idCurso, $categoria);
+                        $stmtCategoria->execute();
+
                         echo json_encode(["message" => "Curso creado con éxito"]);
                     } else {
                         echo json_encode(["message" => "No se pudo crear el curso"]);
@@ -125,6 +135,7 @@ function createCurso($conn) {
         echo json_encode(["message" => "Usuario no autorizado o no autenticado"]);
     }
 }
+
 
 function updateCurso($conn) {
     $data = json_decode(file_get_contents("php://input"));
