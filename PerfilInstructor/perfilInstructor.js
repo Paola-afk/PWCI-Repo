@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
+
     const profileMenuToggle = document.getElementById('profileMenuToggle');
     const profileMenu = document.getElementById('profileMenu');
-
+    
+    // Lógica para el menú desplegable de la foto de perfil
     profileMenuToggle.addEventListener('click', function() {
         const isVisible = profileMenu.style.display === 'block';
         profileMenu.style.display = isVisible ? 'none' : 'block';
@@ -13,6 +15,41 @@ document.addEventListener("DOMContentLoaded", function() {
             profileMenu.style.display = 'none';
         }
     });
+
+    // Realiza la solicitud para obtener los datos de la sesión
+    fetch('/PWCI-Repo/backend/get_session.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // Verifica que los datos de la sesión llegan correctamente
+            if (data.loggedIn) {
+                // Ocultar botones de iniciar sesión y registro
+                document.querySelector('.auth-buttons').style.display = 'none';
+                document.getElementById('userProfile').style.display = 'block';
+
+                // Establecer avatar del usuario
+                document.querySelector('.avatar').src = 'http://localhost/PWCI-Repo/backend/' + data.avatar;
+
+                // Filtrar el menú por rol de usuario
+                const profileMenu = document.getElementById('profileMenu');
+                profileMenu.innerHTML = '';  // Limpiar el menú actual
+
+                // Mostrar elementos según el rol del usuario
+                if (data.rol == 1) {  // Estudiante
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/MisCursos/perfilEstudiante.html">Ver mis cursos</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                } else if (data.rol == 2) {  // Instructor
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                } else if (data.rol == 3) {  // Administrador
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilAdmin/admin.html">Ver reportes</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
 });
 
 //Navegacion para moverse entre las pestanas
@@ -142,6 +179,7 @@ document.getElementById('aplicar-filtros').addEventListener('click', function() 
 let instructorId = null; // Variable para almacenar el ID del instructor
 
 // Obtener datos de la sesión al cargar la página
+/*
 fetch('getsession.php')
     .then(response => response.json())
     .then(data => {
@@ -155,6 +193,7 @@ fetch('getsession.php')
     .catch(error => console.error('Error al obtener la sesión:', error));
 
 // Evento para enviar el formulario
+/*
 document.getElementById("create-course-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Evitar el envío real del formulario
 
@@ -205,3 +244,94 @@ document.getElementById("create-course-form").addEventListener("submit", functio
         createButton.innerText = "Crear Curso";
     });
 });
+*/
+
+/*
+document.getElementById('create-course-form').addEventListener('submit', function (e) {
+    /*e.preventDefault(); // Evita el envío estándar del formulario
+
+    // Recopilar datos del formulario
+    const formData = new FormData(this);
+
+    // Enviar datos al servidor
+    fetch('/api/cursos/crear', {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mostrar mensaje de éxito
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+
+                // Opcional: Limpiar el formulario
+                this.reset();
+            } else {
+                // Mostrar mensaje de error
+                document.getElementById('success-message').style.display = 'none';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+        });
+        
+});
+*/
+
+
+document.getElementById("create-course-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita que se recargue la página al enviar el formulario
+
+    // Crear un objeto FormData para manejar la subida de archivos
+    var formData = new FormData(this);
+
+    // Verificar si hay un archivo de imagen seleccionado y agregarlo al FormData
+    var imagenFile = document.getElementById("curso-imagen").files[0];
+    if (imagenFile) {
+        formData.append("Imagen", imagenFile);
+    }
+
+    // Obtener el ID del usuario que está creando el curso desde la sesión
+    fetch('../backend/get_session.php')
+        .then(response => response.json())
+        .then(sessionData => {
+            if (sessionData.loggedIn) {
+                // El usuario está autenticado, incluir el ID del instructor
+                formData.append("ID_Instructor", sessionData["ID Usuario"]);
+
+                // Enviar los datos al backend
+                fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "Curso creado con éxito") {
+                        // Mostrar mensaje de éxito
+                        document.getElementById("success-message").style.display = "block";
+                        document.getElementById("error-message").style.display = "none";
+                    } else {
+                        // Mostrar mensaje de error
+                        document.getElementById("error-message").style.display = "block";
+                        document.getElementById("success-message").style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("error-message").style.display = "block";
+                    document.getElementById("success-message").style.display = "none";
+                });
+            } else {
+                // Si el usuario no está autenticado
+                alert("Debes iniciar sesión para crear un curso.");
+            }
+        })
+        .catch(error => {
+            console.error("Error al verificar la sesión:", error);
+        });
+});
+
