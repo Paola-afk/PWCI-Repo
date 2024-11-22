@@ -244,3 +244,27 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
 });
+
+fetch('http://localhost/PWCI-Repo/backend/gestion_usuarios.php')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('tabla-usuarios');
+            tbody.innerHTML = ''; // Limpiar cualquier contenido previo
+
+            data.forEach(usuario => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${usuario.ID_Usuario}</td>
+                    <td>${usuario.Nombre_Completo}</td>
+                    <td>${usuario.ID_Rol}</td>
+                    <td>
+                        <button class='btn btn-warning btn-sm'>Bloquear</button>
+                        <button class='btn btn-danger btn-sm'>Eliminar</button>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error al cargar los usuarios:', error));

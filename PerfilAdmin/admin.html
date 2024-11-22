@@ -90,41 +90,21 @@
 
             <!-- Contenido principal -->
             <div class="col-md-10 content">
-                <!-- Gestión de Usuarios -->
                 <section id="gestionar-usuarios" class="admin-section">
                     <h2>Gestión de Usuarios</h2>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
+                                <th>Nombre Completo</th>
                                 <th>Rol</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Harry Styles</td>
-                                <td>Instructor</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm">Bloquear</button>
-                                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Niall Horan</td>
-                                <td>Estudiante</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm">Bloquear</button>
-                                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                                </td>
-                            </tr>
+                        <tbody id="tabla-usuarios">
                         </tbody>
                     </table>
                 </section>
-
                 <!-- Gestión de Categorías -->
                 <section id="gestionar-categorias" class="admin-section" style="display: none;">
                     <h2>Gestión de Categorías</h2>
