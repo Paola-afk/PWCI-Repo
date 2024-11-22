@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <img src="${curso.Imagen}" alt="${curso.Titulo}">
                         <h3>${curso.Titulo}</h3>
                         <p>${curso.Descripcion}</p>
-                        <a href="#" class="btn">Ver más</a>
+                        <a href="http://localhost/PWCI-Repo/MisCursos/cursoNA.html" class="btn">Ver más</a>
                     </div>
                 `;
             });
