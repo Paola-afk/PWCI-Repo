@@ -1,0 +1,60 @@
+/* Contenedor del video */
+#video-preview {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    max-width: 600px; /* Ancho máximo */
+    max-height: 300px; /* Limita la altura máxima */
+    margin: 10px 0; /* Separación del input */
+    border: 2px solid #5D3FD3; /* Borde de color primario */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para resaltar */
+    background-color: #333366; /* Fondo para carga en caso de error */
+    display: none; /* Por defecto oculto */
+}
+
+/* Agrega un estilo opcional para el contenedor del video */
+.video-container {
+    text-align: center; /* Centra el video horizontalmente */
+    padding: 10px;
+    background-color: #F8F9FA; /* Color suave de fondo */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para resaltar */
+}
+
+/* Texto indicativo */
+.video-placeholder {
+    font-size: 14px;
+    color: #7B6FE7; /* Color secundario */
+    margin-top: 10px;
+    font-style: italic;
+    display: none; /* Oculto inicialmente */
+}
+
+#material-preview-container {
+    padding: 10px;
+    background-color: #F8F9FA; /* Fondo suave */
+    border: 1px dashed #7B6FE7; /* Borde punteado */
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+#material-preview img {
+    display: block;
+    margin: 0 auto;
+}
+
+#material-preview iframe {
+    display: block;
+    border-radius: 5px;
+}
+
+#material-preview a {
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#material-preview a:hover {
+    color: #333366; /* Color oscuro para hover */
+}
+

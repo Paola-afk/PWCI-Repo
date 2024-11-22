@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Niveles - SkillHub</title>
+    <link rel="stylesheet" href="../PerfilInstructor/perfilInstructor.css">
+    <link rel="stylesheet" href="Level_Management.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <img class="logo-image" src="http://localhost/PWCI-Repo/Multimedia/LogoPS.png" alt="SkillHub Logo">
+                <img class="logo-name" src="http://localhost/PWCI-Repo/Multimedia/LogoNombreS.png" alt="SkillHub">
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="http://localhost/PWCI-Repo/Inicio/inicio.html">Inicio</a></li>
+                    <li><a href="/MisCursos/cursoA.html">Cursos</a></li>
+                    <li><a href="http://localhost/PWCI-Repo/categorias%20y%20carrito/categorias.html">Categorías</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="main-content pt-.4">
+        <!-- Contenido principal -->
+        <main class="profile-instructor">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Barra lateral -->
+                    <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                        <div class="sidebar-sticky">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/PerfilInstructor/perfilInstructor.html">Volver a Panel</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+    
+                    <!-- Contenido principal -->
+                    <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                        <h2>Gestión de Niveles</h2>
+
+                        <!-- Selección del curso -->
+                        <div class="form-group">
+                            <label for="curso-select">Selecciona el Curso</label>
+                            <select class="form-control" id="curso-select" name="curso" required>
+                                <option value="" disabled selected>Selecciona un curso</option>
+                                <option value="1">Curso de Marketing Digital</option>
+                                <option value="2">Curso de Diseño Gráfico</option>
+                                <option value="3">Curso de Programación</option>
+                                <!-- Puedes generar las opciones dinámicamente desde el backend -->
+                            </select>
+                        </div>
+
+                        
+                        <!-- Tabla de niveles -->
+                        <h3>Niveles Existentes</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID Nivel</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="niveles-list">
+                                <!-- Ejemplo de nivel -->
+                                <tr>
+                                    <td>1</td>
+                                    <td>Introducción</td>
+                                    <td>Conceptos básicos y objetivos del curso.</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm">Editar</button>
+                                        <button class="btn btn-danger btn-sm">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                        <!-- Formulario para añadir o editar niveles -->
+                        <h3>Agregar o Editar Nivel</h3>
+                        <form id="nivel-form">
+                            <div class="form-group">
+                                <label for="nivel-nombre">Nombre del Nivel</label>
+                                <input type="text" class="form-control" id="nivel-nombre" name="nombre" placeholder="Ej. Introducción" required>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="nivel-descripcion">Descripción</label>
+                                <textarea class="form-control" id="nivel-descripcion" name="descripcion" rows="3" placeholder="Descripción del nivel" required></textarea>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="nivel-video">Subir Video del Nivel</label>
+                                <input type="file" class="form-control" id="nivel-video" name="video" accept="video/*" required>
+                            
+                                <!-- Contenedor de la vista previa -->
+                                <div class="video-container mt-3">
+                                    <video id="video-preview" controls></video>
+                                    <p id="video-placeholder" class="video-placeholder">El video cargado aparecerá aquí.</p>
+                                </div>
+                            </div>
+                            
+
+                            <!-- Material adicional (opcional) -->
+                        <div class="form-group">
+                            <label for="nivel-material">Material Adicional (Opcional)</label>
+                            <input type="file" class="form-control" id="nivel-material" name="material" accept=".pdf,.ppt,.pptx,.doc,.docx,.xlsx,.zip,.rar,image/*">
+                            <div id="material-preview-container" class="mt-3" style="display: none;">
+                                <!-- Aquí se mostrará la vista previa -->
+                                <div id="material-preview" style="max-height: 300px; overflow: auto;"></div>
+                            </div>
+                        </div>
+
+                            <!-- Agregar links -->
+                            <div class="form-group">
+                                <label for="nivel-links">Links Relacionados</label>
+                                <div id="links-container">
+                                    <input type="url" class="form-control mb-2 nivel-link" name="links[]" placeholder="https://ejemplo.com">
+                                </div>
+                                <button type="button" id="add-link-btn" class="btn btn-secondary btn-sm">Agregar Otro Link</button>
+                            </div>
+
+                            <!-- Botón para guardar -->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Guardar Nivel</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </main>
+    
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkillHub. Todos los derechos reservados.</p>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Términos de Servicio</a>
+            <a href="#">Contacto</a>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="Level_Management.js"></script>
+</body>
+</html>
