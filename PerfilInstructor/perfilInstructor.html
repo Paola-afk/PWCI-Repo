@@ -256,7 +256,34 @@
                         </div>
                     </div>
 
-                    
+                    <!-- Formulario para editar curso -->
+                    <div id="editarCursoModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <h2>Editar Curso</h2>
+                            <form id="formEditarCurso" method="POST">
+                                <input type="hidden" id="idCurso" name="idCurso">
+                                
+                                <label for="tituloCurso">Título del curso:</label>
+                                <input type="text" id="tituloCurso" name="tituloCurso" required>
+                                
+                                <label for="descripcionCurso">Descripción:</label>
+                                <textarea id="descripcionCurso" name="descripcionCurso" required></textarea>
+
+                                <label for="costoCurso">Costo:</label>
+                                <input type="number" id="costoCurso" name="costoCurso" step="0.01" required>
+
+                                <label for="nivelCurso">Nivel:</label>
+                                <input type="number" id="nivelCurso" name="nivelCurso" required>
+
+                                <label for="imagenCurso">Imagen:</label>
+                                <input type="file" id="imagenCurso" name="imagenCurso">
+
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            </form>
+                        </div>
+                    </div>
+
 
                     <!-- Eliminar curso -->
 
