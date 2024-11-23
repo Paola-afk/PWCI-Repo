@@ -274,7 +274,7 @@ label {
     --fondo: #333366;
 }
 
-/* Opcional: Personalizar clases para cursos */
+/* Opcional: Personalizar clases para cursos 
 .curso-tarjeta {
     @apply bg-[#7B6FE7] rounded-lg shadow-lg p-6;
 }
@@ -293,7 +293,7 @@ label {
 
 .curso-boton {
     @apply bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold;
-}
+}*/
 
 /*Footer*/
 /* Pie de Página */

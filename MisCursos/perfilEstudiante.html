@@ -10,47 +10,55 @@
 </head>
 <body>
     <header class="header">
-        <div class="container">
+        <div class="container header-container">
             <div class="logo">
-                <img class="logo-image" src="../Multimedia/LogoPS.png" alt="SkillHub Logo">
-                <img class="logo-name" src="../Multimedia/LogoNombreS.png" alt="SkillHub">
+                <img class="logo-image" src="http://localhost/PWCI-Repo/Multimedia/LogoPS.png" alt="SkillHub Logo">
+                <img class="logo-name" src="http://localhost/PWCI-Repo/Multimedia/LogoNombreS.png" alt="SkillHub">
+            <!--<h1>SkillHub</h1> -->
             </div>
-
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../Inicio/inicio.html">Inicio</a></li>
-                    <li><a href="../MisCursos/perfilEstudiante.html">Cursos</a></li>
-                    <li><a href="../categorias y carrito/categorias.html">Categorías</a></li>
+                    <li><a href="http://localhost/PWCI-Repo/Inicio/inicio.html">Inicio</a></li>
+                    <li><a href="/MisCursos/cursoA.html">Cursos</a></li>
+                    <li><a href="http://localhost/PWCI-Repo/categorias%20y%20carrito/categorias.html">Categorías</a></li>
                 </ul>
             </nav>
-    
+
             <div class="search-bar">
                 <input type="text" placeholder="Busca aquí...">
                 <i class="fa fa-search search-icon"></i>
             </div>
 
-            <!-- Icono del carrito de compras -->
-            <div class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <!-- Mostrar el número de artículos en el carrito -->
-                <span class="cart-count">3</span>
-            </div>
-    
-            <div class="auth-buttons">
-                <!--pendiente-->
-                <a href="../logIn/logIn.html" class="btn btn-login">Iniciar sesión</a>
-                <a href="../SignIn/signIn.html" class="btn btn-signin">Registrarse</a>
-            </div>
-
-            <!-- Perfil del Usuario -->
-            <!-- <div class="user-profile" id="userProfile" style="display: none;"> -->
-                <div class="user-profile" id="userProfile">
-                    <img src="../ZIcons/ICON5.jpg" alt="Avatar" class="avatar" id="profileMenuToggle">
-                    <div class="profile-menu" id="profileMenu">
-                        <a href="/PerfilUser/perfilUser.html">Ver Perfil</a>
-                        <a href="/logIn/logIn.html">Cerrar sesión</a>
+            <!-- Aquí decidimos si mostramos el avatar o los botones de Iniciar sesión y Registrarse -->
+                            <!-- Perfil del Usuario, visible solo si ha iniciado sesión -->
+                    <?php if (isset($_SESSION['id_usuario'])): ?>
+                    <div class="user-profile" id="userProfile">
+                        <img src="#" alt="Avatar" class="avatar" id="profileMenuToggle">
+                        <!--<img src="<?php echo isset($avatar_url) ? $avatar_url : '/default-avatar.png'; ?>" alt="Avatar" class="avatar" id="profileMenuToggle"> -->
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="/PerfilUser/perfilUser.html">Ver Perfil</a>
+                            
+                            <!-- Enlaces según el rol del usuario -->
+                            <?php if ($_SESSION['rol_usuario'] == 1): // Estudiante ?>
+                                <a href="/MisCursos/perfilEstudiante.html">Ver mis cursos</a>
+                            <?php elseif ($_SESSION['rol_usuario'] == 2): // Instructor ?>
+                                <a href="/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>
+                            <?php elseif ($_SESSION['rol_usuario'] == 3): // Administrador ?>
+                                <a href="/PerfilAdmin/admin.html">Ver reportes</a>
+                            <?php endif; ?>
+                            
+                            <!-- Cerrar sesión debería redirigir a un script PHP que destruya la sesión -->
+                            <a href="http://localhost/PWCI-Repo/backend/logout.php">Cerrar sesión</a>
+                        </div>
                     </div>
+                    <?php endif; ?>
+
+                <!-- Botones de Iniciar sesión y Registrarse -->
+                <div class="auth-buttons">
+                    <a href="/logIn/logIn.html" class="btn btn-login">Iniciar sesión</a>
+                    <a href="/SignIn/signIn.html" class="btn btn-signin">Registrarse</a>
                 </div>
+            <?php endif; ?>
         </div>
     </header>
 
