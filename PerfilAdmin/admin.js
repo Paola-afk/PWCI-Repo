@@ -268,3 +268,51 @@ fetch('http://localhost/PWCI-Repo/backend/gestion_usuarios.php')
             });
         })
         .catch(error => console.error('Error al cargar los usuarios:', error));
+
+document.addEventListener('DOMContentLoaded', () => {
+            loadReport('instructores');
+            loadReport('estudiantes');
+        
+            document.querySelectorAll('.tab-link').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    const reportType = e.target.id === 'instructor-tab' ? 'instructores' : 'estudiantes';
+                    loadReport(reportType);
+                });
+            });
+        });
+        
+        function loadReport(reportType) {
+            fetch(`http://localhost/PWCI-Repo/backend/reportes.php?report_type=${reportType}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tbodyId = reportType === 'instructores' ? 'instructor-table-body' : 'student-table-body';
+                    const tbody = document.getElementById(tbodyId);
+                    tbody.innerHTML = '';
+        
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+        
+                        if (reportType === 'instructores') {
+                            row.innerHTML = `
+                                <td>${item.Usuario}</td>
+                                <td>${item.Nombre_Completo}</td>
+                                <td>${item.Fecha_Ingreso}</td>
+                                <td>${item.Cantidad_Cursos_Ofrecidos}</td>
+                                <td>${item.Total_Ganancias}</td>
+                            `;
+                        } else {
+                            row.innerHTML = `
+                                <td>${item.Usuario}</td>
+                                <td>${item.Nombre_Completo}</td>
+                                <td>${item.Fecha_Ingreso}</td>
+                                <td>${item.Cantidad_Cursos_Inscritos}</td>
+                                <td>${item.Porcentaje_Cursos_Terminados}%</td>
+                            `;
+                        }
+        
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los reportes:', error));
+        }
+        
