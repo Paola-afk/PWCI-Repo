@@ -20,19 +20,30 @@ switch($request_method) {
         ];
         echo json_encode($response, JSON_UNESCAPED_UNICODE);
         break;    
+
     case 'POST':
-        createCurso($conn);
+        if (isset($_POST['accion'])) {
+            if ($_POST['accion'] === 'crear') {
+                createCurso($conn);
+            } elseif ($_POST['accion'] === 'editar') {
+                updateCurso($conn);
+            } else {
+                echo json_encode(["message" => "Acción no reconocida"]);
+            }
+        } else {
+            echo json_encode(["message" => "Acción no especificada"]);
+        }
         break;
-    case 'PUT':
-        updateCurso($conn);
-        break;
+
     case 'DELETE':
         deleteCurso($conn);
         break;
+
     default:
         echo json_encode(["message" => "Método no permitido"]);
         break;
 }
+
 
 function getCursos($conn) {
     $query = "SELECT * FROM Cursos WHERE Estado = 'Activo'";
@@ -83,7 +94,7 @@ function getCursosImpartidos($conn) {
 }
 
 
-function createCurso($conn) {
+function createCurso($conn) { 
     // Verificar que el usuario esté autenticado y sea un instructor
     if (isset($_SESSION['id_usuario']) && $_SESSION['rol'] == 2) { // Supongamos que '2' es el rol del instructor
         // Verificar que se reciban los datos necesarios
@@ -96,13 +107,26 @@ function createCurso($conn) {
             $estado = isset($_POST['Estado']) ? trim($_POST['Estado']) : 'Activo';
             $categoria = (int) $_POST['Categoria'];  // La categoría seleccionada
 
+            // Manejo de la imagen
+            $imagenPath = null;
+            if (isset($_FILES['Imagen']) && $_FILES['Imagen']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = "uploads/"; // Directorio donde se almacenarán las imágenes
+                $imagenPath = $uploadDir . basename($_FILES['Imagen']['name']);
+
+                // Intentar mover el archivo al directorio
+                if (!move_uploaded_file($_FILES['Imagen']['tmp_name'], $imagenPath)) {
+                    echo json_encode(["message" => "Error al subir la imagen"]);
+                    return;
+                }
+            }
+
             // Preparar la consulta para insertar el curso
-            $query = "INSERT INTO Cursos (ID_Instructor, Titulo, Descripcion, Costo, Nivel, Estado) VALUES (?, ?, ?, ?, ?, ?)";
-            
+            $query = "INSERT INTO Cursos (ID_Instructor, Titulo, Descripcion, Costo, Nivel, Estado, Imagen) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
             if ($stmt = $conn->prepare($query)) {
                 try {
                     // Enlazar los parámetros y ejecutar la consulta
-                    $stmt->bind_param('issdss', $_SESSION['id_usuario'], $titulo, $descripcion, $costo, $nivel, $estado);
+                    $stmt->bind_param('issdsss', $_SESSION['id_usuario'], $titulo, $descripcion, $costo, $nivel, $estado, $imagenPath);
                     $stmt->execute();
 
                     // Verificar si la inserción fue exitosa
@@ -138,23 +162,77 @@ function createCurso($conn) {
 
 
 function updateCurso($conn) {
-    $data = json_decode(file_get_contents("php://input"));
-    
-    if (!empty($data->ID_Curso)) {
-        $query = "UPDATE Cursos SET Titulo = ?, Descripcion = ?, Costo = ?, Nivel = ?, Estado = ? WHERE ID_Curso = ?";
-        $stmt = $conn->prepare($query);
-        
-        $stmt->bind_param('sssdsd', $data->Titulo, $data->Descripcion, $data->Costo, $data->Nivel, $data->Estado, $data->ID_Curso);
+    // Verificar permisos de escritura (rol instructor)
+    if (isset($_SESSION['id_usuario']) && $_SESSION['rol'] == 2) { 
+        // Validar que el ID del curso esté presente
+        if (!empty($_POST['idCurso'])) {
+            $idCurso = (int) $_POST['idCurso'];
+            $titulo = isset($_POST['tituloCurso']) ? trim($_POST['tituloCurso']) : null;
+            $descripcion = isset($_POST['descripcionCurso']) ? trim($_POST['descripcionCurso']) : null;
+            $costo = isset($_POST['costoCurso']) ? (float) $_POST['costoCurso'] : null;
+            $nivel = isset($_POST['nivelCurso']) ? (int) $_POST['nivelCurso'] : null;
 
-        if ($stmt->execute()) {
-            echo json_encode(["message" => "Curso actualizado con éxito"]);
+            // Validar campos obligatorios
+            if (!$titulo || !$descripcion || is_null($costo) || is_null($nivel)) {
+                echo json_encode(["message" => "Todos los campos son obligatorios"]);
+                return;
+            }
+
+            // Manejo de la imagen
+            $imagenPath = null;
+            if (isset($_FILES['imagenCurso']) && $_FILES['imagenCurso']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = "uploads/";
+                $imagenPath = $uploadDir . basename($_FILES['imagenCurso']['name']);
+
+                // Intentar mover el archivo al directorio
+                if (!move_uploaded_file($_FILES['imagenCurso']['tmp_name'], $imagenPath)) {
+                    echo json_encode(["message" => "Error al subir la imagen"]);
+                    return;
+                }
+            }
+
+            // Construir la consulta dinámica
+            $query = "UPDATE Cursos SET Titulo = ?, Descripcion = ?, Costo = ?, Nivel = ?";
+            $params = ['ssdi', $titulo, $descripcion, $costo, $nivel];
+
+            if ($imagenPath) {
+                $query .= ", Imagen = ?";
+                $params[0] .= 's'; // Agregar tipo de dato para bind_param
+                $params[] = $imagenPath;
+            }
+
+            $query .= " WHERE ID_Curso = ? AND ID_Instructor = ?";
+            $params[0] .= 'ii';
+            $params[] = $idCurso;
+            $params[] = $_SESSION['id_usuario'];
+
+            // Preparar y ejecutar la consulta
+            $stmt = $conn->prepare($query);
+            if ($stmt === false) {
+                echo json_encode(["message" => "Error al preparar la consulta"]);
+                return;
+            }
+
+            $stmt->bind_param(...$params);
+
+            if ($stmt->execute()) {
+                echo json_encode(["message" => "Curso actualizado con éxito"]);
+            } else {
+                echo json_encode(["message" => "No se pudo actualizar el curso"]);
+            }
+
+            $stmt->close();
         } else {
-            echo json_encode(["message" => "No se pudo actualizar el curso"]);
+            echo json_encode(["message" => "ID del curso es obligatorio"]);
         }
     } else {
-        echo json_encode(["message" => "ID de curso es obligatorio"]);
+        echo json_encode(["message" => "No autorizado o sin permisos de escritura"]);
     }
 }
+
+
+
+
 
 function deleteCurso($conn) {
     $data = json_decode(file_get_contents("php://input"));

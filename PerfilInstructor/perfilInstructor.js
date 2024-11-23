@@ -318,7 +318,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-document.getElementById("create-course-form").addEventListener("submit", function(event) {
+    function cargarCursos(){
+        fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php')
+            .then(response => response.json())
+        .then(data => {
+        const tbody = document.getElementById("cursos-impartidos-body");
+        let contenido = "";
+        data.cursosImpartidos.forEach(curso => {
+            contenido += `
+                <tr>
+                    <td>${curso.Titulo}</td>
+                    <td>${curso.Categoria}</td>
+                    <td>${curso.Descripcion}</td>
+                    <td>${curso.Estado}</td>
+                    <td>
+                        <button class="btn btn-info editar-curso-btn" data-id="${curso.ID_Curso}">Editar</button>
+                        <button class="btn btn-danger eliminar-curso-btn" data-id="${curso.ID_Curso}">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = contenido;
+        })
+        .catch(error => console.error('Error al cargar los cursos:', error));
+    }
+
+
+
+document.getElementById("create-course-form").addEventListener("submit", function (event) {
     event.preventDefault(); // Evita que se recargue la página al enviar el formulario
 
     // Crear un objeto FormData para manejar la subida de archivos
@@ -343,56 +370,144 @@ document.getElementById("create-course-form").addEventListener("submit", functio
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === "Curso creado con éxito") {
-                        // Mostrar mensaje de éxito
-                        document.getElementById("success-message").style.display = "block";
-                        document.getElementById("error-message").style.display = "none";
-                    } else {
-                        // Mostrar mensaje de error
-                        document.getElementById("error-message").style.display = "block";
-                        document.getElementById("success-message").style.display = "none";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    document.getElementById("error-message").style.display = "block";
-                    document.getElementById("success-message").style.display = "none";
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === "Curso creado con éxito") {
+                            // Mostrar mensaje de éxito con SweetAlert
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Éxito!',
+                                text: data.message,
+                                confirmButtonText: 'Aceptar'
+                            });
+                            cargarCursos()
+                        } else {
+                            // Mostrar mensaje de error con SweetAlert
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'Ocurrió un error al crear el curso.',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error inesperado',
+                            text: 'Hubo un problema al procesar la solicitud. Inténtalo de nuevo.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
             } else {
                 // Si el usuario no está autenticado
-                alert("Debes iniciar sesión para crear un curso.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Inicia sesión',
+                    text: 'Debes iniciar sesión para crear un curso.',
+                    confirmButtonText: 'Aceptar'
+                });
             }
         })
         .catch(error => {
             console.error("Error al verificar la sesión:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error inesperado',
+                text: 'No se pudo verificar la sesión. Inténtalo de nuevo.',
+                confirmButtonText: 'Aceptar'
+            });
         });
 });
 
 
+document.addEventListener('DOMContentLoaded', cargarCursos);
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php')
-        .then(response => response.json())
-    .then(data => {
-    const tbody = document.getElementById("cursos-impartidos-body");
-    let contenido = "";
-    data.cursosImpartidos.forEach(curso => {
-        contenido += `
-            <tr>
-                <td>${curso.Titulo}</td>
-                <td>${curso.Categoria}</td>
-                <td>${curso.Descripcion}</td>
-                <td>${curso.Estado}</td>
-                <td>
-                    <button class="btn btn-info editar-curso-btn" data-id="${curso.ID_Curso}">Editar</button>
-                    <button class="btn btn-danger eliminar-curso-btn" data-id="${curso.ID_Curso}">Eliminar</button>
-                </td>
-            </tr>
-        `;
-    });
-    tbody.innerHTML = contenido;
-    })
-    .catch(error => console.error('Error al cargar los cursos:', error));
+// Manejar el clic en el botón "Editar" y llenar el formulario del modal
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('editar-curso-btn')) {
+        const idCurso = e.target.getAttribute('data-id');
+        const titulo = e.target.getAttribute('data-titulo');
+        const descripcion = e.target.getAttribute('data-descripcion');
+        const costo = e.target.getAttribute('data-costo');
+        const nivel = e.target.getAttribute('data-nivel');
+
+        // Llenar el formulario del modal con los datos del curso
+        document.getElementById('idCurso').value = idCurso;
+        document.getElementById('tituloCurso').value = titulo;
+        document.getElementById('descripcionCurso').value = descripcion;
+        document.getElementById('costoCurso').value = costo;
+        document.getElementById('nivelCurso').value = nivel;
+
+        // Mostrar el modal
+        const modal = new bootstrap.Modal(document.getElementById('modalEditarCurso'));
+        modal.show();
+    }
 });
+
+// Esta función cierra el modal
+function closeModal() {
+    // Asumimos que el modal tiene el id 'modalEditarCurso'
+    const modal = document.getElementById('modalEditarCurso');
+    modal.classList.remove('show');  // Elimina la clase 'show' para ocultarlo
+    modal.style.display = 'none';    // Cambia el estilo directamente si es necesario
+}
+
+
+// Enviar los datos del formulario de editar curso
+// Enviar los datos del formulario de editar curso
+document.getElementById('formEditarCurso').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Evita la recarga de la página
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text()) // Usamos 'text' para ver la respuesta cruda
+    .then(data => {
+        console.log(data); // Ver la respuesta cruda
+        try {
+            const jsonResponse = JSON.parse(data); // Intentamos parsear a JSON
+            if (jsonResponse) {
+                console.log(jsonResponse);
+                // Usamos SweetAlert en lugar de alert
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: jsonResponse.message || "Curso actualizado con éxito",
+                });
+                cargarCursos();
+                closeModal(); // Cierra el modal si todo salió bien
+            } else {
+                // Usamos SweetAlert para el error
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: "Ocurrió un error al actualizar el curso",
+                });
+            }
+        } catch (error) {
+            console.error('Error al parsear el JSON:', error);
+            // Usamos SweetAlert para el error inesperado
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: "Error inesperado, por favor inténtalo de nuevo",
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error de red:", error);
+        // Usamos SweetAlert para el error de red
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: "Error inesperado, por favor inténtalo de nuevo",
+        });
+    });
+});
+
