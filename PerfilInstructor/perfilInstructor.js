@@ -424,6 +424,63 @@ document.getElementById("create-course-form").addEventListener("submit", functio
 
 document.addEventListener('DOMContentLoaded', cargarCursos);
 
+// Manejar el clic en el botón "Eliminar" y realizar la baja lógica del curso
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('eliminar-curso-btn')) {
+        const cursoId = e.target.getAttribute('data-id');
+
+        // Confirmación antes de dar de baja el curso
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "El curso quedará inactivo.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, dar de baja',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar la solicitud de baja lógica al backend
+                fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `idCurso=${cursoId}`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === "Curso dado de baja con éxito") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Hecho!',
+                                text: data.message,
+                                confirmButtonText: 'Aceptar'
+                            });
+                            cargarCursos(); // Recargar la tabla de cursos
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error al dar de baja el curso:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error inesperado',
+                            text: 'No se pudo procesar la solicitud. Intenta nuevamente.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
+            }
+        });
+    }
+});
+
+
 // Manejar el clic en el botón "Editar" y llenar el formulario del modal
 document.addEventListener('click', function (e) {
     if (e.target.classList.contains('editar-curso-btn')) {

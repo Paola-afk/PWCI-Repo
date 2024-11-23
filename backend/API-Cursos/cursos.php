@@ -235,21 +235,30 @@ function updateCurso($conn) {
 
 
 function deleteCurso($conn) {
-    $data = json_decode(file_get_contents("php://input"));
+    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        parse_str(file_get_contents("php://input"), $deleteData);
+        if (isset($deleteData['idCurso'])) {
+            $idCurso = (int) $deleteData['idCurso'];
+            $idInstructor = $_SESSION['id_usuario'];
     
-    if (!empty($data->ID_Curso)) {
-        $query = "UPDATE Cursos SET Estado = 'Inactivo' WHERE ID_Curso = ?";
-        $stmt = $conn->prepare($query);
-        
-        $stmt->bind_param('d', $data->ID_Curso);
-
-        if ($stmt->execute()) {
-            echo json_encode(["message" => "Curso desactivado con éxito"]);
+            // Baja lógica: Cambiar el estado del curso a 'Inactivo'
+            $query = "UPDATE Cursos SET Estado = 'Inactivo' WHERE ID_Curso = ? AND ID_Instructor = ?";
+            $stmt = $conn->prepare($query);
+            if ($stmt) {
+                $stmt->bind_param('ii', $idCurso, $idInstructor);
+                if ($stmt->execute()) {
+                    echo json_encode(["message" => "Curso dado de baja con éxito"]);
+                } else {
+                    echo json_encode(["message" => "No se pudo dar de baja el curso"]);
+                }
+                $stmt->close();
+            } else {
+                echo json_encode(["message" => "Error al preparar la consulta"]);
+            }
         } else {
-            echo json_encode(["message" => "No se pudo desactivar el curso"]);
+            echo json_encode(["message" => "ID del curso es obligatorio"]);
         }
-    } else {
-        echo json_encode(["message" => "ID de curso es obligatorio"]);
     }
+    
 }
 ?>
