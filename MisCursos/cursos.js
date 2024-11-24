@@ -51,3 +51,56 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error:', error));
 });
+
+
+
+// Recuperar el ID del curso desde la URL
+const urlParams = new URLSearchParams(window.location.search);
+const cursoID = urlParams.get('id');
+
+// Mostrar el ID en consola (para verificar)
+console.log(cursoID);
+
+// Aquí puedes usar el cursoID para hacer una solicitud y cargar los detalles del curso
+fetch(`/PWCI-Repo/backend/cursos/getCursoDetails.php?id=${cursoID}`)
+    .then(response => response.json())
+    .then(curso => {
+        if (curso) {
+            console.log(curso); // Verifica los datos del curso
+
+            // Mostrar los detalles del curso
+            document.querySelector('#cursoTitulo').innerText = curso.Titulo || 'Título no disponible';
+            document.querySelector('#cursoDescripcion').innerText = curso.Descripcion || 'Descripción no disponible';
+            document.querySelector('#precio').innerText = `Adquirir por $${curso.Costo || '0.00'}`;
+            document.querySelector('#cursoImagen').src = curso.Imagen || 'ruta_por_defecto.jpg';
+
+            // Evento para agregar al carrito
+            document.querySelector('#addCarrito').addEventListener('click', function () {
+                // Crear un objeto con los detalles del curso
+                const cursoCarrito = {
+                    id: curso.ID_Curso,
+                    titulo: curso.Titulo,
+                    costo: curso.Costo,
+                    imagen: curso.Imagen
+                };
+
+                // Obtener el carrito de compras del localStorage, si existe
+                let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+                // Agregar el curso al carrito
+                carrito.push(cursoCarrito);
+
+                // Guardar el carrito actualizado en el localStorage
+                localStorage.setItem('carrito', JSON.stringify(carrito));
+
+                // Mensaje de confirmación
+                alert('Curso agregado al carrito');
+            });
+        } else {
+            console.error('No se encontró el curso');
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar los detalles del curso:', error);
+    });
+

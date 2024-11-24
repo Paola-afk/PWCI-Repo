@@ -1,8 +1,9 @@
-//Acciones al picar la foto del usuario en header
 document.addEventListener("DOMContentLoaded", function() {
+
     const profileMenuToggle = document.getElementById('profileMenuToggle');
     const profileMenu = document.getElementById('profileMenu');
-
+    
+    // Lógica para el menú desplegable de la foto de perfil
     profileMenuToggle.addEventListener('click', function() {
         const isVisible = profileMenu.style.display === 'block';
         profileMenu.style.display = isVisible ? 'none' : 'block';
@@ -14,233 +15,133 @@ document.addEventListener("DOMContentLoaded", function() {
             profileMenu.style.display = 'none';
         }
     });
+
+    // Realiza la solicitud para obtener los datos de la sesión
+    fetch('/PWCI-Repo/backend/get_session.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // Verifica que los datos de la sesión llegan correctamente
+            if (data.loggedIn) {
+                // Ocultar botones de iniciar sesión y registro
+                document.querySelector('.auth-buttons').style.display = 'none';
+                document.getElementById('userProfile').style.display = 'block';
+
+                // Establecer avatar del usuario
+                document.querySelector('.avatar').src = 'http://localhost/PWCI-Repo/backend/' + data.avatar;
+
+                // Filtrar el menú por rol de usuario
+                const profileMenu = document.getElementById('profileMenu');
+                profileMenu.innerHTML = '';  // Limpiar el menú actual
+
+                // Mostrar elementos según el rol del usuario
+                if (data.rol == 1) {  // Estudiante
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/MisCursos/perfilEstudiante.html">Ver mis cursos</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                } else if (data.rol == 2) {  // Instructor
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                } else if (data.rol == 3) {  // Administrador
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilAdmin/admin.html">Ver reportes</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
 });
 
 
 
-const paymentMethod = document.getElementById('payment-method');
-const formTarjeta = document.getElementById('form-tarjeta');
-const formPayPal = document.getElementById('form-paypal');
-const formTransferencia = document.getElementById('form-transferencia');
-const termsAnConditions = document.getElementById('terms');
 
-document.addEventListener('DOMContentLoaded', function () {
+const carritoLista = document.querySelector("#carritoLista");
+const totalDisplay = document.querySelector("#totalDisplay");
 
-    total();
+// Cargar carrito desde localStorage
+function cargarCarrito() {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || []; // Obtener carrito o inicializar vacío
 
-});
+    carritoLista.innerHTML = ""; // Limpiar el contenido actual del carrito en el DOM
 
-
-paymentMethod.addEventListener('change', function () {
-    // Ocultar todos los formularios
-    formTarjeta.classList.add('hidden');
-    formPayPal.classList.add('hidden');
-    formTransferencia.classList.add('hidden');
-
-    // Mostrar formulario correspondiente al método de pago seleccionado
-    switch (paymentMethod.value) {
-        case 'tarjeta':
-            formTarjeta.classList.remove('hidden');
-            break;
-        case 'paypal':
-            formPayPal.classList.remove('hidden');
-            break;
-        case 'transferencia':
-            formTransferencia.classList.remove('hidden');
-            break;
-    }
-});
-
-
-function total(){
-
-const totalDisplay = document.getElementById('totalDisplay');
-const prices = document.querySelectorAll('.price');
-
-    const sumTotal = () => {
-        let totalPrices = 0;
-
-        prices.forEach((price) => {
-
-            console.log(price.textContent)
-
-            totalPrices += parseFloat(price.textContent); 
-        });
-
-        return totalPrices;
-    };
-
-    if (totalDisplay) {
-        totalDisplay.textContent = ` ${sumTotal().toFixed(2)}`; // Mostrar el total formateado a 2 decimales
+    // Mostrar mensaje si el carrito está vacío
+    if (carrito.length === 0) {
+        carritoLista.innerHTML = `<li class="py-4 text-center text-gray-500">Tu carrito está vacío</li>`;
+        totalDisplay.textContent = "0.00";
+        return;
     }
 
-} 
+    let total = 0; // Para calcular el total
 
-function agregarAlCarrito() {
+    // Iterar sobre los cursos del carrito
+    carrito.forEach((curso, index) => {
+        const costo = parseFloat(curso.costo); // Asegurar que costo sea numérico
+        total += costo; // Sumar al total
 
-event.preventDefault();
-
-let complete = false; 
-let terms = false;
-
-if(!termsAnConditions.checked){
-
-    Swal.fire({
-    title: '¡Aviso! ',
-    text: 'Tiene que aceptar los terminos y condiciones para poder continuar',
-    icon: 'warning',
-    confirmButtonText: 'Ok',
-    })
-
-    terms = false;
-}
-else
-    terms = true;
-    
-
-
-if(paymentMethod.value != "") {
-    switch (paymentMethod.value) {
-        case 'tarjeta':
-            console.log("Eligió tarjeta");
-            complete = validarFormularioTarjetas();
-            break;
-        case 'paypal':
-            console.log("Eligió PayPal");
-            complete = validarFormularioPaypal();
-            break;
-        case 'transferencia':
-            console.log("Eligió transferencia");
-            complete = validarTransferencia();
-            break;
-    }
-
-    if (complete) {
-        Swal.fire({
-            title: 'Curso Agregado al Carrito',
-            text: 'Has agregado el curso de Desarrollo Web Completo a tu carrito.',
-            icon: 'success',
-            confirmButtonText: 'Continuar'
-        });
-        return true;
-    } 
-} else if (terms){
-    Swal.fire({
-    title: '¡Aviso! ',
-    text: 'Por favor ingresa un metodo de pago previamente',
-    icon: 'warning',
-    confirmButtonText: 'Ok',
-})
-}
-
-
-}
-
-function eliminarDelCarrito() {
-Swal.fire({
-    title: '¡Chanfles! ',
-    text: '¿Deseas eliminar este curso de tu carrito?',
-    icon: 'error',
-    confirmButtonText: 'Sí, eliminarlo',
-    cancelButtonText: 'Cancelar'
-})
-}
-
-function validarFormularioTarjetas() {
-
-const numeroTarjeta = document.getElementById("numeroTarjeta").value.trim();
-const fechaExpiracion = document.getElementById("fechaExpiracion").value.trim();
-const cvv = document.getElementById("cvv").value.trim();
-
-console.log("Esta entrando");
-if (numeroTarjeta === "" || !/^\d{16}$/.test(numeroTarjeta)) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, ingrese un número de tarjeta válido de 16 dígitos.',
-        confirmButtonText: 'Continuar'
-    })
-    return false;
-}
-if (fechaExpiracion === "" || !/^\d{2}\/\d{2}$/.test(fechaExpiracion)) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, ingrese una fecha de expiración válida (MM/YY).'
+        // Crear el elemento de lista para el curso
+        const li = document.createElement("li");
+        li.className = "flex justify-between items-center py-4";
+        li.innerHTML = `
+            <div class="flex items-center">
+                <img src="${curso.imagen}" alt="${curso.titulo}" class="w-16 h-16 object-cover rounded mr-4">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-700">${curso.titulo}</h3>
+                </div>
+            </div>
+            <p class="text-lg font-bold text-[#4821ea]">$${costo.toFixed(2)}</p>
+            <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="eliminarDelCarrito(${index})">
+                Eliminar
+            </button>
+        `;
+        carritoLista.appendChild(li);
     });
-    return false;
-}
-if (cvv === "" || !/^\d{3}$/.test(cvv)) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, ingrese un CVV válido de 3 dígitos.'
-    });
-    return false;
-}
-Swal.fire({
-    icon: 'success',
-    title: 'Pago realizado',
-    text: 'Su pago con tarjeta de crédito ha sido procesado exitosamente.'
-});
 
+    // Mostrar el total calculado
+    totalDisplay.textContent = total.toFixed(2);
 }
 
-function validarFormularioPaypal() {
-const emailPaypal = document.getElementById("emailPaypal").value.trim();
-const passwordPaypal = document.getElementById("passwordPaypal").value.trim(); // Asegúrate de tener este elemento en tu HTML
 
-if (emailPaypal === "" || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailPaypal)) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, ingrese un correo electrónico válido.'
-    });
-    return false;
-}
-if (passwordPaypal === "" || passwordPaypal.length < 6) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, ingrese una contraseña válida de al menos 6 caracteres.'
-    });
-    return false;
-}
-Swal.fire({
-    icon: 'success',
-    title: 'Pago realizado',
-    text: 'Su pago con PayPal ha sido procesado exitosamente.'
-});
-return true;
-}
+// Agregar curso al carrito
+function agregarCursoAlCarrito(curso) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || []; // Obtener carrito o inicializar vacío
 
-function validarTransferencia() {
-const nombreBanco = document.getElementById("nombreBanco").value.trim();
-    const numCuenta = document.getElementById("numCuenta").value.trim();
+    // Agregar curso al carrito
+    carrito.push(curso);
 
-    if (nombreBanco === "" || nombreBanco.length < 3) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Por favor, ingrese el nombre del banco con al menos 3 caracteres.'
-        });
-        return false;
-    }
+    // Guardar carrito actualizado en localStorage
+    localStorage.setItem("carrito", JSON.stringify(carrito));
 
-    if (numCuenta === "" || !/^\d{10,20}$/.test(numCuenta)) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Por favor, ingrese un número de cuenta válido (10-20 dígitos).'
-        });
-        return false;
-    }
+    // Recargar la interfaz del carrito
+    cargarCarrito();
 
     Swal.fire({
+        title: '¡Curso agregado!',
+        text: `El curso "${curso.titulo}" ha sido añadido al carrito.`,
         icon: 'success',
-        title: 'Pago realizado',
-        text: 'Su pago mediante transferencia bancaria ha sido procesado exitosamente.'
+        confirmButtonText: 'Continuar'
     });
-    return true;    
 }
 
+// Eliminar curso del carrito
+function eliminarDelCarrito(index) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || []; // Obtener carrito o inicializar vacío
+
+    // Eliminar el curso seleccionado
+    carrito.splice(index, 1);
+
+    // Guardar el carrito actualizado en localStorage
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+
+    // Recargar la interfaz del carrito
+    cargarCarrito();
+
+    Swal.fire({
+        title: 'Eliminado',
+        text: 'El curso fue eliminado del carrito.',
+        icon: 'success',
+        confirmButtonText: 'Entendido'
+    });
+}
+
+// Inicializar carrito en la pantalla
+document.addEventListener('DOMContentLoaded', cargarCarrito);
