@@ -70,3 +70,64 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error:', error));
 });
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const courseId = params.get("id");
+
+    console.log(courseId);
+
+    if (!courseId) {
+        alert("No se proporcionó un ID de curso.");
+        return;
+    }
+
+    // Llamar a la API para obtener los detalles del curso
+    fetch(`../backend/cursos/myCourseDetails.php?id=${courseId}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Error al obtener los detalles del curso.");
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            // Mostrar los detalles del curso
+            renderCourseDetails(data);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Hubo un problema al cargar los detalles del curso.");
+        });
+});
+
+// Función para renderizar los detalles del curso en el HTML
+function renderCourseDetails(course) {
+    document.querySelector(".curso-tarjeta h2").textContent = course.Titulo;
+    document.querySelector(".curso-tarjeta p").textContent = course.Descripcion;
+    document.querySelector(".curso-tarjeta .bg-[#9F88FF]").style.backgroundImage = `url('${course.Imagen || 'https://via.placeholder.com/500x150'}')`;
+
+    // Actualizar barra de progreso
+    document.querySelector(".bg-green-500").style.width = `${course.Progreso}%`;
+    document.querySelector(".text-sm").textContent = `Has completado el ${course.Progreso}% del curso`;
+
+    // Renderizar niveles
+    const nivelesContainer = document.querySelector(".bg-[#7B6FE7] .space-y-4");
+    nivelesContainer.innerHTML = course.Niveles.map(nivel => `
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold text-[#E8EAF6] mb-2">${nivel.Nombre}</h3>
+            <ul class="space-y-4">
+                ${nivel.Contenido.map(item => `
+                    <li class="bg-[#9F88FF] p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#333366]">${item.Nombre}</h4>
+                        <a href="${item.Link}" class="text-[#5D3FD3] underline">${item.Tipo === 'Video' ? 'Ver Video' : 'Descargar'}</a>
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+    `).join('');
+}
