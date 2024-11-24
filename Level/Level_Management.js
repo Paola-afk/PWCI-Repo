@@ -73,10 +73,11 @@ document.addEventListener('DOMContentLoaded', cargarOpcionesCursos);
 
 
 /////niveles
+
 // Función para cargar los niveles de un curso seleccionado
 function cargarNiveles(cursoId) {
     console.log(`Cargando niveles para el curso con ID: ${cursoId}`); // Verifica el curso_id
-    fetch(`http://localhost/PWCI-Repo/backend/niveles.php?curso_id=${cursoId}`)
+    fetch(`http://localhost/PWCI-Repo/backend/niveles.php?curso_id=${cursoId}`)  // Usamos el curso_id dinámico
         .then(response => response.json())
         .then(data => {
             console.log('Datos de niveles recibidos:', data);  // Verifica los datos aquí
@@ -116,3 +117,11 @@ function cargarNiveles(cursoId) {
             });
         });
 }
+
+// Evento cuando se selecciona un curso para cargar los niveles
+document.getElementById('curso-select').addEventListener('change', function () {
+    const cursoId = this.value;  // Obtenemos el ID del curso seleccionado
+    if (cursoId) {
+        cargarNiveles(cursoId);  // Cargar los niveles para el curso seleccionado
+    }
+});

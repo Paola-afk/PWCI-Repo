@@ -20,7 +20,7 @@ if (isset($_GET['curso_id'])) {
     if ($niveles) {
         echo json_encode(['niveles' => $niveles]);  // Devolvemos los niveles en formato JSON
     } else {
-        echo json_encode(['niveles' => []]);  // Si no hay niveles, devolvemos un array vacío
+        echo json_encode(['niveles' => []]); // Si no hay niveles, devolvemos un array vacío
     }
 
 } else {
