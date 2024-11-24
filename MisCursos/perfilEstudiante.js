@@ -70,3 +70,44 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error:', error));
 });
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const courseList = document.getElementById("courseList");
+    if (!courseList) {
+        console.error("No se encontró el elemento con ID 'courseList'. Verifica tu HTML.");
+    }
+
+    // Llamar al script PHP para obtener los cursos
+    fetch("../backend/cursos/misCursos.php")
+        .then(response => {
+            if (!response.ok) throw new Error("Error al obtener los cursos");
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                courseList.innerHTML = `<p>${data.error}</p>`;
+                return;
+            }
+
+            // Crear el contenido dinámico
+            if (data.length > 0) {
+                courseList.innerHTML = data.map(course => `
+                    <div class="course" onclick="window.location.href='http://localhost/PWCI-Repo/MisCursos/cursoA.html?id=${course.ID_Curso}';">
+
+                        <img src="${course.Imagen || 'https://via.placeholder.com/500x150'}" alt="Imagen del curso">
+                        <h3>${course.Titulo}</h3>
+                        <p>Progreso: ${course.Progreso}%</p>
+                    </div>
+                `).join('');
+            } else {
+                courseList.innerHTML = `<p>No has comprado ningún curso aún.</p>`;
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            courseList.innerHTML = `<p>Error al cargar los cursos. Inténtalo más tarde.</p>`;
+        });
+});
