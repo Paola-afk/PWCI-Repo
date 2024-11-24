@@ -109,14 +109,18 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderCourseDetails(course) {
     document.querySelector(".curso-tarjeta h2").textContent = course.Titulo;
     document.querySelector(".curso-tarjeta p").textContent = course.Descripcion;
-    document.querySelector(".curso-tarjeta .bg-[#9F88FF]").style.backgroundImage = `url('${course.Imagen || 'https://via.placeholder.com/500x150'}')`;
+   // Corregimos el selector con caracteres especiales
+    const imageElement = document.querySelector(".curso-tarjeta .bg-\\[\\#9F88FF\\]");
+    if (imageElement) {
+        imageElement.style.backgroundImage = `url('${course.Imagen || 'https://via.placeholder.com/500x150'}')`;
+    }
 
     // Actualizar barra de progreso
     document.querySelector(".bg-green-500").style.width = `${course.Progreso}%`;
     document.querySelector(".text-sm").textContent = `Has completado el ${course.Progreso}% del curso`;
 
     // Renderizar niveles
-    const nivelesContainer = document.querySelector(".bg-[#7B6FE7] .space-y-4");
+    const nivelesContainer = document.querySelector(".bg-\\[\\#7B6FE7\\] .space-y-4");
     nivelesContainer.innerHTML = course.Niveles.map(nivel => `
         <div class="mb-8">
             <h3 class="text-xl font-semibold text-[#E8EAF6] mb-2">${nivel.Nombre}</h3>
