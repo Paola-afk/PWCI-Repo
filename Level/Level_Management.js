@@ -1,82 +1,118 @@
-window.addEventListener('DOMContentLoaded', () => {
-    const navbar = document.querySelector('.header');
-    const mainContent = document.querySelector('.main-content');
-    
-    if (navbar && mainContent) {
-        const navbarHeight = navbar.offsetHeight;
-        mainContent.style.marginTop = `${navbarHeight}px`;
-    }
-});
+// Función para verificar que el label 'for' coincida con el id del campo
+function verificarLabelYSelect() {
+    const label = document.querySelector('label[for="curso-select"]');
+    const select = document.getElementById('curso-select');
 
-document.getElementById('add-link-btn').addEventListener('click', function () {
-    const linksContainer = document.getElementById('links-container');
-    const newLinkInput = document.createElement('input');
-    newLinkInput.type = 'url';
-    newLinkInput.className = 'form-control mb-2 nivel-link';
-    newLinkInput.name = 'links[]';
-    newLinkInput.placeholder = 'https://ejemplo.com';
-    linksContainer.appendChild(newLinkInput);
-});
-
-document.getElementById('nivel-video').addEventListener('change', function (event) {
-    const file = event.target.files[0];
-    const preview = document.getElementById('video-preview');
-    const placeholder = document.getElementById('video-placeholder');
-
-    if (file) {
-        const fileURL = URL.createObjectURL(file);
-        preview.src = fileURL;
-        preview.style.display = 'block';
-        placeholder.style.display = 'none';
+    // Verificar si el label existe
+    if (!label) {
+        console.error('El <label> con for="curso-select" no existe en el DOM.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'El <label> con for="curso-select" no existe en el DOM.'
+        });
     } else {
-        preview.style.display = 'none';
-        preview.src = '';
-        placeholder.style.display = 'block';
+        console.log('Etiqueta encontrada:', label);
     }
-});
 
-document.getElementById('nivel-material').addEventListener('change', function (event) {
-    const file = event.target.files[0];
-    const previewContainer = document.getElementById('material-preview-container');
-    const previewElement = document.getElementById('material-preview');
-
-    // Limpia la vista previa anterior
-    previewContainer.style.display = 'none';
-    previewElement.innerHTML = '';
-
-    if (file) {
-        const fileType = file.type;
-        const fileURL = URL.createObjectURL(file);
-
-        if (fileType.startsWith('image/')) {
-            // Si el archivo es una imagen, mostrarla
-            const img = document.createElement('img');
-            img.src = fileURL;
-            img.style.maxWidth = '100%';
-            img.style.maxHeight = '300px';
-            img.style.border = '1px solid #5D3FD3';
-            img.style.borderRadius = '8px';
-            previewElement.appendChild(img);
-        } else if (fileType === 'application/pdf') {
-            // Si es un PDF, mostrar un visor embebido
-            const iframe = document.createElement('iframe');
-            iframe.src = fileURL;
-            iframe.style.width = '100%';
-            iframe.style.height = '300px';
-            iframe.style.border = '1px solid #5D3FD3';
-            previewElement.appendChild(iframe);
-        } else {
-            // Para otros archivos, muestra un enlace de descarga
-            const link = document.createElement('a');
-            link.href = fileURL;
-            link.target = '_blank';
-            link.textContent = `Descargar: ${file.name}`;
-            link.style.display = 'block';
-            link.style.color = '#5D3FD3';
-            previewElement.appendChild(link);
-        }
-
-        // Muestra el contenedor de la vista previa
-        previewContainer.style.display = 'block';
+    // Verificar si el select existe
+    if (!select) {
+        console.error('El elemento con id="curso-select" no existe en el DOM.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'El elemento con id="curso-select" no existe en el DOM.'
+        });
+    } else {
+        console.log('Elemento select encontrado:', select);
     }
-});
+
+    // Verificar si el 'for' del label coincide con el id del select
+    if (label && select && label.getAttribute('for') !== select.id) {
+        console.error('El atributo for del label no coincide con el id del select.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de accesibilidad',
+            text: 'El atributo "for" del <label> no coincide con el id del <select>. Esto puede afectar el autocompletado y la accesibilidad.'
+        });
+    }
+}
+
+// Llamar a la función después de que el DOM esté completamente cargado
+document.addEventListener('DOMContentLoaded', verificarLabelYSelect);
+
+// Función para cargar dinámicamente las opciones del curso
+function cargarOpcionesCursos() {
+    fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById("curso-select");
+            // Limpiar las opciones actuales antes de agregar nuevas
+            select.innerHTML = '<option value="" disabled selected>Selecciona un curso</option>';
+
+            // Agregar las opciones dinámicamente
+            data.cursosImpartidos.forEach(curso => {
+                const option = document.createElement('option');
+                option.value = curso.ID_Curso;
+                option.textContent = curso.Titulo;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar las opciones del curso:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de conexión',
+                text: 'Hubo un error al cargar las opciones del curso.'
+            });
+        });
+}
+
+// Llamada para cargar las opciones del curso cuando se carga el DOM
+document.addEventListener('DOMContentLoaded', cargarOpcionesCursos);
+
+
+/////niveles
+// Función para cargar los niveles de un curso seleccionado
+function cargarNiveles(cursoId) {
+    console.log(`Cargando niveles para el curso con ID: ${cursoId}`); // Verifica el curso_id
+    fetch(`http://localhost/PWCI-Repo/backend/niveles.php?curso_id=${cursoId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos de niveles recibidos:', data);  // Verifica los datos aquí
+
+            const nivelesList = document.getElementById("niveles-list");
+            nivelesList.innerHTML = '';  // Limpiar la tabla antes de agregar los niveles
+
+            // Si el servidor responde con niveles
+            if (data.niveles && data.niveles.length > 0) {
+                data.niveles.forEach(nivel => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${nivel.id}</td>
+                        <td>${nivel.titulo}</td>
+                        <td>${nivel.contenido || 'No disponible'}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="editarNivel(${nivel.id})">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarNivel(${nivel.id})">Eliminar</button>
+                        </td>
+                    `;
+                    nivelesList.appendChild(row);
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No hay niveles disponibles',
+                    text: 'Este curso no tiene niveles asociados o los datos no pudieron cargarse correctamente.'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar los niveles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de carga',
+                text: 'Hubo un error al cargar los niveles del curso.'
+            });
+        });
+}

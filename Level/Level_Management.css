@@ -58,3 +58,7 @@
     color: #333366; /* Color oscuro para hover */
 }
 
+#curso-select {
+    display: block !important;
+    opacity: 1 !important;
+}
