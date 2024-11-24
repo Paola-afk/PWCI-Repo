@@ -201,3 +201,5 @@ async function enviarComentario(event) {
         alert('Error al enviar el comentario.');
     }
 }
+
+
