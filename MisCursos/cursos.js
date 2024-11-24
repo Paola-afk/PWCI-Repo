@@ -52,14 +52,12 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Error:', error));
 });
 
-
-
 // Recuperar el ID del curso desde la URL
 const urlParams = new URLSearchParams(window.location.search);
-const cursoID = urlParams.get('id');
+const cursoID = urlParams.get('id');  // Corregido: usar la variable cursoID en lugar de idCurso
 
 // Mostrar el ID en consola (para verificar)
-console.log(cursoID);
+console.log(cursoID);  // Verifica si realmente está obteniendo el ID del curso
 
 // Aquí puedes usar el cursoID para hacer una solicitud y cargar los detalles del curso
 fetch(`/PWCI-Repo/backend/cursos/getCursoDetails.php?id=${cursoID}`)
@@ -105,17 +103,27 @@ fetch(`/PWCI-Repo/backend/cursos/getCursoDetails.php?id=${cursoID}`)
     });
 
 ////comentariosss
-// Obtener el ID del curso (puede venir desde una URL o variable)
-const idCurso = new URLSearchParams(window.location.search).get('id_curso');
-
 async function obtenerComentarios() {
     try {
-        const response = await fetch(`http://localhost/PWCI-Repo/backend/mostrar_comentarios.php?id_curso=${idCurso}`);
+        // Verifica que cursoID tenga un valor
+        if (!cursoID) {
+            throw new Error('No se ha encontrado el ID del curso');
+        }
+
+        // Llamar a la API para obtener los comentarios
+        const response = await fetch(`http://localhost/PWCI-Repo/backend/mostrar_comentarios.php?id_curso=${cursoID}`);
+        
+        // Verifica si la respuesta es exitosa
+        if (!response.ok) {
+            throw new Error('Error en la respuesta de la API');
+        }
+
         const comentarios = await response.json();
 
-        console.log(comentarios); // Verifica qué contiene la respuesta
+        // Verificar qué contiene la respuesta
+        console.log(comentarios); // Esto te ayudará a ver qué estás obteniendo
 
-        // Verifica si la respuesta es un array
+        // Si la respuesta no es un array, mostrar un mensaje y retornar
         if (!Array.isArray(comentarios)) {
             throw new Error('La respuesta no es un array');
         }
@@ -126,18 +134,70 @@ async function obtenerComentarios() {
         // Limpiar el contenedor antes de agregar los nuevos comentarios
         comentariosContainer.innerHTML = '';
 
+        // Verificar si hay comentarios
+        if (comentarios.length === 0) {
+            comentariosContainer.innerHTML = '<p>No hay comentarios disponibles.</p>';
+        }
+
         // Recorrer los comentarios y agregarlos al contenedor
         comentarios.forEach(comentario => {
             const comentarioDiv = document.createElement('div');
             comentarioDiv.classList.add('bg-[#333366]', 'p-4', 'rounded-lg');
+
+            // Generar las estrellas según la calificación
+            const stars = '⭐'.repeat(comentario.Calificacion) + '☆'.repeat(5 - comentario.Calificacion);
+
             comentarioDiv.innerHTML = `
                 <p class="font-semibold text-[#9F88FF]">${comentario.Usuario}</p>
-                <p class="text-yellow-400">⭐⭐⭐⭐⭐</p>
+                <p class="text-yellow-400">${stars}</p>
                 <p>${comentario.Comentario}</p>
             `;
+
             comentariosContainer.appendChild(comentarioDiv);
         });
     } catch (error) {
         console.error('Error al obtener los comentarios:', error);
+    }
+}
+document.addEventListener("DOMContentLoaded", function() {
+    // Llama a la función para obtener los comentarios después de cargar el contenido del curso
+    obtenerComentarios();
+});
+
+////subir comentarios
+async function enviarComentario(event) {
+    event.preventDefault();
+
+    const cursoID = 10; // ID del curso (puedes obtenerlo dinámicamente)
+    const comentario = document.getElementById('nuevoComentario').value.trim();
+    const calificacion = document.getElementById('rating').value;
+
+    const data = {
+        cursoID,
+        comentario,
+        calificacion
+    };
+
+    try {
+        const response = await fetch('http://localhost/PWCI-Repo/backend/comentario.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Para incluir las cookies de sesión
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('Comentario agregado exitosamente.');
+            // Opcional: Actualiza la lista de comentarios
+        } else {
+            console.error(result.error || result.message);
+            alert(result.error || result.message);
+        }
+    } catch (error) {
+        console.error('Error al enviar el comentario:', error);
+        alert('Error al enviar el comentario.');
     }
 }
