@@ -1,3 +1,58 @@
+document.addEventListener("DOMContentLoaded", function() {
+
+    const profileMenuToggle = document.getElementById('profileMenuToggle');
+    const profileMenu = document.getElementById('profileMenu');
+    
+    // Lógica para el menú desplegable de la foto de perfil
+    profileMenuToggle.addEventListener('click', function() {
+        const isVisible = profileMenu.style.display === 'block';
+        profileMenu.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // Ocultar el menú si se hace clic fuera de él
+    document.addEventListener('click', function(event) {
+        if (!profileMenuToggle.contains(event.target) && !profileMenu.contains(event.target)) {
+            profileMenu.style.display = 'none';
+        }
+    });
+
+    // Realiza la solicitud para obtener los datos de la sesión
+    fetch('/PWCI-Repo/backend/get_session.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // Verifica que los datos de la sesión llegan correctamente
+            if (data.loggedIn) {
+                // Ocultar botones de iniciar sesión y registro
+                document.querySelector('.auth-buttons').style.display = 'none';
+                document.getElementById('userProfile').style.display = 'block';
+
+                // Establecer avatar del usuario
+                document.querySelector('.avatar').src = 'http://localhost/PWCI-Repo/backend/' + data.avatar;
+
+                // Filtrar el menú por rol de usuario
+                const profileMenu = document.getElementById('profileMenu');
+                profileMenu.innerHTML = '';  // Limpiar el menú actual
+
+                // Mostrar elementos según el rol del usuario
+                if (data.rol == 1) {  // Estudiante
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/MisCursos/perfilEstudiante.html">Ver mis cursos</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                } else if (data.rol == 2) {  // Instructor
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                } else if (data.rol == 3) {  // Administrador
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilUser/perfilUser.html">Ver Perfil</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/PerfilAdmin/admin.html">Ver reportes</a>';
+                    profileMenu.innerHTML += '<a href="http://localhost/PWCI-Repo/logIn/logIn.html">Cerrar sesión</a>';
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+
 // Función para verificar que el label 'for' coincida con el id del campo
 function verificarLabelYSelect() {
     const label = document.querySelector('label[for="curso-select"]');
@@ -90,12 +145,12 @@ function cargarNiveles(cursoId) {
                 data.niveles.forEach(nivel => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${nivel.id}</td>
-                        <td>${nivel.titulo}</td>
-                        <td>${nivel.contenido || 'No disponible'}</td>
+                        <td>${nivel.ID_Nivel}</td>
+                        <td>${nivel.Titulo}</td>
+                        <td>${nivel.Contenido || 'No disponible'}</td>
                         <td>
-                            <button class="btn btn-info btn-sm" onclick="editarNivel(${nivel.id})">Editar</button>
-                            <button class="btn btn-danger btn-sm" onclick="eliminarNivel(${nivel.id})">Eliminar</button>
+                            <button class="btn btn-info btn-sm" onclick="editarNivel(${nivel.ID_Nivel})">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarNivel(${nivel.ID_Nivel})">Eliminar</button>
                         </td>
                     `;
                     nivelesList.appendChild(row);
@@ -125,3 +180,87 @@ document.getElementById('curso-select').addEventListener('change', function () {
         cargarNiveles(cursoId);  // Cargar los niveles para el curso seleccionado
     }
 });
+
+
+function editarNivel(nivelId) {
+    fetch(`http://localhost/PWCI-Repo/backend/niveles/nivelDetails.php?nivel_id=${nivelId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.nivel) {
+                const nivel = data.nivel;
+                document.getElementById('nivel-id').value = nivel.ID_Nivel;
+                document.getElementById('nivel-titulo').value = nivel.Titulo;
+                document.getElementById('nivel-contenido').value = nivel.Contenido || '';
+                document.getElementById('nivel-video').value = nivel.Video || '';
+                document.getElementById('nivel-documento').value = nivel.Documento || '';
+                document.getElementById('nivel-estado').value = nivel.Estado || 'activo';
+                document.getElementById('editarNivelModal').style.display = 'block';
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nivel no encontrado',
+                    text: 'No se pudo cargar la información del nivel.'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar el nivel:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al cargar los datos del nivel.'
+            });
+        });
+}
+
+
+document.getElementById('editarNivelForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    
+    const nivelId = document.getElementById('nivel-id').value;
+    const titulo = document.getElementById('nivel-titulo').value;
+    const contenido = document.getElementById('nivel-contenido').value;
+    const video = document.getElementById('nivel-video').value;
+    const documento = document.getElementById('nivel-documento').value;
+    const estado = document.getElementById('nivel-estado').value;
+
+    fetch('http://localhost/PWCI-Repo/backend/niveles/editarNivel.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            id: nivelId, 
+            titulo, 
+            contenido, 
+            video, 
+            documento, 
+            estado 
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Nivel actualizado',
+                    text: 'El nivel se actualizó correctamente.'
+                });
+                document.getElementById('editarNivelModal').style.display = 'none';
+                cargarNiveles(document.getElementById('curso-select').value);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error al actualizar el nivel.'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar el nivel:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema en la conexión.'
+            });
+        });
+});
+
