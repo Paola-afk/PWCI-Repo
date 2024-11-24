@@ -8,7 +8,9 @@ if (isset($_GET['curso_id'])) {
     $curso_id = $_GET['curso_id'];  // Obtener el id del curso desde la URL
 
     // Consulta para obtener los niveles del curso especificado
-    $sql = "SELECT * FROM niveles WHERE curso_id = ?";  // Filtramos por 'curso_id'
+    $sql = "SELECT * FROM niveles WHERE ID_Curso = ?";  // Filtramos por 'curso_id'
+    //$sql = "SELECT * FROM niveles WHERE curso_id = ?";  // Filtramos por 'curso_id'
+
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $curso_id);  // Asignamos el 'curso_id' como parámetro
     $stmt->execute();

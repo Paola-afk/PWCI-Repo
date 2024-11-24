@@ -11,21 +11,62 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+
     <header class="header">
         <div class="container header-container">
             <div class="logo">
                 <img class="logo-image" src="http://localhost/PWCI-Repo/Multimedia/LogoPS.png" alt="SkillHub Logo">
                 <img class="logo-name" src="http://localhost/PWCI-Repo/Multimedia/LogoNombreS.png" alt="SkillHub">
+            <!--<h1>SkillHub</h1> -->
             </div>
             <nav class="main-nav">
                 <ul>
                     <li><a href="http://localhost/PWCI-Repo/Inicio/inicio.html">Inicio</a></li>
-                    <li><a href="/MisCursos/cursoA.html">Cursos</a></li>
+                    <li><a href="http://localhost/PWCI-Repo/categorias%20y%20carrito/carritoPWCI.html">Carrito</a></li>
                     <li><a href="http://localhost/PWCI-Repo/categorias%20y%20carrito/categorias.html">Categorías</a></li>
                 </ul>
             </nav>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Busca aquí...">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+
+            <!-- Aquí decidimos si mostramos el avatar o los botones de Iniciar sesión y Registrarse -->
+                            <!-- Perfil del Usuario, visible solo si ha iniciado sesión -->
+                    <?php if (isset($_SESSION['id_usuario'])): ?>
+                    <div class="user-profile" id="userProfile">
+                        <img src="#" alt="Avatar" class="avatar" id="profileMenuToggle">
+                        <!--<img src="<?php echo isset($avatar_url) ? $avatar_url : '/default-avatar.png'; ?>" alt="Avatar" class="avatar" id="profileMenuToggle"> -->
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="/PerfilUser/perfilUser.html">Ver Perfil</a>
+                            
+                            <!-- Enlaces según el rol del usuario -->
+                            <?php if ($_SESSION['rol_usuario'] == 1): // Estudiante ?>
+                                <a href="/MisCursos/perfilEstudiante.html">Ver mis cursos</a>
+                            <?php elseif ($_SESSION['rol_usuario'] == 2): // Instructor ?>
+                                <a href="/PerfilInstructor/perfilInstructor.html">Ver mis ventas</a>
+                            <?php elseif ($_SESSION['rol_usuario'] == 3): // Administrador ?>
+                                <a href="/PerfilAdmin/admin.html">Ver reportes</a>
+                            <?php endif; ?>
+                            
+                            <!-- Cerrar sesión debería redirigir a un script PHP que destruya la sesión -->
+                            <a href="http://localhost/PWCI-Repo/backend/logout.php">Cerrar sesión</a>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                <!-- Botones de Iniciar sesión y Registrarse -->
+                <div class="auth-buttons">
+                    <a href="/logIn/logIn.html" class="btn btn-login">Iniciar sesión</a>
+                    <a href="/SignIn/signIn.html" class="btn btn-signin">Registrarse</a>
+                </div>
+            <?php endif; ?>
         </div>
     </header>
+
+
+
     <main class="main-content pt-.4">
         <!-- Contenido principal -->
         <main class="profile-instructor">
@@ -125,6 +166,44 @@
             </div>
         </main>
     </main>
+
+    <!-- Modal Editar Nivel -->
+<div id="editarNivelModal" class="modal">
+    <div class="modal-content">
+        <h3>Editar Nivel</h3>
+        <form id="editarNivelForm">
+            <input type="hidden" id="nivel-id" />
+            <div class="form-group">
+                <label for="nivel-titulo">Título:</label>
+                <input type="text" id="nivel-titulo" required class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="nivel-contenido">Contenido:</label>
+                <textarea id="nivel-contenido" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="nivel-video">Video:</label>
+                <input type="text" id="nivel-video" placeholder="URL del video" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="nivel-documento">Documento:</label>
+                <input type="text" id="nivel-documento" placeholder="URL del documento" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="nivel-estado">Estado:</label>
+                <select id="nivel-estado" class="form-control">
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <button type="button" onclick="cerrarModal()" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
     
 
     <footer class="footer">
@@ -137,76 +216,76 @@
     </footer>
     <script>
         // Función para verificar que el label 'for' coincida con el id del campo
-function verificarLabelYSelect() {
-    const label = document.querySelector('label[for="curso-select"]');
-    const select = document.getElementById('curso-select');
+        function verificarLabelYSelect() {
+            const label = document.querySelector('label[for="curso-select"]');
+            const select = document.getElementById('curso-select');
 
-    // Verificar si el label existe
-    if (!label) {
-        console.error('El <label> con for="curso-select" no existe en el DOM.');
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'El <label> con for="curso-select" no existe en el DOM.'
-        });
-    } else {
-        console.log('Etiqueta encontrada:', label);
-    }
+            // Verificar si el label existe
+            if (!label) {
+                console.error('El <label> con for="curso-select" no existe en el DOM.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El <label> con for="curso-select" no existe en el DOM.'
+                });
+            } else {
+                console.log('Etiqueta encontrada:', label);
+            }
 
-    // Verificar si el select existe
-    if (!select) {
-        console.error('El elemento con id="curso-select" no existe en el DOM.');
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'El elemento con id="curso-select" no existe en el DOM.'
-        });
-    } else {
-        console.log('Elemento select encontrado:', select);
-    }
+            // Verificar si el select existe
+            if (!select) {
+                console.error('El elemento con id="curso-select" no existe en el DOM.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El elemento con id="curso-select" no existe en el DOM.'
+                });
+            } else {
+                console.log('Elemento select encontrado:', select);
+            }
 
-    // Verificar si el 'for' del label coincide con el id del select
-    if (label && select && label.getAttribute('for') !== select.id) {
-        console.error('El atributo for del label no coincide con el id del select.');
-        Swal.fire({
-            icon: 'error',
-            title: 'Error de accesibilidad',
-            text: 'El atributo "for" del <label> no coincide con el id del <select>. Esto puede afectar el autocompletado y la accesibilidad.'
-        });
-    }
-}
+            // Verificar si el 'for' del label coincide con el id del select
+            if (label && select && label.getAttribute('for') !== select.id) {
+                console.error('El atributo for del label no coincide con el id del select.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de accesibilidad',
+                    text: 'El atributo "for" del <label> no coincide con el id del <select>. Esto puede afectar el autocompletado y la accesibilidad.'
+                });
+            }
+        }
 
-// Llamar a la función después de que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', verificarLabelYSelect);
+        // Llamar a la función después de que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', verificarLabelYSelect);
 
-// Función para cargar dinámicamente las opciones del curso
-function cargarOpcionesCursos() {
-    fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php')
-        .then(response => response.json())
-        .then(data => {
-            const select = document.getElementById("curso-select");
-            // Limpiar las opciones actuales antes de agregar nuevas
-            select.innerHTML = '<option value="" disabled selected>Selecciona un curso</option>';
+        // Función para cargar dinámicamente las opciones del curso
+        function cargarOpcionesCursos() {
+            fetch('http://localhost/PWCI-Repo/backend/API-Cursos/cursos.php')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById("curso-select");
+                    // Limpiar las opciones actuales antes de agregar nuevas
+                    select.innerHTML = '<option value="" disabled selected>Selecciona un curso</option>';
 
-            // Agregar las opciones dinámicamente
-            data.cursosImpartidos.forEach(curso => {
-                const option = document.createElement('option');
-                option.value = curso.ID_Curso;
-                option.textContent = curso.Titulo;
-                select.appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error('Error al cargar las opciones del curso:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error de conexión',
-                text: 'Hubo un error al cargar las opciones del curso.'
-            });
-        });
-}
-// Llamada para cargar las opciones del curso cuando se carga el DOM
-document.addEventListener('DOMContentLoaded', cargarOpcionesCursos);
+                    // Agregar las opciones dinámicamente
+                    data.cursosImpartidos.forEach(curso => {
+                        const option = document.createElement('option');
+                        option.value = curso.ID_Curso;
+                        option.textContent = curso.Titulo;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar las opciones del curso:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de conexión',
+                        text: 'Hubo un error al cargar las opciones del curso.'
+                    });
+                });
+        }
+        // Llamada para cargar las opciones del curso cuando se carga el DOM
+        document.addEventListener('DOMContentLoaded', cargarOpcionesCursos);
 
 
     </script>
