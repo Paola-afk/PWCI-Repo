@@ -2,9 +2,10 @@
 // Conexión a la base de datos
 include 'conexion.php'; // Archivo que contiene la conexión a la base de datos
 
+// Establecer el tipo de contenido para la respuesta JSON
 header('Content-Type: application/json');
 
-// Verificar conexión
+// Verificar la conexión
 if (!$conn) {
     echo json_encode(["error" => "Error al conectar con la base de datos"]);
     exit();
@@ -13,6 +14,7 @@ if (!$conn) {
 // Obtener el ID del curso desde los parámetros GET
 $id_curso = isset($_GET['id_curso']) ? intval($_GET['id_curso']) : 0;
 
+// Validar que el ID del curso sea válido
 if ($id_curso <= 0) {
     echo json_encode(["error" => "ID del curso inválido"]);
     exit();
@@ -43,13 +45,19 @@ if ($result && $result->num_rows > 0) {
         $comentarios[] = $row;
     }
 } else {
-    // Si no hay comentarios
-    $comentarios = ["message" => "No hay comentarios para este curso"];
+    // Si no hay comentarios, devolver un array vacío
+    $comentarios = [];
 }
+
+// Devolver los comentarios como JSON
+if (empty($comentarios)) {
+    // Si no hay comentarios, devolver un array vacío
+    echo json_encode([]);
+} else {
+    echo json_encode($comentarios);
+}
+
 
 $stmt->close();
 $conn->close();
-
-// Devolver los comentarios como JSON
-echo json_encode($comentarios);
 ?>
