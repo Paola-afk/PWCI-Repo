@@ -76,38 +76,57 @@
             <p class="text-base mb-4" id="cursoDescripcion">
                 Aprende desde lo básico hasta técnicas avanzadas sobre [tema del curso]. ¡Mejora tus habilidades con este curso completo y detallado!
             </p>
-            <button class="bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold" id="precio">
-                Adquirir Curso por $99
-            </button>
-            <button class="bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold" id="addCarrito">
-                Agregar al carrito
-            </button>
+            <div class="space-y-4">
+                <button class="bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold" id="precio">
+                    Adquirir Curso por $99
+                </button>
+                <button class="bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold" id="addCarrito">
+                    Agregar al carrito
+                </button>
+            </div>
+            
         </div>
 
         <div class="bg-[#7B6FE7] rounded-lg shadow-lg p-6 col-span-full lg:col-span-2">
-            <h2 class="text-2xl font-bold text-[#5D3FD3] mb-4">Comentarios y Calificaciones</h2>
-            <div class="space-y-4">
-                <!-- Comentario -->
-                <div class="bg-[#333366] p-4 rounded-lg">
-                    <p class="font-semibold text-[#9F88FF]">Juan Pérez</p>
-                    <p class="text-yellow-400">⭐⭐⭐⭐⭐</p>
-                    <p>Excelente curso, me ayudó muchísimo a entender los conceptos básicos.</p>
-                </div>
-                <!-- Comentario -->
-                <div class="bg-[#333366] p-4 rounded-lg">
-                    <p class="font-semibold text-[#9F88FF]">Ana Gómez</p>
-                    <p class="text-yellow-400">⭐⭐⭐⭐</p>
-                    <p>Muy completo, aunque podría profundizar un poco más en algunos temas.</p>
-                </div>
-            </div>
+            <h2 class="text-2xl font-bold text-[#5D3FD3] mb-6">Comentarios y Calificaciones</h2>
         
-            <!-- Botón para ver todos los comentarios -->
-            <div class="mt-6">
-                <button onclick="window.location.href='comentarios.html';" class="bg-[#5D3FD3] text-[#E8EAF6] w-full py-3 rounded-lg hover:bg-[#9F88FF] transition duration-300 font-semibold">
-                    Ver todos los comentarios
-                </button>
+            <!-- Contenedor para los comentarios -->
+            <div id="comentarios-container" class="space-y-4">
+                <!-- Los comentarios se llenarán aquí dinámicamente con JavaScript -->
+            </div>            
+        
+            <!-- Formulario para agregar un nuevo comentario -->
+            <div class="mt-8">
+                <h3 class="text-xl font-bold text-[#E8EAF6] mb-4">Deja tu comentario</h3>
+                <form id="commentForm" class="space-y-4" onsubmit="enviarComentario(event)">
+                    <textarea 
+                        class="w-full bg-[#333366] text-[#E8EAF6] rounded-lg p-3 placeholder-[#9F88FF] focus:ring-2 focus:ring-[#9F88FF] resize-none"
+                        rows="4" 
+                        placeholder="Escribe tu comentario aquí..." 
+                        id="nuevoComentario"
+                        required>
+                    </textarea>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <label class="text-[#E8EAF6]" for="rating">Calificación:</label>
+                            <select id="rating" class="bg-[#333366] text-[#E8EAF6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9F88FF]" required>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="1">⭐</option>
+                            </select>
+                        </div>
+                        <button 
+                            type="submit" 
+                            class="bg-[#9F88FF] text-white px-6 py-2 rounded-lg hover:bg-[#E8EAF6] hover:text-[#333366] transition duration-300">
+                            Enviar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
+        
         
 
         <!-- Nueva Sección: Cursos que podrían interesarte -->

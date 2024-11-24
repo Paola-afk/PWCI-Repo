@@ -104,3 +104,40 @@ fetch(`/PWCI-Repo/backend/cursos/getCursoDetails.php?id=${cursoID}`)
         console.error('Error al cargar los detalles del curso:', error);
     });
 
+////comentariosss
+// Obtener el ID del curso (puede venir desde una URL o variable)
+const idCurso = new URLSearchParams(window.location.search).get('id_curso');
+
+async function obtenerComentarios() {
+    try {
+        const response = await fetch(`http://localhost/PWCI-Repo/backend/mostrar_comentarios.php?id_curso=${idCurso}`);
+        const comentarios = await response.json();
+
+        console.log(comentarios); // Verifica qué contiene la respuesta
+
+        // Verifica si la respuesta es un array
+        if (!Array.isArray(comentarios)) {
+            throw new Error('La respuesta no es un array');
+        }
+
+        // Referencia al contenedor de comentarios en el HTML
+        const comentariosContainer = document.getElementById('comentarios-container');
+
+        // Limpiar el contenedor antes de agregar los nuevos comentarios
+        comentariosContainer.innerHTML = '';
+
+        // Recorrer los comentarios y agregarlos al contenedor
+        comentarios.forEach(comentario => {
+            const comentarioDiv = document.createElement('div');
+            comentarioDiv.classList.add('bg-[#333366]', 'p-4', 'rounded-lg');
+            comentarioDiv.innerHTML = `
+                <p class="font-semibold text-[#9F88FF]">${comentario.Usuario}</p>
+                <p class="text-yellow-400">⭐⭐⭐⭐⭐</p>
+                <p>${comentario.Comentario}</p>
+            `;
+            comentariosContainer.appendChild(comentarioDiv);
+        });
+    } catch (error) {
+        console.error('Error al obtener los comentarios:', error);
+    }
+}

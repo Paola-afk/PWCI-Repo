@@ -32,128 +32,84 @@
             </div>
     
             <div class="auth-buttons">
-                <!--pendiente-->
                 <a href="/logIn/logIn.html" class="btn btn-login">Iniciar sesión</a>
                 <a href="/SignIn/signIn.html" class="btn btn-signin">Registrarse</a>
             </div>
 
-            <!-- Perfil del Usuario -->
-            <!-- <div class="user-profile" id="userProfile" style="display: none;"> -->
-                <div class="user-profile" id="userProfile">
-                    <img src="../ZIcons/ICON5.jpg" alt="Avatar" class="avatar" id="profileMenuToggle">
-                    <div class="profile-menu" id="profileMenu">
-                        <a href="/PerfilUser/perfilUser.html">Ver Perfil</a>
-                        <a href="/logIn/logIn.html">Cerrar sesión</a>
-                    </div>
+            <div class="user-profile" id="userProfile">
+                <img src="../ZIcons/ICON5.jpg" alt="Avatar" class="avatar" id="profileMenuToggle">
+                <div class="profile-menu" id="profileMenu">
+                    <a href="/PerfilUser/perfilUser.html">Ver Perfil</a>
+                    <a href="/logIn/logIn.html">Cerrar sesión</a>
                 </div>
-    
+            </div>
         </div>
     </header>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
-    <div class="container max-w-3xl mx-auto bg-[#7B6FE7] rounded-lg shadow-lg p-6">
-
-    <br>
-    <br>
-    <br>
-    <br>
-        <h2 class="text-2xl font-bold text-[#5D3FD3] mb-6">Todos los Comentarios</h2>
-
-        <div id="average-rating" class="text-yellow-400 text-lg font-semibold mb-4">
-            Promedio de calificación: ⭐⭐⭐⭐⭐
-        </div>
-        
-        <div class="space-y-4">
+    <div class="pt-20">
+        <form id="commentForm" class="space-y-6 bg-[#7B6FE7] p-6 rounded-lg shadow-lg">
+            <h3 class="text-2xl font-bold text-[#E8EAF6] mb-4">Deja tu comentario</h3>
+            
             <!-- Comentario -->
-            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
-                <div>
+            <div>
+                <label for="commentText" class="block text-[#B3B8E0] text-lg mb-2">Comentario:</label>
+                <textarea id="commentText" name="Comentario" 
+                          class="w-full bg-[#333366] text-[#E8EAF6] rounded-lg p-4 focus:ring-2 focus:ring-[#9F88FF] focus:outline-none placeholder-gray-400" 
+                          rows="5" placeholder="Escribe tu comentario aquí..." required></textarea>
+            </div>
+            
+            <!-- Calificación -->
+            <div class="flex items-center space-x-4">
+                <label for="rating" class="text-[#B3B8E0] text-lg">Calificación:</label>
+                <select id="rating" name="Calificacion" 
+                        class="bg-[#444488] text-[#E8EAF6] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#9F88FF] focus:outline-none" 
+                        required>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="1">⭐</option>
+                </select>
+            </div>
+        
+            <!-- Botón de Enviar -->
+            <div class="text-right">
+                <button type="submit" 
+                        class="bg-gradient-to-r from-[#6C5DD3] to-[#9F88FF] text-white px-8 py-3 rounded-full shadow-lg hover:from-[#E8EAF6] hover:to-[#C2C6FF] hover:text-[#333366] transition-all duration-300">
+                    Enviar
+                </button>
+            </div>
+        </form>
+        <div class="container max-w-3xl mx-auto bg-[#7B6FE7] rounded-lg shadow-lg p-6 mt-12">
+            <h2 class="text-2xl font-bold text-[#5D3FD3] mb-6">Todos los Comentarios</h2>
+    
+            <div id="average-rating" class="text-yellow-400 text-lg font-semibold mb-4">
+                Promedio de calificación: ⭐⭐⭐⭐⭐
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Comentarios -->
+                <div class="bg-[#333366] p-4 rounded-lg">
                     <p class="font-semibold text-[#9F88FF]">Juan Pérez</p>
                     <p class="text-yellow-400">⭐⭐⭐⭐⭐</p>
                     <p>Excelente curso, me ayudó muchísimo a entender los conceptos básicos.</p>
                 </div>
-                <!-- Botón para bloquear comentario (solo visible para instructores) -->
-                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
-                    Bloquear
-                </button>
-            </div>
-
-            <!-- Otro Comentario -->
-            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
-                <div>
+    
+                <div class="bg-[#333366] p-4 rounded-lg">
                     <p class="font-semibold text-[#9F88FF]">paola_idk</p>
                     <p class="text-yellow-400">⭐⭐⭐⭐</p>
                     <p>Muy completo, aunque podría profundizar un poco más en algunos temas.</p>
                 </div>
-                <!-- Botón para bloquear comentario (solo visible para instructores) -->
-                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
-                    Bloquear
-                </button>
-            </div>
-
-            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
-                <div>
+    
+                <div class="bg-[#333366] p-4 rounded-lg">
                     <p class="font-semibold text-[#9F88FF]">soiio</p>
                     <p class="text-yellow-400">⭐⭐⭐⭐⭐</p>
                     <p>Excelente curso, me ayudó muchísimo a entender los conceptos básicos.</p>
                 </div>
-                <!-- Botón para bloquear comentario (solo visible para instructores) -->
-                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
-                    Bloquear
-                </button>
             </div>
-
-            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
-                <div>
-                    <p class="font-semibold text-[#9F88FF]">mattArile</p>
-                    <p class="text-yellow-400">⭐</p>
-                    <p>lo compre creyendo que era un curso de comida</p>
-                </div>
-                <!-- Botón para bloquear comentario (solo visible para instructores) -->
-                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
-                    Bloquear
-                </button>
-            </div>
-
-            <div class="bg-[#333366] p-4 rounded-lg flex justify-between items-center">
-                <div>
-                    <p class="font-semibold text-[#9F88FF]">Rulove</p>
-                    <p class="text-yellow-400">⭐⭐</p>
-                    <p>no me gusto, las tareas son muy complejas</p>
-                </div>
-                <!-- Botón para bloquear comentario (solo visible para instructores) -->
-                <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300" onclick="bloquearComentario(this)">
-                    Bloquear
-                </button>
-            </div>
-
-            <!-- Más comentarios... -->
         </div>
-        <div class="mt-6"></div>
-            <button onclick="window.location.href='cursoNA.html';" class="bg-[#9F88FF] text-white px-6 py-3 rounded-lg hover:bg-[#E8EAF6] hover:text-[#333366] transition duration-300">
-                Regresar
-            </button>
-        </div>
+        
     </div>
-
-    <!--
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 SkillHub. Todos los derechos reservados.</p>
-            <a href="#">Política de Privacidad</a>
-            <a href="#">Términos de Servicio</a>
-            <a href="#">Contacto</a>
-        </div>
-    </footer>
--->
-
 
     <script src="comentarios.js"></script>
 </body>
