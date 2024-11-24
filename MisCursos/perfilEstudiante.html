@@ -71,6 +71,38 @@
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <h2>Mis cursos</h2>
 
+
+                    <!-- Filtros -->
+                    <form id="filterForm">
+                        <label for="dateStart">Fecha de Inicio:</label>
+                        <input type="date" id="dateStart" name="dateStart">
+                    
+                        <label for="dateEnd">Fecha de Fin:</label>
+                        <input type="date" id="dateEnd" name="dateEnd">
+                    
+                        <label for="filterCategory">Categoría:</label>
+                        <select id="filterCategory" name="category">
+                            <option value="all">Todas</option>
+                        </select>
+                    
+                        <label for="status">Estado:</label>
+                        <select id="status" name="status">
+                            <option value="all">Todos</option>
+                            <option value="completed">Completado</option>
+                            <option value="inprogress">En progreso</option>
+                        </select>
+                    
+                        <label for="active">Estado del Curso:</label>
+                        <select id="active" name="active">
+                            <option value="all">Todos</option>
+                            <option value="active">Activo</option>
+                            <option value="inactive">Inactivo</option>
+                        </select>
+                    
+                        <button type="submit">Aplicar Filtros</button>
+                    </form>
+                    
+
                     <!-- Resumen visual -->
                     <div class="course-list" id="courseList">
                         <!--
@@ -79,26 +111,6 @@
                             <img src="https://via.placeholder.com/500x150" alt="Curso Desarrollo Web">
                             <h3>Curso de Desarrollo Web</h3>
                             <p>Progreso: 50%</p>
-                        </div>
-        
-                        Curso 2 
-                        <div class="course" onclick="openCourse('Curso de Diseño Gráfico')">
-                            <img src="https://via.placeholder.com/500x150" alt="Curso Diseño Gráfico">
-                            <h3>Curso de Diseño Gráfico</h3>
-                            <p>Progreso: 80%</p>
-                        </div>
-        
-                        urso 3
-                        <div class="course" onclick="openCourse('Curso de Marketing Digital')">
-                            <img src="https://via.placeholder.com/500x150" alt="Curso Marketing Digital">
-                            <h3>Curso de Marketing Digital</h3>
-                            <p>Progreso: 30%</p>
-                        </div>
-                        Curso 4 
-                        <div class="course" onclick="openCourse('Curso de Marketing Digital')">
-                            <img src="https://via.placeholder.com/500x150" alt="Curso Marketing Digital">
-                            <h3>Curso 100% real</h3>
-                            <p>Progreso: 0%</p>
                         </div>
                         -->
                     </div>

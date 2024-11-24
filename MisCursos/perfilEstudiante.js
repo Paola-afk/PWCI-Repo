@@ -74,10 +74,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+
 document.addEventListener("DOMContentLoaded", () => {
     const courseList = document.getElementById("courseList");
     if (!courseList) {
         console.error("No se encontró el elemento con ID 'courseList'. Verifica tu HTML.");
+        return; // Detener ejecución si no se encuentra el elemento
     }
 
     // Llamar al script PHP para obtener los cursos
@@ -95,8 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Crear el contenido dinámico
             if (data.length > 0) {
                 courseList.innerHTML = data.map(course => `
-                    <div class="course" onclick="window.location.href='http://localhost/PWCI-Repo/MisCursos/cursoA.html?id=${course.ID_Curso}';">
-
+                    <div class="course" onclick="window.location.href='cursoA.html?id=${course.ID_Curso}';">
                         <img src="${course.Imagen || 'https://via.placeholder.com/500x150'}" alt="Imagen del curso">
                         <h3>${course.Titulo}</h3>
                         <p>Progreso: ${course.Progreso}%</p>
@@ -110,4 +111,110 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error:", error);
             courseList.innerHTML = `<p>Error al cargar los cursos. Inténtalo más tarde.</p>`;
         });
+});
+
+function renderFilteredCourses(courses) {
+    const courseList = document.getElementById('courseList');
+    
+    // Limpiar la lista de cursos actual
+    courseList.innerHTML = '';
+
+    if (courses.length === 0) {
+        courseList.innerHTML = '<p>No se encontraron cursos con los filtros seleccionados.</p>';
+        return;
+    }
+
+    // Recorrer los cursos filtrados y agregarlos al DOM
+    courses.forEach(course => {
+        const courseElement = document.createElement('div');
+        courseElement.classList.add('course');
+
+        courseElement.innerHTML = `
+            <img src="${course.Imagen ? course.Imagen : 'placeholder.png'}" alt="${course.Titulo}">
+            <h3>${course.Titulo}</h3>
+            <p>Progreso: ${course.Progreso}%</p>
+        `;
+
+        // Añadir evento para abrir el curso
+        courseElement.addEventListener('click', () => {
+            openCourse(course.Titulo); // Cambia esto según tu implementación
+        });
+
+        courseList.appendChild(courseElement);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    cargarCategorias();
+});
+
+function cargarCategorias() {
+    fetch('http://localhost/PWCI-Repo/backend/getCategorias.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Categorías recibidas:', data); // Depura los datos que recibes
+
+            const categoriaSelect = document.getElementById('filterCategory');
+            
+            // Limpia las opciones actuales
+            categoriaSelect.innerHTML = '<option value="all">Todas</option>';
+            
+            // Verifica que los datos de categorías no estén vacíos
+            if (data.length === 0) {
+                categoriaSelect.innerHTML = '<option value="all">Sin categorías disponibles</option>';
+            } else {
+                data.forEach(categoria => {
+                    const option = document.createElement('option');
+                    option.value = categoria.ID_Categoria;
+                    option.textContent = categoria.Nombre_Categoria; // Asegúrate de que el campo se llama Nombre_Categoria
+                    categoriaSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar las categorías:', error);
+        });
+}
+
+
+document.getElementById('filterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Obtener valores de los filtros
+    const dateStart = document.getElementById('dateStart').value;
+    const dateEnd = document.getElementById('dateEnd').value;
+    const category = document.getElementById('filterCategory').value;
+    console.log("Categoría seleccionada: ", category); 
+    const status = document.getElementById('status').value;
+    const active = document.getElementById('active').value;
+
+    console.log(dateStart, dateEnd, category, status, active); // Solo para depuración
+
+   // Verifica el valor de la categoría
+
+    const filters = {
+        dateStart: dateStart || null,
+        dateEnd: dateEnd || null,
+        category: category || 'all',
+        status: status || 'all',
+        active: active || 'all'
+    };
+    console.log(filters);
+    //onsole.log("DATA", data['category']); 
+    
+    fetch('http://localhost/PWCI-Repo/backend/kardex/filterCursos.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(filters),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        renderFilteredCourses(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 });
