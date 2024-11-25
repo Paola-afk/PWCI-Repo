@@ -468,64 +468,6 @@ document.getElementById('formEditarCurso').addEventListener('submit', async func
 
 
 //Reportes y Ventas
-document.addEventListener("DOMContentLoaded", function () {
-    const tablaVentas = document.getElementById("tabla-ventas");
-    const totalIngresos = document.getElementById("total-ingresos");
-
-    // Cargar datos iniciales al cargar la página
-    function cargarResumenVentas() {
-        fetch('http://localhost/PWCI-Repo/backend/ventas/getReporte.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                    return;
-                }
-
-                // Actualizar la tabla
-                tablaVentas.innerHTML = "";
-                let sumaTotal = 0;
-
-                if (data.length > 0) {
-                    data.forEach(curso => {
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${curso.Curso}</td>
-                            <td>${curso.Alumnos_Inscritos}</td>
-                            <td>${curso.Nivel_Promedio}%</td>
-                            <td>${curso.Alumnos_Egresados}</td>
-                            <td>${curso.Total_Ingresos}</td>
-                            <td>${curso.Formas_Pago}</td>
-                        `;
-                        tablaVentas.appendChild(row);
-
-                        // Sumar ingresos
-                        const ingresosNumericos = parseFloat(curso.Total_Ingresos.replace(/[$,]/g, ""));
-                        sumaTotal += ingresosNumericos;
-                    });
-                } else {
-                    tablaVentas.innerHTML = `<tr><td colspan="6">No se encontraron datos para mostrar.</td></tr>`;
-                }
-
-                // Mostrar total de ingresos
-                totalIngresos.textContent = sumaTotal.toLocaleString("es-MX", { style: "currency", currency: "MXN" });
-            })
-            .catch(error => console.error("Error al cargar el resumen de ventas:", error));
-    }
-
-    // Llamar a la función al cargar la página
-    cargarResumenVentas();
-});
-
-
-
-
-
-
-
-
-
-
 
 
 document.addEventListener("DOMContentLoaded", function () {
