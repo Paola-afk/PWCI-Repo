@@ -158,32 +158,6 @@
                                 </tr>
                             </thead>
                             <tbody id="cursos-impartidos-body">
-                                <!--
-                                    <tr>
-                                        <td>Curso de Marketing Digital</td>
-                                        <td>Marketing</td>
-                                        <td>Aprende estrategias avanzadas de marketing digital.</td>
-                                        <td>01 Ago 2024</td>
-                                        <td>30 Nov 2024</td>
-                                        <td>Activo</td>
-                                        <td>
-                                            <button class="btn btn-info">Editar</button> 
-                                            <button class="btn btn-danger eliminar-curso-btn">Eliminar</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Curso de Diseño Gráfico</td>
-                                        <td>Diseño grafico</td>
-                                        <td>Fundamentos y técnicas de diseño gráfico.</td>
-                                        <td>15 Sep 2024</td>
-                                        <td>15 Dic 2024</td>
-                                        <td>Inactivo</td>
-                                        <td>
-                                            <button class="btn btn-info">Editar</button> 
-                                            <button class="btn btn-danger eliminar-curso-btn">Eliminar</button>
-                                        </td>
-                                    </tr>
-                                -->
                             </tbody>
                         </table>
                     </div>
@@ -228,13 +202,7 @@
                             <div class="form-group">
                                 <label for="curso-categoria">Selecciona la categoría del curso</label>
                                 <select id="curso-categoria" class="form-control" name="Categoria" required>
-                                    <!--
-                                        <option>Marketing</option>
-                                        <option>Diseño Gráfico</option>
-                                        <option>IT & Software</option>
-                                        <option>Animación Digital</option>
-                                        <option>Programación</option>
-                                    -->
+
                                 </select>
                             </div>
 
@@ -385,6 +353,15 @@
                 <!-- Detalles del curso -->
                 <div class="tab-pane fade" id="detalles-curso" role="tabpanel" aria-labelledby="detalles-curso-tab">
                     <h3>Detalles del Curso</h3>
+
+                    <!-- Menú desplegable -->
+                    <div class="form-group mb-3">
+                        <label for="curso-select">Selecciona un Curso:</label>
+                        <select id="curso-select" class="form-control">
+                            <option value="">-- Seleccionar Curso --</option>
+                        </select>
+                    </div>
+
                     <table class="table">
                         <thead>
                             <tr>
@@ -395,7 +372,7 @@
                                 <th>Forma de Pago</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tablaDetalles">
                             <tr>
                                 <td>Harry Styles</td>
                                 <td>01 Ago 2024</td>
@@ -421,7 +398,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="3"><strong>Total Ingresos:</strong></td>
-                                <td colspan="2">$1,500.00 MXN</td>
+                                <td id="total-ingresos-curso" colspan="2">$1,500.00 MXN</td>
                             </tr>
                         </tfoot>
                     </table>

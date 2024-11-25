@@ -132,6 +132,7 @@ eliminarBtns.forEach(function(btn) {
 });
 
 //Aplicar los filtords
+/*
 document.getElementById('aplicar-filtros').addEventListener('click', function() {
     // Captura los valores de los filtros
     const fechaInicio = document.getElementById('fecha-inicio').value;
@@ -175,6 +176,7 @@ document.getElementById('aplicar-filtros').addEventListener('click', function() 
     });
 
 });
+*/
 
 let instructorId = null; // Variable para almacenar el ID del instructor
 
@@ -463,3 +465,177 @@ document.getElementById('formEditarCurso').addEventListener('submit', async func
     });
 });
 
+
+
+//Reportes y Ventas
+
+document.addEventListener("DOMContentLoaded", function () {
+    const tablaVentas = document.getElementById("tabla-ventas");
+    const totalIngresos = document.getElementById("total-ingresos");
+    const aplicarFiltros = document.getElementById("aplicar-filtros");
+
+    aplicarFiltros.addEventListener("click", function () {
+        const fechaInicio = document.getElementById("fecha-inicio").value || null;
+        const fechaFin = document.getElementById("fecha-fin").value || null;
+        const categoria = document.getElementById("categoria").value;
+        const soloActivos = document.getElementById("solo-activos").checked;
+
+        // Preparar los datos para enviar al servidor
+        const filtros = {
+            fechaInicio,
+            fechaFin,
+            categoria,
+            soloActivos
+        };
+
+        fetch('http://localhost/PWCI-Repo/backend/ventas/getReporte.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(filtros)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert("Error: " + data.error);
+                return;
+            }
+
+            // Limpiar la tabla
+            tablaVentas.innerHTML = "";
+            let ingresosTotales = 0;
+
+            // Actualizar la tabla con los datos obtenidos
+            if (data.length > 0) {
+                data.forEach(curso => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${curso.Curso}</td>
+                        <td>${curso.Alumnos_Inscritos}</td>
+                        <td>${curso.Nivel_Promedio}%</td>
+                        <td>${curso.Alumnos_Egresados}</td>
+                        <td>${curso.Total_Ingresos}</td>
+                        <td>${curso.Formas_Pago}</td>
+                    `;
+                    ingresosTotales += parseFloat(curso.Total_Ingresos.replace(/[$,]/g, ""));
+                    tablaVentas.appendChild(row);
+                });
+            } else {
+                tablaVentas.innerHTML = `<tr><td colspan="6">No hay datos disponibles para los filtros aplicados.</td></tr>`;
+            }
+
+            // Actualizar el total de ingresos
+            totalIngresos.textContent = `$${ingresosTotales.toLocaleString("es-MX")} MXN`;
+        })
+        .catch(error => {
+            console.error("Error al obtener el reporte de ventas:", error);
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const cursoSelect = document.getElementById("curso-select");
+    const tablaDetalles = document.getElementById("tablaDetalles");
+    const totalIngresosCurso = document.getElementById("total-ingresos-curso");
+
+    // Cargar cursos del instructor
+    fetch('http://localhost/PWCI-Repo/backend/ventas/getCursosInstructor.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.cursos && data.cursos.length > 0) {
+                // Limpiar las opciones previas
+                const select = document.getElementById('curso-select');
+                select.innerHTML = '<option value="">Selecciona un curso</option>';
+
+                // Agregar los cursos al dropdown
+                data.cursos.forEach(curso => {
+                    const option = document.createElement('option');
+                    option.value = curso.ID_Curso;
+                    option.textContent = curso.Titulo;
+                    select.appendChild(option);
+                });
+            } else {
+                console.error("No se encontraron cursos.");
+            }
+        })
+        .catch(error => {
+            console.error("Error al cargar los cursos:", error);
+        });
+
+    // Manejar el cambio en el select
+    cursoSelect.addEventListener("change", function () {
+        const idCurso = this.value;
+        console.log("Curso seleccionado ID:", idCurso); // Verificar el valor
+
+        if (!idCurso) {
+            tablaDetalles.innerHTML = `<tr><td colspan="5">Selecciona un curso para ver los detalles.</td></tr>`;
+            totalIngresosCurso.textContent = "$0.00 MXN";
+            return;
+        }
+
+        // Obtener detalles del curso seleccionado
+        fetch('http://localhost/PWCI-Repo/backend/ventas/getDetails.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ idCurso })
+        })
+        .then(response => response.text())  // Cambiar a .text() para leer el cuerpo como texto
+        .then(text => {
+            console.log('Respuesta del servidor (texto):', text);  // Imprimir el texto de la respuesta
+        
+            // Intentar parsear como JSON
+            try {
+                const data = JSON.parse(text);
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+        
+                // Actualizar la tabla con los detalles del curso
+                tablaDetalles.innerHTML = "";  // Limpiar tabla antes de agregar los nuevos detalles
+                let totalIngresos = 0;
+        
+                if (data.detalles && data.detalles.length > 0) {
+                    data.detalles.forEach(detalle => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${detalle.Nombre_Alumno ?? 'N/A'}</td>
+                            <td>${detalle.Fecha_inscripcion ?? 'N/A'}</td>
+                            <td>${detalle.Nivel_de_Avance ?? '0.00%'}</td>
+                            <td>${(detalle.Precio_Pagado ?? 0).toLocaleString("es-MX", { style: "currency", currency: "MXN" })}</td>
+                            <td>${detalle.Forma_Pago ?? 'Desconocida'}</td>
+                        `;
+                        totalIngresos += parseFloat(detalle.Precio_Pagado);
+                        tablaDetalles.appendChild(row);
+                    });
+                } else {
+                    tablaDetalles.innerHTML = `<tr><td colspan="5">No hay detalles disponibles para este curso.</td></tr>`;
+                }
+        
+                // Mostrar total de ingresos
+                totalIngresosCurso.textContent = totalIngresos.toLocaleString("es-MX", { style: "currency", currency: "MXN" });
+        
+            } catch (error) {
+                console.error("Error al parsear JSON:", error);
+            }
+        })
+        .catch(error => {
+            console.error("Error al obtener los detalles del curso:", error);
+        });
+        
+    });
+});
