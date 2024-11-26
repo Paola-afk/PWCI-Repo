@@ -10,31 +10,39 @@ if (!isset($_GET['id'])) {
 
 $idCurso = intval($_GET['id']);
 
-$query = "
+// Consulta para obtener los detalles del curso
+$queryCurso = "
     SELECT 
-        c.Titulo, c.Descripcion, c.Imagen, c.Costo, c.Nivel,
+        c.Titulo, 
+        c.Descripcion, 
+        c.Imagen, 
+        c.Costo, 
+        c.Nivel,
         IFNULL(SUM(k.Progreso), 0) AS Progreso
     FROM Cursos c
     LEFT JOIN Kardex k ON c.ID_Curso = k.ID_Curso
     WHERE c.ID_Curso = ?
     GROUP BY c.ID_Curso
 ";
-$stmt = $pdo->prepare($query);
-$stmt->execute([$idCurso]);
+$stmtCurso = $pdo->prepare($queryCurso);
+$stmtCurso->execute([$idCurso]);
 
-$curso = $stmt->fetch(PDO::FETCH_ASSOC);
+$curso = $stmtCurso->fetch(PDO::FETCH_ASSOC);
 
 if (!$curso) {
     echo json_encode(["error" => "Curso no encontrado."]);
     exit;
 }
 
-// Obtener los niveles del curso
+// Consulta para obtener los niveles y su contenido
 $queryNiveles = "
     SELECT 
-        n.Titulo AS NivelNombre
+        n.Titulo AS NivelNombre,
+        n.Contenido,
+        n.Video,
+        n.Documento
     FROM Niveles n
-    WHERE n.ID_Curso = ?
+    WHERE n.ID_Curso = ? AND n.Estado = 'activo'
 ";
 $stmtNiveles = $pdo->prepare($queryNiveles);
 $stmtNiveles->execute([$idCurso]);
@@ -42,12 +50,15 @@ $stmtNiveles->execute([$idCurso]);
 $niveles = [];
 while ($row = $stmtNiveles->fetch(PDO::FETCH_ASSOC)) {
     $niveles[] = [
-        "Nombre" => $row['NivelNombre']
+        "Nombre" => $row['NivelNombre'],
+        "Contenido" => $row['Contenido'],
+        "Video" => $row['Video'],
+        "Documento" => $row['Documento']
     ];
 }
 
 $curso['Niveles'] = $niveles;
 
 // Enviar la respuesta como JSON
-echo json_encode($curso, JSON_UNESCAPED_SLASHES);  // Usar JSON_UNESCAPED_SLASHES para evitar que las URLs se escapen
+echo json_encode($curso, JSON_UNESCAPED_SLASHES);
 ?>
