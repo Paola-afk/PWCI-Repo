@@ -266,6 +266,7 @@ function renderCourseDetails(course) {
 
 
 
+
 async function cargarMensajes(idCurso) {
     try {
         // Realizar la solicitud GET para obtener los mensajes del curso
@@ -281,20 +282,20 @@ async function cargarMensajes(idCurso) {
         if (data.success) {
             const mensajes = data.mensajes;
 
-            // Aquí debes agregar el código para mostrar los mensajes en la interfaz
-            const chatContainer = document.getElementById('chatWindow'); // El contenedor donde mostrarás los mensajes
-            const mensajesContainer = chatContainer.querySelector('.p-3'); // Contenedor específico de los mensajes
+            // Obtener el contenedor de los mensajes y el encabezado del chat
+            const chatContainer = document.getElementById('chatWindow'); 
+            const mensajesContainer = chatContainer.querySelector('.p-3'); 
+            const instructorNameElement = document.getElementById('instructorName'); // Elemento para mostrar el nombre del instructor
 
             // Limpiar el contenedor de mensajes antes de agregar los nuevos
             mensajesContainer.innerHTML = '';
 
             // Agregar los mensajes al contenedor
             mensajes.forEach(mensaje => {
-                // Crear un div para cada mensaje
                 const mensajeElement = document.createElement('div');
-                mensajeElement.classList.add('p-2', 'mb-2', 'rounded-lg');
+                mensajeElement.classList.add('p-2', 'mb-2', 'rounded-lg', 'flex', 'items-start', 'space-x-2');
 
-                // Verifica si es un mensaje del instructor o del estudiante
+                // Dependiendo de quién sea el remitente, se aplica la clase correspondiente
                 if (mensaje.ID_Remitente === mensaje.ID_Destinatario) {
                     // Mensaje del instructor
                     mensajeElement.classList.add('bg-[var(--primario)]', 'text-[var(--fondo)]');
@@ -303,15 +304,28 @@ async function cargarMensajes(idCurso) {
                     mensajeElement.classList.add('bg-[var(--acento)]', 'text-[var(--fondo)]');
                 }
 
+                // Obtener la imagen del remitente (puedes agregar más lógica si es necesario)
+                //const avatarUrl = mensaje.Imagen ? `../${mensaje.Imagen}` : 'default-avatar.jpg'; // Si no tiene avatar, mostrar uno por defecto
+                // Suponiendo que 'mensaje' es el objeto que recibes de la respuesta PHP
+
+                const avatarUrl = mensaje.Avatar ? `http://localhost/PWCI-Repo/backend/uploads/${mensaje.Avatar}` : 'default-avatar.jpg';
+
+
                 // Crear el contenido del mensaje
                 mensajeElement.innerHTML = `
-                    <p><strong>${mensaje.Nombre_Completo}:</strong> ${mensaje.Mensaje}</p>
-                    <span class="text-sm text-gray-300">${mensaje.Fecha_envio}</span>
+                    <img src="${mensaje.Avatar ? `http://localhost/PWCI-Repo/backend/uploads/${mensaje.Avatar}` : 'default-avatar.jpg'}" alt="Avatar" class="w-8 h-8 rounded-full mr-2">
+                    <div>
+                        <p><strong>${mensaje.Nombre_Completo}:</strong> ${mensaje.Mensaje}</p>
+                        <span class="text-sm text-gray-300">${mensaje.Fecha_envio}</span>
+                    </div>
                 `;
 
                 // Agregar el mensaje al contenedor de mensajes
                 mensajesContainer.appendChild(mensajeElement);
             });
+
+            // Si quieres mostrar el nombre del instructor al principio del chat
+            instructorNameElement.innerText = "Instructor: " + data.instructorName; // Suponiendo que el nombre del instructor es parte de la respuesta
         } else {
             console.error('Error al cargar mensajes:', data.error);
         }
@@ -322,6 +336,13 @@ async function cargarMensajes(idCurso) {
 
 
 
+
+document.getElementById('chatButton').addEventListener('click', function() {
+    // Llama a la función para cargar los mensajes
+    cargarMensajes(courseId); 
+    // Mostrar la ventana del chat
+    document.getElementById('chatWindow').style.display = 'block';
+});
 
 
 

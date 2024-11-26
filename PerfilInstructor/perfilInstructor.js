@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ocultar las pestañas relacionadas con 'Ventas y reportes'
         document.getElementById('resumen-ventas-tab').style.display = 'none';
         document.getElementById('detalles-curso-tab').style.display = 'none';
+
     });
 
     document.getElementById('ventas-reportes-link').addEventListener('click', function() {
@@ -95,8 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ocultar las pestañas relacionadas con 'Gestión de cursos'
         document.getElementById('cursos-impartidos-tab').style.display = 'none';
         document.getElementById('crear-curso-tab').style.display = 'none';
+
        // document.getElementById('eliminar-curso-tab').style.display = 'none';
     });
+
 });
 
 

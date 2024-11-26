@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require '../conexion.php'; // Conexión a la base de datos
 
@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Obtener los mensajes y los datos del instructor
     $sql = "SELECT M.*, U.Nombre_Completo, U.Avatar 
             FROM Mensajes M 
             JOIN Usuarios U ON M.ID_Remitente = U.ID_Usuario 
@@ -70,10 +71,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $mensajes = [];
     while ($fila = $result->fetch_assoc()) {
-        $mensajes[] = $fila;
+        // Agregar datos de cada mensaje
+        $mensajes[] = [
+            'ID_Mensaje' => $fila['ID_Mensaje'],
+            'Mensaje' => $fila['Mensaje'],
+            'Fecha_envio' => $fila['Fecha_envio'],
+            'ID_Remitente' => $fila['ID_Remitente'],
+            'Nombre_Completo' => $fila['Nombre_Completo'],
+            'Avatar' => $fila['Avatar'] ? "../" . $fila['Avatar'] : 'default-avatar.jpg', // Ruta de la imagen
+        ];
     }
 
-    echo json_encode(["success" => true, "mensajes" => $mensajes]);
+    // Obtener datos del instructor (si es necesario)
+    $sqlInstructor = "SELECT u.Nombre_Completo, u.Avatar 
+                      FROM Cursos c 
+                      JOIN Usuarios u ON c.ID_Instructor = u.ID_Usuario 
+                      WHERE c.ID_Curso = ?";
+    $stmtInstructor = $conn->prepare($sqlInstructor);
+    $stmtInstructor->bind_param("i", $curso);
+    $stmtInstructor->execute();
+    $resultInstructor = $stmtInstructor->get_result();
+    $instructor = $resultInstructor->fetch_assoc();
+
+    echo json_encode([
+        "success" => true,
+        "mensajes" => $mensajes,
+        "instructorName" => $instructor['Nombre_Completo'],
+        "instructorAvatar" => $instructor['Avatar'] ? "../" . $instructor['Avatar'] : 'default-avatar.jpg',
+    ]);
 } else {
     // Método no soportado
     echo json_encode(["success" => false, "error" => "Método no soportado."]);
