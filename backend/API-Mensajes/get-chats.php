@@ -12,7 +12,7 @@ $id_instructor = $_SESSION['id_usuario']; // ID del instructor logueado
 try {
     // Consulta SQL con un parámetro
     $query = "
-        SELECT DISTINCT u.ID_Usuario, u.Nombre_Completo, u.Avatar, c.Titulo AS Curso
+        SELECT DISTINCT u.ID_Usuario, u.Nombre_Completo, u.Avatar, c.ID_Curso, c.Titulo AS Curso
         FROM Usuarios u
         INNER JOIN Kardex k ON u.ID_Usuario = k.ID_Estudiante
         INNER JOIN Cursos c ON k.ID_Curso = c.ID_Curso
@@ -23,8 +23,6 @@ try {
 
     // Preparar y ejecutar la consulta
     $stmt = $pdo->prepare($query);
-
-    // Suponiendo que tienes el ID del instructor en una variable PHP
 
     // Pasar el parámetro a la consulta
     $stmt->bindParam(':id_instructor', $id_instructor, PDO::PARAM_INT);
@@ -41,5 +39,4 @@ try {
     // Manejo de errores
     echo json_encode(['error' => $e->getMessage()]);
 }
-
 ?>
