@@ -243,17 +243,19 @@ if (contrasena.trim() !== "" && !validatePassword(contrasena)) {
 // Obtener userId desde el campo oculto en el HTML
 const userId = document.getElementById('userId').value;
 
+// Manejar el clic en el botón de cambiar foto
 document.getElementById('changePhotoBtn').addEventListener('click', function() {
     document.getElementById('avatarInput').click();
 });
 
+// Manejar el cambio en el input de archivo
 document.getElementById('avatarInput').addEventListener('change', function() {
     const fileInput = document.getElementById('avatarInput');
     const file = fileInput.files[0];
     if (file) {
         const formData = new FormData();
         formData.append('avatar', file);
-        formData.append('user_id', userId);  // Ahora estamos usando el userId correcto
+        formData.append('user_id', userId); // Ahora estamos usando el userId correcto
 
         fetch('/PWCI-Repo/backend/update_avatar.php', {
             method: 'POST',
@@ -273,4 +275,29 @@ document.getElementById('avatarInput').addEventListener('change', function() {
             Swal.fire('Error', 'Ocurrió un error al procesar la solicitud.', 'error');
         });
     }
+});
+
+// Manejar el clic en el botón de usar Gravatar
+document.getElementById('useGravatarBtn').addEventListener('click', function() {
+    const formData = new FormData();
+    formData.append('use_gravatar', '1');
+    formData.append('user_id', userId);
+
+    fetch('/PWCI-Repo/backend/update_avatar.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire('¡Éxito!', 'Avatar actualizado a Gravatar correctamente.', 'success');
+            document.getElementById('profile-avatar').src = data.new_avatar_url;
+        } else {
+            Swal.fire('Error', data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire('Error', 'Ocurrió un error al procesar la solicitud.', 'error');
+    });
 });

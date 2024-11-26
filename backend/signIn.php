@@ -1,5 +1,7 @@
 <?php 
 include 'conexion.php'; // Conexión a la base de datos
+include 'gravatar.php';
+
 
 // Incluir SweetAlert al inicio del archivo
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
