@@ -69,67 +69,72 @@
         <div class="container-fluid">
             <div class="row">
                 <!-- Barra lateral -->
-                <nav class="col-md-3 col-lg-2 d-md-block sidebar">
-                    <div class="sidebar-sticky">
+                <nav class="col-md-3 col-lg-2 d-md-block sidebar" style="background-color: #262655;">
+                    <div class="sidebar-sticky pt-3">
                         <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="../PerfilInstructor/perfilInstructor.html">Volver a Panel</a>
+                            <li class="nav-item mb-3">
+                                <a class="nav-link btn" href="../PerfilInstructor/perfilInstructor.html" style="background-color: #5D3FD3; color: #E8EAF6;">Volver a Panel</a>
                             </li>
                             <li class="nav-item">
-                                <h4>Chats de Alumnos</h4>
-                                <ul id="studentChatsList">
+                                <h4 style="color: #E8EAF6;">Chats de Alumnos</h4>
+                                <ul id="studentChatsList" class="list-unstyled">
                                     <!-- Ejemplo de chat con estudiante -->
-                                    <li class="chat-item" data-chat-id="1">
-                                        <img src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante" class="chat-avatar">
+                                    <li class="chat-item d-flex align-items-center p-2 mb-2 border rounded" data-chat-id="1" style="background-color: #5D3FD3; color: #E8EAF6;">
+                                        <img src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante" class="chat-avatar me-2 rounded-circle" style="width: 40px; height: 40px;">
                                         <span class="chat-name">Juan Pérez</span>
                                     </li>
-                                    <li class="chat-item" data-chat-id="2">
-                                        <img src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante" class="chat-avatar">
+                                    <li class="chat-item d-flex align-items-center p-2 mb-2 border rounded" data-chat-id="2" style="background-color: #5D3FD3; color: #E8EAF6;">
+                                        <img src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante" class="chat-avatar me-2 rounded-circle" style="width: 40px; height: 40px;">
                                         <span class="chat-name">Ana Gómez</span>
                                     </li>
-                                    <!-- Más chats de estudiantes -->
                                 </ul>
                             </li>
                         </ul>
                     </div>
                 </nav>
-
+    
                 <!-- Chat del Instructor -->
-                <div class="chat-container">
-                    <div class="chat-header">
-                        <img class="avatar" src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante" id="currentChatAvatar">
-                        <span id="currentChatName">Juan Pérez</span>
+                <div class="col-md-9 col-lg-10 chat-container">
+                    <div class="chat-header d-flex align-items-center p-3" style="background-color: #2e2e62; color: #E8EAF6;">
+                        <img class="avatar me-3 rounded-circle" src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante" id="currentChatAvatar" style="width: 50px; height: 50px;">
+                        <span id="currentChatName" class="fs-4">Juan Pérez</span>
                     </div>
-
-                    <!-- Mensaje del estudiante -->
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="chat-message student">
-                            <img class="avatar" src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante">
-                            <div class="message-content">
-                                Hola, tengo una duda sobre el curso.
-                                <div class="timestamp">12:30 PM</div>
+    
+                    <!-- Mensajes -->
+                    <div class="chat-messages p-4" id="chatMessages" style="background-color: #232346; height: 400px; overflow-y: auto; color: #E8EAF6;">
+                        <div class="chat-message student d-flex align-items-start mb-3">
+                            <img class="avatar me-3 rounded-circle" src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante" style="width: 40px; height: 40px;">
+                            <div>
+                                <div class="message-content p-2 rounded" style="background-color: #9F88FF; color: #232346;">
+                                    Hola, tengo una duda sobre el curso.
+                                </div>
+                                <div class="timestamp text-muted small mt-1" style="color: #E8EAF6;">12:30 PM</div>
                             </div>
                         </div>
-
-                        <!-- Mensaje del instructor -->
-                        <div class="chat-message instructor">
-                            <img class="avatar" src="ruta-avatar-instructor.jpg" alt="Avatar Instructor">
-                            <div class="message-content">
-                                ¡Hola! ¿Cómo puedo ayudarte?
-                                <div class="timestamp">12:35 PM</div>
+                        <div class="chat-message instructor d-flex align-items-start mb-3">
+                            <img class="avatar me-3 rounded-circle" src="ruta-avatar-instructor.jpg" alt="Avatar Instructor" style="width: 40px; height: 40px;">
+                            <div>
+                                <div class="message-content p-2 rounded" style="background-color: #7B6FE7; color: #E8EAF6;">
+                                    ¡Hola! ¿Cómo puedo ayudarte?
+                                </div>
+                                <div class="timestamp text-muted small mt-1" style="color: #E8EAF6;">12:35 PM</div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Input para enviar nuevos mensajes -->
-                    <div class="chat-input-container">
-                        <input type="text" placeholder="Escribe tu mensaje...">
-                        <button type="submit">Enviar</button>
+    
+                    <!-- Input para enviar mensajes -->
+                    <div class="chat-input-container p-3 border-top" style="background-color: #232346;">
+                        <form id="chatForm" class="d-flex">
+                            <input type="text" class="form-control me-2" placeholder="Escribe tu mensaje..." required style="background-color: #E8EAF6; color: #9F88FF; border: none;">
+                            <button type="submit" class="btn" style="background-color: #5D3FD3; color: #E8EAF6;">Enviar</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    
+    
 
 
     

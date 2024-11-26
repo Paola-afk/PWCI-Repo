@@ -55,41 +55,51 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
 document.addEventListener('DOMContentLoaded', () => {
-    const chatItems = document.querySelectorAll('.chat-item');
+    const chatList = document.getElementById('chatList'); // Contenedor de la lista de chats
     const currentChatName = document.getElementById('currentChatName');
     const currentChatAvatar = document.getElementById('currentChatAvatar');
     const chatMessages = document.getElementById('chatMessages');
 
-    chatItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            // Cambiar nombre y avatar del chat
-            const chatId = item.getAttribute('data-chat-id');
-            const chatName = item.querySelector('.chat-name').textContent;
-            const chatAvatar = item.querySelector('.chat-avatar').src;
+    function cargarChats() {
+        fetch('../backend/API-Mensajes/mensaje-instructor.php') // Cambia esto por la ruta a tu archivo PHP
+            .then(response => response.json())
+            .then(data => {
+                chatList.innerHTML = ''; // Limpiamos la lista
 
-            currentChatName.textContent = chatName;
-            currentChatAvatar.src = chatAvatar;
+                data.forEach(estudiante => {
+                    const chatItem = document.createElement('div');
+                    chatItem.classList.add('chat-item');
+                    chatItem.setAttribute('data-chat-id', estudiante.ID_Usuario); // Guardamos el ID del estudiante
 
-            // Cargar mensajes del chat correspondiente
-            loadMessages(chatId);
-        });
-    });
+                    chatItem.innerHTML = `
+                        <img src="${estudiante.Avatar}" alt="Avatar" class="avatar">
+                        <div class="chat-info">
+                            <h4 class="chat-name">${estudiante.Nombre_Completo}</h4>
+                        </div>
+                    `;
+
+                    // Evento para cargar los mensajes al hacer clic en un chat
+                    chatItem.addEventListener('click', () => {
+                        currentChatName.textContent = estudiante.Nombre_Completo;
+                        currentChatAvatar.src = estudiante.Avatar;
+
+                        // Lógica para cargar mensajes
+                        loadMessages(estudiante.ID_Usuario);
+                    });
+
+                    chatList.appendChild(chatItem);
+                });
+            })
+            .catch(error => console.error('Error al cargar los chats:', error));
+    }
 
     function loadMessages(chatId) {
-        // Lógica para cargar los mensajes del chat seleccionado
-        // Esto puede incluir una llamada AJAX para cargar mensajes desde el servidor
-        chatMessages.innerHTML = '';  // Limpiar mensajes antiguos
-
-        // Ejemplo de mensaje cargado (esto debe ser dinámico)
-        const message = document.createElement('div');
-        message.classList.add('chat-message', 'student');
-        message.innerHTML = `
-            <img class="avatar" src="ruta-avatar-estudiante.jpg" alt="Avatar Estudiante">
-            <div class="message-content">Hola, ¿cuándo será la próxima clase?</div>
-            <div class="timestamp">12:40 PM</div>
-        `;
-        chatMessages.appendChild(message);
+        // Aquí puedes hacer otra solicitud para obtener los mensajes del estudiante con ID `chatId`
+        console.log(`Cargando mensajes del chat con ID: ${chatId}`);
     }
+
+    // Cargar chats al iniciar la página
+    cargarChats();
 });
+
