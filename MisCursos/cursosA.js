@@ -80,11 +80,14 @@ const courseId = params.get("id");
 // URL de la API que devuelve los datos del curso y niveles
 const apiUrl = `../backend/cursos/myCourseDetails.php?id=${courseId}`;
 
+let curso; 
+
 // Función para cargar el curso desde la API
 function cargarCurso() {
     fetch(apiUrl)
         .then(response => response.json()) // Convertir la respuesta a JSON
         .then(data => {
+            curso = data; 
             // Actualizar el título y la descripción del curso
             document.getElementById("curso-titulo").textContent = data.Titulo;
             document.getElementById("curso-descripcion").textContent = data.Descripcion;
@@ -260,3 +263,153 @@ function renderCourseDetails(course) {
     }
 }
 */
+
+
+
+async function cargarMensajes(idCurso) {
+    try {
+        // Realizar la solicitud GET para obtener los mensajes del curso
+        const response = await fetch(`../backend/API-Mensajes/mensajes.php?id_curso=${idCurso}`);
+        
+        if (!response.ok) {
+            throw new Error('Error al obtener los mensajes');
+        }
+
+        const data = await response.json();
+        console.log(data);
+        
+        if (data.success) {
+            const mensajes = data.mensajes;
+
+            // Aquí debes agregar el código para mostrar los mensajes en la interfaz
+            const chatContainer = document.getElementById('chatWindow'); // El contenedor donde mostrarás los mensajes
+            const mensajesContainer = chatContainer.querySelector('.p-3'); // Contenedor específico de los mensajes
+
+            // Limpiar el contenedor de mensajes antes de agregar los nuevos
+            mensajesContainer.innerHTML = '';
+
+            // Agregar los mensajes al contenedor
+            mensajes.forEach(mensaje => {
+                // Crear un div para cada mensaje
+                const mensajeElement = document.createElement('div');
+                mensajeElement.classList.add('p-2', 'mb-2', 'rounded-lg');
+
+                // Verifica si es un mensaje del instructor o del estudiante
+                if (mensaje.ID_Remitente === mensaje.ID_Destinatario) {
+                    // Mensaje del instructor
+                    mensajeElement.classList.add('bg-[var(--primario)]', 'text-[var(--fondo)]');
+                } else {
+                    // Mensaje del estudiante
+                    mensajeElement.classList.add('bg-[var(--acento)]', 'text-[var(--fondo)]');
+                }
+
+                // Crear el contenido del mensaje
+                mensajeElement.innerHTML = `
+                    <p><strong>${mensaje.Nombre_Completo}:</strong> ${mensaje.Mensaje}</p>
+                    <span class="text-sm text-gray-300">${mensaje.Fecha_envio}</span>
+                `;
+
+                // Agregar el mensaje al contenedor de mensajes
+                mensajesContainer.appendChild(mensajeElement);
+            });
+        } else {
+            console.error('Error al cargar mensajes:', data.error);
+        }
+    } catch (error) {
+        console.error('Error en la solicitud de mensajes:', error);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById('formMensaje').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Evita el comportamiento por defecto del formulario
+
+    const mensaje = document.getElementById('mensaje').value.trim(); // Obtener el valor del mensaje
+    const archivo = document.getElementById('archivoAdjunto').files[0]; // Obtener el archivo (si se adjunta)
+    const idCurso = new URLSearchParams(window.location.search).get('id'); // Obtener el ID del curso desde la URL
+
+    // Verificar que 'curso' esté cargado
+    if (!curso) {
+        console.error('Detalles del curso no cargados');
+        return;
+    }
+
+    const idDestinatario = curso.ID_Instructor; // ID del instructor
+
+    if (!idCurso) {
+        console.error('ID del curso no disponible');
+        return;
+    }
+    if (!mensaje) {
+        console.error('El mensaje no puede estar vacío');
+        return;
+    }
+
+    console.log("Datos enviados:");
+    console.log("ID Curso:", idCurso);
+    console.log("ID Destinatario:", idDestinatario);
+    console.log("Mensaje:", mensaje);
+    console.log("Archivo:", archivo ? archivo.name : 'Ningún archivo adjunto');
+
+    // Obtener el ID del usuario autenticado
+    let idUsuario;
+    try {
+        const response = await fetch('/PWCI-Repo/backend/get_session.php');
+        if (!response.ok) {
+            throw new Error('Error al obtener los datos de sesión');
+        }
+        const sessionData = await response.json();
+        idUsuario = sessionData.ID_Usuario;  // Aquí cambiamos a 'ID_Usuario' en lugar de 'id_usuario'
+        if (!idUsuario) {
+            throw new Error('No se encontró el ID de usuario');
+        }
+    } catch (error) {
+        console.error('Error en la sesión:', error);
+        return;
+    }
+
+    // Crear un objeto FormData para manejar los datos del formulario
+    const formData = new FormData();
+    formData.append('mensaje', mensaje);
+    formData.append('id_remitente', idUsuario);  // Usar el ID del usuario autenticado
+    formData.append('id_destinatario', idDestinatario);  // El ID del destinatario (Instructor)
+    formData.append('id_curso', idCurso);  // ID del curso
+    if (archivo) formData.append('archivo', archivo);  // Solo agregar archivo si existe
+
+    try {
+        const sendMessageResponse = await fetch('../backend/API-Mensajes/mensajes.php', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!sendMessageResponse.ok) {
+            throw new Error('Error al enviar el mensaje');
+        }
+
+        const sendMessageData = await sendMessageResponse.json();
+        if (sendMessageData.success) {
+            console.log('Mensaje enviado correctamente:', sendMessageData);
+
+            // Actualiza el chat sin recargar la página
+            cargarMensajes(idCurso);
+            document.getElementById('mensaje').value = ''; // Limpia el textarea
+        } else {
+            console.error('Error al enviar mensaje:', sendMessageData.error);
+        }
+    } catch (error) {
+        console.error('Error en la solicitud de mensaje:', error);
+    }
+});

@@ -10,7 +10,7 @@ if (!isset($_GET['id'])) {
 
 $idCurso = intval($_GET['id']);
 
-// Consulta para obtener los detalles del curso
+// Consulta para obtener los detalles del curso, incluyendo el ID del instructor
 $queryCurso = "
     SELECT 
         c.Titulo, 
@@ -18,7 +18,8 @@ $queryCurso = "
         c.Imagen, 
         c.Costo, 
         c.Nivel,
-        IFNULL(SUM(k.Progreso), 0) AS Progreso
+        IFNULL(SUM(k.Progreso), 0) AS Progreso,
+        c.ID_Instructor  -- Agregar ID_Instructor
     FROM Cursos c
     LEFT JOIN Kardex k ON c.ID_Curso = k.ID_Curso
     WHERE c.ID_Curso = ?
@@ -58,6 +59,9 @@ while ($row = $stmtNiveles->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $curso['Niveles'] = $niveles;
+
+// Agregar el ID del instructor a la respuesta
+$curso['ID_Instructor'] = $curso['ID_Instructor'];
 
 // Enviar la respuesta como JSON
 echo json_encode($curso, JSON_UNESCAPED_SLASHES);
