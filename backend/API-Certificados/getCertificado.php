@@ -47,13 +47,87 @@ $fechaFinalizacion = date('d/m/Y');
 // Crear contenido del certificado
 $htmlContent = "
     <html>
+    <head>
+        <style>
+            body {
+                font-family: 'Georgia', serif;
+                text-align: center;
+                background: #f9f9f9;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+            .certificate-container {
+                width: 100%;
+                height: 100%;
+                padding: 50px;
+                border: 10px solid #5D3FD3;
+                box-sizing: border-box;
+                background: #ffffff;
+            }
+            .certificate-title {
+                font-size: 36px;
+                font-weight: bold;
+                color: #5D3FD3;
+                margin-bottom: 20px;
+            }
+            .certificate-body {
+                font-size: 20px;
+                line-height: 1.6;
+                margin: 20px;
+            }
+            .student-name {
+                font-size: 28px;
+                font-weight: bold;
+                color: #232346;
+                margin: 10px 0;
+            }
+            .course-title {
+                font-size: 24px;
+                font-weight: bold;
+                color: #7B6FE7;
+                margin: 20px 0;
+            }
+            .date {
+                font-size: 18px;
+                margin-top: 20px;
+            }
+            .footer {
+                font-size: 14px;
+                margin-top: 30px;
+                color: #666;
+            }
+            .signature {
+                margin-top: 50px;
+                font-size: 18px;
+                font-style: italic;
+                color: #333;
+            }
+        </style>
+    </head>
     <body>
-        <h1>Certificado de Finalización</h1>
-        <p>Se otorga el presente certificado a:</p>
-        <h2>$nombreEstudiante</h2>
-        <p>Por haber completado satisfactoriamente el curso:</p>
-        <h3>$tituloCurso</h3>
-        <p>Fecha de finalización: $fechaFinalizacion</p>
+        <div class='certificate-container'>
+            <h1 class='certificate-title'>Certificado de Finalización</h1>
+            <p class='certificate-body'>
+                Se otorga el presente certificado a:
+            </p>
+            <h2 class='student-name'>$nombreEstudiante</h2>
+            <p class='certificate-body'>
+                Por haber completado satisfactoriamente el curso:
+            </p>
+            <h3 class='course-title'>$tituloCurso</h3>
+            <p class='date'>
+                Fecha de finalización: $fechaFinalizacion
+            </p>
+            <div class='signature'>
+                ________________________________<br>
+                Director de EduCrafters
+            </div>
+            <p class='footer'>
+                EduCrafters - Plataforma de aprendizaje online<br>
+                www.educrafters.com
+            </p>
+        </div>
     </body>
     </html>
 ";
