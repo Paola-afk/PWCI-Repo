@@ -107,62 +107,61 @@
 
 
         <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const button = document.getElementById("btn-certificado");
-        const certificadoSection = document.getElementById("certificado-section");
+            document.addEventListener("DOMContentLoaded", function () {
+                const button = document.getElementById("btn-certificado");
+                const certificadoSection = document.getElementById("certificado-section");
 
-        const params = new URLSearchParams(window.location.search);
-        const cursoId = params.get("id");
+                const params = new URLSearchParams(window.location.search);
+                const cursoId = params.get("id");
 
-        console.log("Datos enviados:");
-        console.log("ID Curso:", cursoId);
+                console.log("Datos enviados:");
+                console.log("ID Curso:", cursoId);
 
-        // Verificar si el curso está completado
-        fetch(`../backend/API-Certificados/cursoTerminado.php?curso_id=${cursoId}`)
-            .then(response => {
-                console.log("Estado HTTP:", response.status);
-                return response.json();
-            })
-            .then(data => {
-                console.log("Respuesta del servidor:", data); // Registro completo
+                // Verificar si el curso está completado
+                fetch(`../backend/API-Certificados/cursoTerminado.php?curso_id=${cursoId}`)
+                    .then(response => {
+                        console.log("Estado HTTP:", response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Respuesta del servidor:", data); // Registro completo
 
-                if (data.status === 'Completado') {
-                    // Hacer visible el contenedor y habilitar el botón
-                    certificadoSection.style.display = 'block';
-                    button.disabled = false;  // Habilitar el botón
-                    button.addEventListener("click", () => generateCertificate(cursoId));
-                } else if (data.status === 'en_progreso') {
-                    alert(`Curso en progreso. Avance: ${data.progreso}%.`);
-                } else if (data.error) {
-                    alert("Error del servidor: " + data.error);
-                } else {
-                    alert("Debes completar el curso antes de descargar el certificado.");
-                }
-            })
-            .catch(error => {
-                console.error("Error al obtener el progreso del curso:", error);
+                        if (data.status === 'Completado') {
+                            // Hacer visible el contenedor y habilitar el botón
+                            certificadoSection.style.display = 'block';
+                            button.disabled = false;  // Habilitar el botón
+                            button.addEventListener("click", () => generateCertificate(cursoId));
+                        } else if (data.status === 'en_progreso') {
+                            alert(`Curso en progreso. Avance: ${data.progreso}%.`);
+                        } else if (data.error) {
+                            alert("Error del servidor: " + data.error);
+                        } else {
+                            alert("Debes completar el curso antes de descargar el certificado.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener el progreso del curso:", error);
+                    });
             });
-    });
 
-    function generateCertificate(cursoId) {
-        fetch(`./backend/API-Certificados/getCertificado.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ curso_id: cursoId })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    window.open(data.url, '_blank');
-                } else {
-                    alert("Error al generar el certificado: " + data.message);
-                }
-            })
-            .catch(error => {
-                alert("Hubo un error al generar el certificado.");
-                console.error("Error:", error);
-            });
-    }
+            function generateCertificate(cursoId) {
+                fetch(`../backend/API-Certificados/getCertificado.php?curso_id=${cursoId}`, {
+                    method: 'GET',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Abrir el enlace del certificado en una nueva pestaña
+                            window.open(data.url, '_blank');
+                        } else {
+                            alert("Error al generar el certificado: " + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert("Hubo un error al generar el certificado.");
+                        console.error("Error:", error);
+                    });
+            }
 
         </script>
 
