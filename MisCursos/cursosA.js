@@ -96,6 +96,12 @@ function cargarCurso() {
             document.getElementById("progreso-bar").style.width = `${data.Progreso}%`;
             document.getElementById("progreso-text").textContent = `Has completado el ${data.Progreso}% del curso`;
 
+             // Mostrar el botón de certificado si el progreso es 100%
+            if (data.Progreso === 100) {
+                document.getElementById("certificado-section").style.display = "block";
+            }
+
+
             // Llamar a la función para cargar los niveles
             cargarNiveles(data.Niveles);
         })
@@ -174,95 +180,6 @@ function cargarNiveles(niveles) {
 // Llamamos la función para cargar el curso
 cargarCurso();
 
-
-
-/*
-document.addEventListener("DOMContentLoaded", () => {
-    const params = new URLSearchParams(window.location.search);
-    const courseId = params.get("id");
-
-    console.log(courseId);
-
-    if (!courseId) {
-        alert("No se proporcionó un ID de curso.");
-        return;
-    }
-
-    // Llamar a la API para obtener los detalles del curso
-    fetch(`../backend/cursos/myCourseDetails.php?id=${courseId}`)
-        .then(response => {
-            if (!response.ok) throw new Error("Error al obtener los detalles del curso.");
-            return response.json();
-        })
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-                return;
-            }
-
-            // Mostrar los detalles del curso
-            renderCourseDetails(data);
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("Hubo un problema al cargar los detalles del curso.");
-        });
-});
-
-// Función para renderizar los detalles del curso en el HTML
-function renderCourseDetails(course) {
-    // Actualizar los datos básicos del curso
-    document.querySelector(".curso-tarjeta h2").textContent = course.Titulo || "Título no disponible";
-    document.querySelector(".curso-tarjeta p").textContent = course.Descripcion || "Descripción no disponible.";
-
-    // Corregimos el selector con caracteres especiales para la imagen
-    const imageElement = document.querySelector(".curso-tarjeta .bg-\\[\\#9F88FF\\]");
-    if (imageElement) {
-        imageElement.style.backgroundImage = `url('${course.Imagen || 'https://via.placeholder.com/500x150'}')`;
-    }
-
-    // Actualizar barra de progreso
-    document.querySelector(".bg-green-500").style.width = `${course.Progreso || 0}%`;
-    document.querySelector(".text-sm").textContent = `Has completado el ${course.Progreso || 0}% del curso`;
-
-    // Renderizar niveles
-    const nivelesContainer = document.querySelector(".bg-\\[\\#7B6FE7\\]");
-    nivelesContainer.innerHTML = `
-        <h2 class="text-2xl font-bold text-[#5D3FD3] mb-4">Contenido del Curso</h2>
-    `;
-
-    // Validamos que los niveles sean un arreglo
-    if (Array.isArray(course.Niveles) && course.Niveles.length > 0) {
-        nivelesContainer.innerHTML += course.Niveles.map(nivel => `
-            <div class="mb-8">
-                <h3 class="text-xl font-semibold text-[#E8EAF6] mb-2">${nivel.Titulo || "Nivel sin título"}</h3>
-                <ul class="space-y-4">
-                    ${nivel.Contenido ? `
-                        <li class="bg-[#9F88FF] p-4 rounded-lg">
-                            <h4 class="text-lg font-bold text-[#333366]">Contenido</h4>
-                            <p class="text-[#5D3FD3]">${nivel.Contenido}</p>
-                        </li>
-                    ` : ''}
-                    ${nivel.Video ? `
-                        <li class="bg-[#9F88FF] p-4 rounded-lg">
-                            <h4 class="text-lg font-bold text-[#333366]">Video</h4>
-                            <a href="${nivel.Video}" class="text-[#5D3FD3] underline" target="_blank">Ver Video</a>
-                        </li>
-                    ` : ''}
-                    ${nivel.Documento ? `
-                        <li class="bg-[#9F88FF] p-4 rounded-lg">
-                            <h4 class="text-lg font-bold text-[#333366]">Documento</h4>
-                            <a href="${nivel.Documento}" class="text-[#5D3FD3] underline" target="_blank">Descargar Documento</a>
-                        </li>
-                    ` : ''}
-                </ul>
-            </div>
-        `).join('');
-    } else {
-        nivelesContainer.innerHTML += "<p class='text-[#E8EAF6]'>No hay niveles disponibles para este curso.</p>";
-    }
-}
-*/
 
 
 
