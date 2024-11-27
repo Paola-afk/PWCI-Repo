@@ -51,3 +51,91 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error:', error));
 });
+
+
+
+
+// Obtener referencias a los elementos
+const searchForm = document.getElementById('searchForm');
+const searchResults = document.getElementById('searchResults');
+const categoriaFilter = document.getElementById('categoriaFilter');
+const usuarioFilter = document.getElementById('usuarioFilter');
+
+// Cargar filtros al iniciar la página
+window.addEventListener('DOMContentLoaded', () => {
+    fetchFilters();
+});
+
+// Escuchar el envío del formulario
+searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    fetchSearchResults();
+});
+
+// Función para cargar los filtros de categoría e instructor
+function fetchFilters() {
+    fetch('http://localhost/PWCI-Repo/backend/busquedas/filters.php')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al cargar filtros');
+        }
+        return response.json();
+        })
+        .then(data => {
+            // Cargar categorías
+            categoriaFilter.innerHTML = '<option value="">Seleccionar Categoría</option>';
+            data.categorias.forEach(categoria => {
+                categoriaFilter.innerHTML += `<option value="${categoria.ID_Categoria}">${categoria.Nombre_Categoria}</option>`;
+            });
+
+            // Cargar usuarios
+            usuarioFilter.innerHTML = '<option value="">Seleccionar Instructor</option>';
+            data.usuarios.forEach(usuario => {
+                usuarioFilter.innerHTML += `<option value="${usuario.ID_Usuario}">${usuario.Nombre_Completo}</option>`;
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los filtros:', error);
+        });
+
+}
+
+function fetchSearchResults() {
+    const formData = new FormData(searchForm);
+
+    // Depuración: Verificar qué datos se están enviando en formData
+    formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+    });
+
+    console.log("searchQuery:", formData.get('q'));
+    console.log("Instructor seleccionado:", formData.get('usuario'));
+    //console.log("Fecha:", formData.get('fechaInicio'));
+    console.log("Fecha Inicio:", formData.get('fechaInicio'));
+    console.log("Fecha Fin:", formData.get('fechaFin'));
+
+
+    fetch('http://localhost/PWCI-Repo/backend/busquedas/busqueda.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        searchResults.innerHTML = '';
+
+        if (data.length > 0) {
+            data.forEach(curso => {
+                searchResults.innerHTML += `
+                    <div class="course" style="background-color: #2f2f65">
+                        <h3>${curso.Titulo}</h3>
+                        <p>${curso.Descripcion}</p>
+                        <p><strong>Instructor:</strong> ${curso.InstructorNombre}</p>
+                        <p><strong>Fecha de creación:</strong> ${curso.Fecha_Creacion}</p>
+                    </div>
+                `;
+            });
+        } else {
+            searchResults.innerHTML = '<p>No se encontraron resultados.</p>';
+        }
+    });
+}

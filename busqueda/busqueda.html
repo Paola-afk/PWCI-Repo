@@ -30,7 +30,7 @@
 
             <?php if (isset($_SESSION['id_usuario'])): ?>
                 <div class="user-profile" id="userProfile">
-                    <img src="<?php echo isset($avatar_url) ? $avatar_url : '/default-avatar.png'; ?>" alt="Avatar" class="avatar" id="profileMenuToggle">
+                    <img src="" alt="Avatar" class="avatar" id="profileMenuToggle">
                     <div class="profile-menu" id="profileMenu">
                         <a href="/PerfilUser/perfilUser.html">Ver Perfil</a>
                         
@@ -57,52 +57,39 @@
     <main>
         <div class="search-container">
             <h2>Buscar Cursos</h2>
-
             <!-- Formulario de búsqueda -->
-            <form action="http://localhost/PWCI-Repo/backend/busqueda.php" method="GET">
-                <input type="text" name="q" placeholder="Busca por título" value="<?php echo htmlspecialchars($_GET['q'] ?? ''); ?>">
-
-                <!-- Filtro de categoría -->
-                <select name="categoria">
-                    <option value="">Seleccionar Categoría</option>
-                    <?php foreach ($categoriasResult as $row): ?>
-                        <option value="<?php echo $row['ID_Categoria']; ?>" <?php echo ($_GET['categoria'] == $row['ID_Categoria']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($row['Nombre']); ?>
-                        </option>
-                    <?php endforeach; ?>
+            <form id="searchForm">
+                <!-- Campo para texto de búsqueda -->
+                <label for="textoBusqueda">Buscar texto:</label>
+                <input type="text" id="textoBusqueda" name="q" placeholder="Escribe el título o descripción" />
+            
+                <!-- Selector de categoría -->
+                <label for="categoriaFilter">Seleccionar Categoría:</label>
+                <select id="categoriaFilter" name="categoria">
+                    <option value="">Cargando categorías...</option>
                 </select>
-
-                <!-- Filtro de usuario -->
-                <select name="usuario">
-                    <option value="">Seleccionar Instructor</option>
-                    <?php foreach ($usuariosResult as $row): ?>
-                        <option value="<?php echo $row['ID_Usuario']; ?>" <?php echo ($_GET['usuario'] == $row['ID_Usuario']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($row['Nombre']); ?>
-                        </option>
-                    <?php endforeach; ?>
+            
+                <!-- Selector de instructor -->
+                <label for="usuarioFilter">Seleccionar Instructor:</label>
+                <select id="usuarioFilter" name="usuario">
+                    <option value="">Cargando instructores...</option>
                 </select>
-
-                <!-- Filtro de fechas -->
-                <input type="date" name="fecha_inicio" value="<?php echo htmlspecialchars($_GET['fecha_inicio'] ?? ''); ?>">
-                <input type="date" name="fecha_fin" value="<?php echo htmlspecialchars($_GET['fecha_fin'] ?? ''); ?>">
-
+            
+                <!-- Campo para fecha inicial -->
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" />
+            
+                <!-- Campo para fecha final -->
+                <label for="fechaFin">Fecha de fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" />
+            
+                <!-- Botón de búsqueda -->
                 <button type="submit">Buscar</button>
             </form>
-
-            <div class="search-results">
-                <?php if (count($cursos) > 0): ?>
-                    <?php foreach ($cursos as $curso): ?>
-                        <div class="course">
-                            <h3><?php echo htmlspecialchars($curso['Titulo']); ?></h3>
-                            <p><?php echo htmlspecialchars($curso['Descripcion']); ?></p>
-                            <p><strong>Instructor:</strong> <?php echo htmlspecialchars($curso['InstructorNombre']); ?></p>
-                            <p><strong>Fecha de creación:</strong> <?php echo htmlspecialchars($curso['Fecha_Creacion']); ?></p>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No se encontraron resultados.</p>
-                <?php endif; ?>
-            </div>
+            
+            <div id="searchResults">
+                <!-- Aquí se mostrarán los resultados de búsqueda -->
+            </div            
         </div>
     </main>
 
