@@ -52,10 +52,20 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Error:', error));
 });
 
-
-
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/PWCI-Repo/backend/getCursos.php')
+    // Cargar cursos mejor calificados
+    fetchCursos('getTopRated', 'topRatedCourses');
+    
+    // Cargar cursos más vendidos
+    fetchCursos('getMostSold', 'mostSoldCourses');
+    
+    // Cargar cursos más recientes
+    fetchCursos('getMostRecent', 'recentCourses');
+});
+
+// Función para obtener y mostrar los cursos
+function fetchCursos(action, containerId) {
+    fetch(`http://localhost/PWCI-Repo/backend/getcursosT.php?action=${action}`)
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');
@@ -64,8 +74,9 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(data => {
         console.log(data); // Verifica la respuesta aquí
-        const coursesContainer = document.querySelector('.course-cards');
-        
+
+        const coursesContainer = document.getElementById(containerId);
+
         if (data.length === 0) {
             coursesContainer.innerHTML = '<p>No se encontraron cursos disponibles.</p>';
         } else {
@@ -76,6 +87,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         <img src="${curso.Imagen}" alt="${curso.Titulo}">
                         <h3>${curso.Titulo}</h3>
                         <p>${curso.Descripcion}</p>
+                        <p><strong>Ventas: </strong>${curso.Numero_de_Ventas ? curso.Numero_de_Ventas : 'N/A'}</p>
+                        <p><strong>Promedio de calificación: </strong>${curso.Promedio_Calificacion ? curso.Promedio_Calificacion.toFixed(2) : 'N/A'}</p>
                         <a href="http://localhost/PWCI-Repo/MisCursos/cursoNA.html?id=${curso.ID_Curso}" class="btn">Ver más</a>
                     </div>
                 `;
@@ -85,17 +98,4 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => {
         console.error('Hubo un problema con la solicitud:', error);
     });
-
-});
-
-async function fetchCourses() {
-    try {
-        const response = await fetch('http://localhost/api.php?action=getCourses'); 
-        if (!response.ok) { 
-            throw new Error('Error en la solicitud: ' + response.statusText); 
-        } 
-        const courses = await response.json();
-        displayCourses(courses);
-    } 
-    catch (error) { console.error('Error:', error); }
 }
