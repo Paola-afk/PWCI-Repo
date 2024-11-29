@@ -351,3 +351,12 @@ document.getElementById('formMensaje').addEventListener('submit', async (event) 
         console.error('Error en la solicitud de mensaje:', error);
     }
 });
+
+
+
+
+
+
+
+
+

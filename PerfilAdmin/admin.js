@@ -85,164 +85,136 @@ document.addEventListener("DOMContentLoaded", function () {
     // Mostrar la primera sección por defecto
     showSection("gestionar-usuarios");
 
-    // Funciones de alerta para botones de acciones
-    const buttonsBlock = document.querySelectorAll(".btn-warning");
-    const buttonsDelete = document.querySelectorAll(".btn-danger");
-    const buttonsEdit = document.querySelectorAll(".btn-secondary");
 
-    buttonsBlock.forEach(button => {
-        button.addEventListener("click", function () {
-            alert("Usuario bloqueado.");
-        });
-    });
-
-    // Simular la eliminación con confirmación
-    buttonsDelete.forEach(button => {
-        button.addEventListener("click", function () {
-            const row = this.closest("tr"); // Obtener la fila más cercana
-            const userName = row.querySelector("td:nth-child(2)").textContent; // Obtener el nombre del usuario
-
-            // Mostrar confirmación antes de eliminar
-            const confirmed = confirm(`¿Estás seguro de que quieres eliminar a ${userName}?`);
-
-            if (confirmed) {
-                row.remove(); // Eliminar la fila si se confirma
-                alert(`${userName} ha sido eliminado.`);
-            }
-        });
-    });
-
-    buttonsEdit.forEach(button => {
-        button.addEventListener("click", function () {
-            alert("Editando categoría.");
-        });
-    });
-
-    /*
-    const addCategoryForm = document.getElementById("addCategoryForm");
-    const categoryTableBody = document.querySelector("#gestionar-categorias tbody");
-    
-    // Contador para los IDs de las categorías
-    let categoryIdCounter = 1;
-    
-    addCategoryForm.addEventListener("submit", function (event) {
-        event.preventDefault(); // Evitar el envío del formulario
-    
-        const categoryNameInput = document.getElementById("category-name");
-        const categoryName = categoryNameInput.value.trim();
-    
-        if (categoryName === "") {
-            alert("El nombre de la categoría no puede estar vacío.");
-            return;
-        }
-    
-        // Confirmar la adición de la categoría
-        const confirmed = confirm(`¿Estás seguro de que quieres agregar la categoría "${categoryName}"?`);
-    
-        if (confirmed) {
-            // Agregar la nueva categoría a la tabla
-            const newRow = document.createElement("tr");
-            newRow.innerHTML = `
-                <td>${categoryIdCounter++}</td>
-                <td>${categoryName}</td>
-                <td>
-                    <button class="btn btn-secondary btn-sm">Editar</button>
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                </td>
-            `;
-    
-            categoryTableBody.appendChild(newRow);
-
-        
-    
-            // Asignar eventos a los botones de la nueva fila
-            const editButton = newRow.querySelector(".btn-secondary");
-            const deleteButton = newRow.querySelector(".btn-danger");
-    
-            // Evento de editar
-            editButton.addEventListener("click", function () {
-                alert(`Editando categoría "${categoryName}".`);
-            });
-    
-            // Evento de eliminar
-            deleteButton.addEventListener("click", function () {
-                const confirmedDelete = confirm(`¿Estás seguro de que quieres eliminar la categoría "${categoryName}"?`);
-                if (confirmedDelete) {
-                    newRow.remove(); // Eliminar la fila si se confirma
-                    alert(`Categoría "${categoryName}" ha sido eliminada.`);
-                }
-            });
-    
-            // Limpiar el campo de texto y cerrar el modal
-            categoryNameInput.value = "";
-            $('#addCategoryModal').modal('hide');
-            alert(`Categoría "${categoryName}" ha sido agregada.`);
-        }
-        
-    });
-    */
 
 
     // Función que se ejecutará cuando el DOM esté listo
     $(document).ready(function() {
-        // Función AJAX que se ejecuta al cargar la página
-        loadCategorias();
-
         // Función para cargar las categorías
+        loadCategorias();
+    
         function loadCategorias() {
             $.ajax({
                 url: '/PWCI-Repo/backend/loadCategories.php', // Archivo PHP que traerá las categorías
                 type: 'GET',
                 success: function(response) {
-                    $('#categoriaTableBody').html(response); // Insertar los datos en la tabla
+                    const categorias = JSON.parse(response); // Convertir el JSON a un objeto
+    
+                    // Limpiar la tabla antes de agregar los datos
+                    $('#categoriaTableBody').empty();
+    
+                    // Recorrer las categorías y agregar las filas a la tabla
+                    categorias.forEach(function(categoria) {
+                        const row = `<tr>
+                            <td>${categoria.Nombre_Categoria}</td>
+                            <td>${categoria.Descripcion}</td>
+                            <td>
+                                <button class='btn btn-secondary btn-sm edit-category' data-id='${categoria.ID_Categoria}' data-name='${categoria.Nombre_Categoria}' data-description='${categoria.Descripcion}'>Editar</button>
+                                <button class='btn btn-danger btn-sm delete-category' data-id='${categoria.ID_Categoria}'>Eliminar</button>
+                            </td>
+                        </tr>`;
+                        $('#categoriaTableBody').append(row); // Agregar la fila a la tabla
+                    });
                 },
                 error: function() {
                     alert('Hubo un error al cargar las categorías');
                 }
             });
         }
-    });
 
 
-    $('#addCategoryForm').on('submit', function (event) {
-        event.preventDefault();
-    
-        $.ajax({
-            url: '/PWCI-Repo/backend/addCategory.php',
-            type: 'POST',
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(response) {
-                console.log(response); // Verifica lo que devuelve el servidor
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Éxito!',
-                        text: response.message
-                    }).then(() => {
-                        //loadCategorias(); // Actualiza las categorías en la tabla
-                        $('#addCategoryModal').modal('hide');
-                    });
-                } else {
+
+        $('#addCategoryForm').on('submit', function (event) {
+            event.preventDefault();
+        
+            $.ajax({
+                url: '/PWCI-Repo/backend/addCategory.php',
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response); // Verifica lo que devuelve el servidor
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: response.message
+                        }).then(() => {
+                            //loadCategorias(); // Actualiza las categorías en la tabla
+                            $('#addCategoryModal').modal('hide');
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error en la solicitud AJAX:", xhr.responseText);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
-                        text: response.message
+                        title: 'Error en la solicitud',
+                        text: `Hubo un problema al realizar la solicitud: ${error}`
                     });
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error en la solicitud AJAX:", xhr.responseText);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error en la solicitud',
-                    text: `Hubo un problema al realizar la solicitud: ${error}`
-                });
-            }
+            });
         });
-    });
-    
 
+
+
+
+        // Evento para el botón de editar categoría
+        $(document).on('click', '.edit-category', function() {
+            const idCategoria = $(this).data('id');
+            const nombreCategoria = $(this).data('name');
+            const descripcion = $(this).data('description');
+
+            // Llenar los campos del formulario de edición con los datos actuales
+            $('#edit-category-name').val(nombreCategoria);
+            $('#edit-category-description').val(descripcion);
+            $('#editCategoryModal').modal('show');
+
+            // Guardar los cambios al enviar el formulario de edición
+            $('#editCategoryForm').data('id_categoria', idCategoria); // Usamos data para guardar el id de la categoría
+        });
+
+        // Evento para el formulario de edición
+        $('#editCategoryForm').on('submit', function(e) {
+            e.preventDefault(); // Evitar el comportamiento por defecto
+        
+            const idCategoria = $(this).data('id_categoria');
+            const newName = $('#edit-category-name').val().trim();  // Capturar valor del campo de nombre
+            const newDescription = $('#edit-category-description').val().trim();  // Capturar valor del campo de descripción
+        
+            // Verificar que los valores se están capturando correctamente
+            console.log("ID Categoria:", idCategoria); // Verificar que el id está correcto
+            console.log("Nuevo Nombre:", newName);    // Verificar que el nombre es el correcto
+            console.log("Nueva Descripción:", newDescription); // Verificar que la descripción es correcta
+        
+            // Enviar los datos al servidor
+            $.ajax({
+                url: '/PWCI-Repo/backend/editCategory.php', // Archivo PHP para editar categoría
+                type: 'POST',
+                data: {
+                    id_categoria: idCategoria,
+                    nombre_categoria: newName,
+                    descripcion: newDescription
+                },
+                success: function(response) {
+                    console.log("Respuesta del servidor:", response); // Verifica lo que devuelve el servidor
+                    alert(response); // Mostrar el mensaje de éxito
+                    $('#editCategoryModal').modal('hide'); // Cerrar el modal
+                    loadCategorias(); // Recargar las categorías
+                },
+                error: function() {
+                    alert('Hubo un error al editar la categoría');
+                }
+            });
+        });
+});
+    
 });
 
 fetch('http://localhost/PWCI-Repo/backend/gestion_usuarios.php')
