@@ -52,50 +52,71 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Error:', error));
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOM completamente cargado. Iniciando carga de cursos...");
+
     // Cargar cursos mejor calificados
-    fetchCursos('getTopRated', 'topRatedCourses');
-    
+    fetchCursos('topRated', 'topRatedCourses');
+
     // Cargar cursos más vendidos
-    fetchCursos('getMostSold', 'mostSoldCourses');
-    
+    fetchCursos('mostSold', 'mostSoldCourses');
+
     // Cargar cursos más recientes
-    fetchCursos('getMostRecent', 'recentCourses');
+    fetchCursos('mostRecent', 'recentCourses');
 });
 
-// Función para obtener y mostrar los cursos
-function fetchCursos(action, containerId) {
-    fetch(`http://localhost/PWCI-Repo/backend/getcursosT.php?action=${action}`)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data); // Verifica la respuesta aquí
+function fetchCursos(tipo, containerId) {
+    console.log(`Iniciando fetch para tipo: ${tipo} en contenedor: ${containerId}`);
 
-        const coursesContainer = document.getElementById(containerId);
+    fetch(`http://localhost/PWCI-Repo/backend/getcursosT.php?tipo=${tipo}`)
+        .then(response => {
+            console.log(`Respuesta recibida para tipo: ${tipo} - Estado: ${response.status}`);
+            
+            if (!response.ok) {
+                console.error(`Error en la respuesta del servidor para tipo: ${tipo}`);
+                alert(`Error en la respuesta del servidor para tipo: ${tipo}`);
+                throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(`Datos recibidos para tipo: ${tipo}`, data); // Verifica la respuesta aquí
 
-        if (data.length === 0) {
-            coursesContainer.innerHTML = '<p>No se encontraron cursos disponibles.</p>';
-        } else {
-            coursesContainer.innerHTML = ''; // Limpia cualquier contenido previo
-            data.forEach(curso => {
-                coursesContainer.innerHTML += `
-                    <div class="course-card">
-                        <img src="${curso.Imagen}" alt="${curso.Titulo}">
-                        <h3>${curso.Titulo}</h3>
-                        <p>${curso.Descripcion}</p>
-                        <p><strong>Ventas: </strong>${curso.Numero_de_Ventas ? curso.Numero_de_Ventas : 'N/A'}</p>
-                        <p><strong>Promedio de calificación: </strong>${curso.Promedio_Calificacion ? curso.Promedio_Calificacion.toFixed(2) : 'N/A'}</p>
-                        <a href="http://localhost/PWCI-Repo/MisCursos/cursoNA.html?id=${curso.ID_Curso}" class="btn">Ver más</a>
-                    </div>
-                `;
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Hubo un problema con la solicitud:', error);
-    });
+            const coursesContainer = document.getElementById(containerId);
+
+            if (!coursesContainer) {
+                console.error(`No se encontró el contenedor con ID: ${containerId}`);
+                alert(`Error: No se encontró el contenedor con ID: ${containerId}`);
+                return;
+            }
+
+            if (data.length === 0) {
+                console.warn(`No se encontraron cursos disponibles para tipo: ${tipo}`);
+                coursesContainer.innerHTML = '<p>No se encontraron cursos disponibles.</p>';
+            } else {
+                console.log(`Mostrando ${data.length} cursos para tipo: ${tipo}`);
+                coursesContainer.innerHTML = ''; // Limpia cualquier contenido previo
+                data.forEach(curso => {
+                    // Validar si Promedio_Calificacion es un número válido
+                    const promedioCalificacion = (typeof curso.Promedio_Calificacion === 'number' && !isNaN(curso.Promedio_Calificacion)) 
+                        ? curso.Promedio_Calificacion.toFixed(2) 
+                        : 'N/A';
+
+                    coursesContainer.innerHTML += `
+                        <div class="course-card">
+                            <img src="${curso.Imagen}" alt="${curso.Titulo}">
+                            <h3>${curso.Titulo}</h3>
+                            <p>${curso.Descripcion}</p>
+                            <p><strong>Calificación promedio:</strong> ${promedioCalificacion}</p>
+                            <a href="http://localhost/PWCI-Repo/MisCursos/cursoNA.html?id=${curso.ID_Curso}" class="btn">Ver más</a>
+                        </div>
+                    `;
+                });
+            }
+        })
+        .catch(error => {
+            console.error(`Hubo un problema con la solicitud para tipo: ${tipo}`, error);
+            alert(`Hubo un problema con la solicitud para tipo: ${tipo}`);
+        });
 }
