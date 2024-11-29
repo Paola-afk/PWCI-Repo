@@ -186,7 +186,7 @@ let instructorId = null; // Variable para almacenar el ID del instructor
 
 // Función para cargar las categorías en el formulario
 function cargarCategorias() {
-    fetch('/PWCI-Repo/backend/getCategorias.php')  // Cambia esta ruta si es necesario
+    fetch('/PWCI-Repo/backend/loadCategories.php')  // Cambia esta ruta si es necesario
     .then(response => response.json())
     .then(data => {
         const selectCategoria = document.getElementById("curso-categoria");
