@@ -183,9 +183,12 @@ document.getElementById('curso-select').addEventListener('change', function () {
 
 
 function editarNivel(nivelId) {
+
+    
     fetch(`http://localhost/PWCI-Repo/backend/niveles/nivelDetails.php?nivel_id=${nivelId}`)
         .then(response => response.json())
         .then(data => {
+        console.log('Datos de niveles recibidos:', data);  
             if (data.nivel) {
                 const nivel = data.nivel;
                 document.getElementById('nivel-id').value = nivel.ID_Nivel;
@@ -264,3 +267,53 @@ document.getElementById('editarNivelForm').addEventListener('submit', function (
         });
 });
 
+
+
+
+
+
+function eliminarNivel(nivelId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esto eliminará el nivel de forma permanente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost/PWCI-Repo/backend/eliminar_nivel.php?nivel_id=${nivelId}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Eliminado',
+                            text: 'El nivel ha sido eliminado con éxito.'
+                        });
+                        // Opcional: recargar la lista de niveles después de la eliminación
+                        const cursoId = document.getElementById("curso-select").value;
+                        cargarNiveles(cursoId);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'Hubo un problema al intentar eliminar el nivel.'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al eliminar el nivel:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un error al comunicarse con el servidor.'
+                    });
+                });
+        }
+    });
+}
