@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 
 if (isset($_GET['nivel_id'])) {
     $nivel_id = $_GET['nivel_id'];
-    $sql = "SELECT * FROM niveles WHERE ID_Nivel = ? AND Estado = 'Activo'";
+    $sql = "SELECT * FROM Niveles WHERE ID_Nivel = ? AND Estado = 'Activo'";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $nivel_id);
     $stmt->execute();

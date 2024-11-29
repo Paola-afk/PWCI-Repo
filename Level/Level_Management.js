@@ -182,13 +182,23 @@ document.getElementById('curso-select').addEventListener('change', function () {
 });
 
 
+
+
+
+
+
+
+
+
 function editarNivel(nivelId) {
 
-    
+    console.log('Tipo de input de video:', document.getElementById('nivel-video').type);
+console.log('Valor de video:', document.getElementById('nivel-video').value);
+
     fetch(`http://localhost/PWCI-Repo/backend/niveles/nivelDetails.php?nivel_id=${nivelId}`)
         .then(response => response.json())
         .then(data => {
-        console.log('Datos de niveles recibidos:', data);  
+            console.log('Datos de niveles recibidos:', data);  
             if (data.nivel) {
                 const nivel = data.nivel;
                 document.getElementById('nivel-id').value = nivel.ID_Nivel;
@@ -216,16 +226,18 @@ function editarNivel(nivelId) {
         });
 }
 
-
 document.getElementById('editarNivelForm').addEventListener('submit', function (e) {
     e.preventDefault();
     
     const nivelId = document.getElementById('nivel-id').value;
     const titulo = document.getElementById('nivel-titulo').value;
     const contenido = document.getElementById('nivel-contenido').value;
-    const video = document.getElementById('nivel-video').value;
+    const videoInput = document.getElementById('nivel-video'); // Accedemos al input
+    const video = videoInput.value; // Obtenemos el valor del video
     const documento = document.getElementById('nivel-documento').value;
     const estado = document.getElementById('nivel-estado').value;
+
+    console.log('Tipo de input de video:', videoInput.type); // Esto debería imprimir "text"
 
     fetch('http://localhost/PWCI-Repo/backend/niveles/editarNivel.php', {
         method: 'POST',
@@ -266,6 +278,10 @@ document.getElementById('editarNivelForm').addEventListener('submit', function (
             });
         });
 });
+
+
+
+
 
 
 
