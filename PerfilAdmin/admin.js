@@ -251,28 +251,46 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 fetch('http://localhost/PWCI-Repo/backend/gestion_usuarios.php')
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.getElementById('tabla-usuarios');
-            tbody.innerHTML = ''; // Limpiar cualquier contenido previo
+.then(response => response.json())
+.then(data => {
+    const tbody = document.getElementById('tabla-usuarios');
+    tbody.innerHTML = ''; // Limpiar cualquier contenido previo
 
-            data.forEach(usuario => {
-                const row = document.createElement('tr');
+    data.forEach(usuario => {
+        const row = document.createElement('tr');
 
-                row.innerHTML = `
-                    <td>${usuario.ID_Usuario}</td>
-                    <td>${usuario.Nombre_Completo}</td>
-                    <td>${usuario.ID_Rol}</td>
-                    <td>
-                        <button class='btn btn-warning btn-sm'>Bloquear</button>
-                        <button class='btn btn-danger btn-sm'>Eliminar</button>
-                    </td>
-                `;
+        row.innerHTML = `
+            <td>${usuario.ID_Usuario}</td>
+            <td>${usuario.Nombre_Completo}</td>
+            <td>${usuario.Estado}</td>
+            <td>${usuario.ID_Rol}</td>
+            <td>
+                <button class='btn btn-warning btn-sm' onclick='bloquearUsuario(${usuario.ID_Usuario})'>Bloquear</button>
+            </td>
+        `;
 
-                tbody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error al cargar los usuarios:', error));
+        tbody.appendChild(row);
+    });
+})
+.catch(error => console.error('Error al cargar los usuarios:', error));
+
+function bloquearUsuario(idUsuario) {
+fetch(`http://localhost/PWCI-Repo/backend/gestion_usuarios.php?action=bloquear&id=${idUsuario}`)
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message); // Mostrar mensaje de éxito o error
+        // Recargar la lista de usuarios
+        location.reload();
+    })
+    .catch(error => console.error('Error al bloquear usuario:', error));
+}
+
+
+
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
             loadReport('instructores');
