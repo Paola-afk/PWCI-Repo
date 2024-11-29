@@ -1,32 +1,29 @@
 <?php
 require_once 'conexion.php'; // Incluye la conexión a la base de datos
 
-// Recibe la acción que determina qué tipo de cursos se deben obtener
-$action = isset($_GET['action']) ? $_GET['action'] : '';
+// Parámetro recibido de la solicitud (GET o POST)
+$tipo = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
-// Verifica la acción y ejecuta el procedimiento almacenado adecuado
-switch ($action) {
-    case 'getTopRated': 
-        $tipo = 'topRated';
-        break;
-    case 'getMostSold': 
-        $tipo = 'mostSold';
-        break;
-    case 'getMostRecent': 
-        $tipo = 'mostRecent';
-        break;
-    default:
-        die("Acción no válida.");
+// Validar que el parámetro es válido
+if (!in_array($tipo, ['topRated', 'mostSold', 'mostRecent'])) {
+    echo json_encode(["error" => "Tipo de curso no válido"]);
+    exit;
 }
 
-// Llamar al procedimiento almacenado que obtiene los cursos por tipo
 try {
+    // Preparar la llamada al Stored Procedure
     $stmt = $pdo->prepare("CALL GetCursosPorTipo(?)");
+
+    // Ejecutar el procedimiento almacenado pasando el parámetro
     $stmt->execute([$tipo]);
+
+    // Obtener los resultados
     $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    echo json_encode($courses); // Devolver los cursos como JSON
+    // Devolver los resultados como JSON
+    echo json_encode($courses);
+
 } catch (PDOException $e) {
-    echo json_encode(["error" => "Error al cargar los cursos: " . htmlspecialchars($e->getMessage())]);
+    echo json_encode(["error" => "Error al ejecutar el procedimiento almacenado: " . htmlspecialchars($e->getMessage())]);
 }
 ?>
