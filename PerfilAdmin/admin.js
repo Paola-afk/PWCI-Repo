@@ -292,6 +292,63 @@ fetch(`http://localhost/PWCI-Repo/backend/gestion_usuarios.php?action=bloquear&i
 
 
 
+
+
+
+
+document.getElementById('instructor-tab').addEventListener('click', function () {
+    fetch('http://localhost/PWCI-Repo/backend/gestionReportes/reportes.php?tipo=instructores')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('instructor-table-body');
+            tbody.innerHTML = ''; // Limpiar tabla
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.Usuario}</td>
+                    <td>${row.Nombre}</td>
+                    <td>${row.Fecha_Ingreso}</td>
+                    <td>${row.Cursos_Ofrecidos}</td>
+                    <td>${row.Total_Ganancias}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error al cargar el reporte de instructores:', error));
+});
+
+
+
+
+
+document.getElementById('student-tab').addEventListener('click', function () {
+    fetch('http://localhost/PWCI-Repo/backend/gestionReportes/reportes.php?tipo=estudiantes')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('student-table-body');
+            tbody.innerHTML = ''; // Limpiar tabla
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.Usuario}</td>
+                    <td>${row.Nombre}</td>
+                    <td>${row.Fecha_Ingreso}</td>
+                    <td>${row.Cursos_Inscritos}</td>
+                    <td>${row.Porcentaje_Cursos_Terminados}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error al cargar el reporte de estudiantes:', error));
+});
+
+
+
+
+/*
+
 document.addEventListener('DOMContentLoaded', () => {
             loadReport('instructores');
             loadReport('estudiantes');
@@ -339,3 +396,4 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(error => console.error('Error al cargar los reportes:', error));
         }
         
+*/
