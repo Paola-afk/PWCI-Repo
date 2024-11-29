@@ -93,14 +93,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 courseList.innerHTML = `<p>${data.error}</p>`;
                 return;
             }
+            //img src="${mensaje.Avatar ? `http://localhost/PWCI-Repo/backend/uploads/${mensaje.Avatar}` : 'default-avatar.jpg'}" alt="Avatar" class="w-8 h-8 rounded-full mr-2">
 
             // Crear el contenido dinámico
             if (data.length > 0) {
                 courseList.innerHTML = data.map(course => `
                     <div class="course" onclick="window.location.href='cursoA.html?id=${course.ID_Curso}';">
-                        <img src="${course.Imagen || 'https://via.placeholder.com/500x150'}" alt="Imagen del curso">
+                        <img src="${course.Imagen ? `http://localhost/PWCI-Repo/backend/API-Cursos/${course.Imagen}` : 'https://via.placeholder.com/500x150'}" alt="Imagen del curso style="width: 50px; height: 25px; object-fit: cover">
                         <h3>${course.Titulo}</h3>
                         <p>Progreso: ${course.Progreso}%</p>
+                        <p>Estado: ${course.Estado}</p>
+
                     </div>
                 `).join('');
             } else {

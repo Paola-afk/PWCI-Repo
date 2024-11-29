@@ -13,10 +13,10 @@ if (!isset($_SESSION['id_usuario'])) {
 $id_estudiante = $_SESSION['id_usuario'];
 
 // Consulta para obtener los cursos comprados
-$query = "SELECT c.ID_Curso, c.Titulo, c.Imagen, k.Progreso 
+$query = "SELECT c.ID_Curso, c.Titulo, c.Imagen, k.Progreso, k.Estado 
             FROM Kardex k 
             JOIN Cursos c ON k.ID_Curso = c.ID_Curso 
-            WHERE k.ID_Estudiante = ? AND k.Estado = 'Activo'";
+            WHERE k.ID_Estudiante = ? AND k.Estado IN ('Activo', 'Completado')";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $id_estudiante);
 $stmt->execute();

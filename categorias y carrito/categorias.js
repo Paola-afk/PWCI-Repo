@@ -122,13 +122,14 @@ async function cargarCategorias() {
 
             // Selecciona el slider recién creado
             const sliderContent = document.getElementById(`slider${category.ID_Categoria}`);
+            //<img src="${course.Imagen ? `http://localhost/PWCI-Repo/backend/API-Cursos/${course.Imagen}` : 'https://via.placeholder.com/500x150'}" alt="Imagen del curso style="width: 50px; height: 25px; object-fit: cover">
 
             // Añade los cursos de la categoría al slider
             category.Cursos.forEach(course => {
                 const item = document.createElement("div");
                 item.classList.add("slider-item");
                 item.innerHTML = `
-                    <img src="${course.Imagen}" alt="${course.Titulo}">
+                    <img src="${course.Imagen ? `http://localhost/PWCI-Repo/backend/API-Cursos/${course.Imagen}` : 'https://via.placeholder.com/500x150'}" alt="${course.Titulo}">
                     <p class="text-white text-center">${course.Titulo}</p>
                 `;
                 sliderContent.appendChild(item);
