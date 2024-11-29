@@ -108,6 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         const row = `<tr>
                             <td>${categoria.Nombre_Categoria}</td>
                             <td>${categoria.Descripcion}</td>
+                            <td>${categoria.Estado}</td>
+
                             <td>
                                 <button class='btn btn-secondary btn-sm edit-category' data-id='${categoria.ID_Categoria}' data-name='${categoria.Nombre_Categoria}' data-description='${categoria.Descripcion}'>Editar</button>
                                 <button class='btn btn-danger btn-sm delete-category' data-id='${categoria.ID_Categoria}'>Eliminar</button>
@@ -180,6 +182,9 @@ document.addEventListener("DOMContentLoaded", function () {
             $('#editCategoryForm').data('id_categoria', idCategoria); // Usamos data para guardar el id de la categoría
         });
 
+
+
+
         // Evento para el formulario de edición
         $('#editCategoryForm').on('submit', function(e) {
             e.preventDefault(); // Evitar el comportamiento por defecto
@@ -213,7 +218,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         });
-});
+
+
+
+
+        // Evento para el botón de baja lógica
+        $(document).on('click', '.delete-category', function() {
+            const idCategoria = $(this).data('id');
+
+            // Confirmación antes de desactivar la categoría
+            if (confirm("¿Estás seguro de que quieres desactivar esta categoría?")) {
+                // Enviar solicitud AJAX al archivo PHP para desactivar la categoría
+                $.ajax({
+                    url: '/PWCI-Repo/backend/deleteCategory.php', // Archivo PHP para desactivar categoría
+                    type: 'POST',
+                    data: {
+                        id_categoria: idCategoria
+                    },
+                    success: function(response) {
+                        alert(response); // Mostrar el mensaje de éxito
+                        loadCategorias(); // Recargar las categorías
+                    },
+                    error: function() {
+                        alert('Hubo un error al desactivar la categoría');
+                    }
+                });
+            }
+        });
+
+    });
     
 });
 

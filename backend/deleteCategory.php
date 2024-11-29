@@ -1,23 +1,26 @@
 <?php
-require_once 'conexion.php';
-global $pdo;
+include 'conexion.php'; // Incluir archivo de conexión
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id_categoria'];
+// Verificar que se reciba el ID de la categoría
+if (isset($_POST['id_categoria'])) {
+    $id_categoria = $_POST['id_categoria'];
 
-    try {
-        $stmt = $pdo->prepare("CALL EliminarCategoria(:id_categoria)");
-        $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
-        $stmt->execute();
+    // Preparar y ejecutar el procedimiento almacenado
+    $query = "CALL BajaLogicaCategoria(?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id_categoria); // 'i' para INT
 
-
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Error al eliminar la categoría']);
-        }
-    } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    // Ejecutar la consulta y verificar
+    if ($stmt->execute()) {
+        echo 'Categoría desactivada correctamente';
+    } else {
+        echo 'Error al desactivar la categoría: ' . $stmt->error;
     }
+
+    // Cerrar la conexión y la declaración
+    $stmt->close();
+    $conn->close();
+} else {
+    echo 'Error: No se ha proporcionado el ID de la categoría.';
 }
 ?>
