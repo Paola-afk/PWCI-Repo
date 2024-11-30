@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.length > 0) {
                 courseList.innerHTML = data.map(course => `
                     <div class="course" onclick="window.location.href='cursoA.html?id=${course.ID_Curso}';">
-                        <img src="${course.Imagen ? `http://localhost/PWCI-Repo/backend/API-Cursos/${course.Imagen}` : 'https://via.placeholder.com/500x150'}" alt="Imagen del curso style="width: 50px; height: 25px; object-fit: cover">
+                        <img src="${course.Imagen ? `http://localhost/PWCI-Repo/backend/API-Cursos/${course.Imagen}` : 'https://via.placeholder.com/500x150'}" alt="Imagen del curso style="width: 200px; height: 150px; object-fit: cover">
                         <h3>${course.Titulo}</h3>
                         <p>Progreso: ${course.Progreso}%</p>
                         <p>Estado: ${course.Estado}</p>

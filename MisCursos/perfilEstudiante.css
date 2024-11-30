@@ -347,6 +347,13 @@ input[type="date"]:focus {
 }
 
 
+.course img {
+    width: 200px; 
+    height: 150px; 
+    object-fit: cover; 
+}
+
+
 
 /*Footer*/
 .footer {
