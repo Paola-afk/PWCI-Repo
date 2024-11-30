@@ -129,8 +129,10 @@ async function cargarCategorias() {
                 const item = document.createElement("div");
                 item.classList.add("slider-item");
                 item.innerHTML = `
-                    <img src="${course.Imagen ? `http://localhost/PWCI-Repo/backend/API-Cursos/${course.Imagen}` : 'https://via.placeholder.com/500x150'}" alt="${course.Titulo}">
-                    <p class="text-white text-center">${course.Titulo}</p>
+                    <a href="http://localhost/PWCI-Repo/MisCursos/cursoNA.html?id=${course.ID_Curso}" class="course-link">
+                        <img src="${course.Imagen ? `http://localhost/PWCI-Repo/backend/API-Cursos/${course.Imagen}` : 'https://via.placeholder.com/500x150'}" alt="${course.Titulo}">
+                        <p class="text-white text-center">${course.Titulo}</p>
+                    </a>
                 `;
                 sliderContent.appendChild(item);
             });
