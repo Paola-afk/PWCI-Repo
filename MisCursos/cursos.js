@@ -57,20 +57,33 @@ const urlParams = new URLSearchParams(window.location.search);
 const cursoID = urlParams.get('id');  // Corregido: usar la variable cursoID en lugar de idCurso
 
 // Mostrar el ID en consola (para verificar)
-console.log(cursoID);  // Verifica si realmente está obteniendo el ID del curso
+console.log(`ID del curso: ${cursoID}`);  // Verifica si realmente está obteniendo el ID del curso
 
-// Aquí puedes usar el cursoID para hacer una solicitud y cargar los detalles del curso
+// Hacer la solicitud para obtener los detalles del curso
 fetch(`/PWCI-Repo/backend/cursos/getCursoDetails.php?id=${cursoID}`)
     .then(response => response.json())
     .then(curso => {
         if (curso) {
-            console.log(curso); // Verifica los datos del curso
+            console.log('Datos del curso:', curso); // Verifica los datos del curso
 
             // Mostrar los detalles del curso
             document.querySelector('#cursoTitulo').innerText = curso.Titulo || 'Título no disponible';
             document.querySelector('#cursoDescripcion').innerText = curso.Descripcion || 'Descripción no disponible';
             document.querySelector('#precio').innerText = `Adquirir por $${curso.Costo || '0.00'}`;
-            document.querySelector('#cursoImagen').src = curso.Imagen || 'ruta_por_defecto.jpg';
+
+            // Construcción de la URL absoluta de la imagen
+            const rutaImagen = curso.Imagen.startsWith('http') 
+                ? curso.Imagen  // Si ya es una URL absoluta, úsala directamente
+                : `http://localhost/PWCI-Repo/backend/API-Cursos/${curso.Imagen}`; // Ruta absoluta construida
+
+            console.log(`Ruta de la imagen generada: ${rutaImagen}`);  // Verifica la ruta de la imagen
+            document.querySelector('#cursoImagen').src = rutaImagen;
+
+            // Agregar evento para manejar errores de carga de la imagen
+            document.querySelector('#cursoImagen').onerror = function () {
+                console.error(`Error al cargar la imagen desde: ${rutaImagen}`);
+                document.querySelector('#cursoImagen').src = 'http://localhost/PWCI-Repo/backend/API-Cursos/uploads/default-image.jpg'; // Imagen por defecto
+            };
 
             // Evento para agregar al carrito
             document.querySelector('#addCarrito').addEventListener('click', function () {
@@ -79,7 +92,7 @@ fetch(`/PWCI-Repo/backend/cursos/getCursoDetails.php?id=${cursoID}`)
                     id: curso.ID_Curso,
                     titulo: curso.Titulo,
                     costo: curso.Costo,
-                    imagen: curso.Imagen
+                    imagen: rutaImagen // Usar la ruta absoluta de la imagen
                 };
 
                 // Obtener el carrito de compras del localStorage, si existe
@@ -96,6 +109,7 @@ fetch(`/PWCI-Repo/backend/cursos/getCursoDetails.php?id=${cursoID}`)
             });
         } else {
             console.error('No se encontró el curso');
+            alert('No se encontró el curso');
         }
     })
     .catch(error => {
