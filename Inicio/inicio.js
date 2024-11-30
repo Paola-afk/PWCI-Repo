@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Error:', error));
 });
 
-
 document.addEventListener("DOMContentLoaded", function() {
     console.log("DOM completamente cargado. Iniciando carga de cursos...");
 
@@ -98,17 +97,19 @@ function fetchCursos(tipo, containerId) {
                 console.log(`Mostrando ${data.length} cursos para tipo: ${tipo}`);
                 coursesContainer.innerHTML = ''; // Limpia cualquier contenido previo
                 data.forEach(curso => {
-                    // Validar si Promedio_Calificacion es un número válido
-                    const promedioCalificacion = (typeof curso.Promedio_Calificacion === 'number' && !isNaN(curso.Promedio_Calificacion)) 
-                        ? curso.Promedio_Calificacion.toFixed(2) 
-                        : 'N/A';
+                    // Actualizamos la construcción de la URL de la imagen
+                    const rutaImagen = curso.Imagen.startsWith('http') 
+                        ? curso.Imagen 
+                        : `http://localhost/PWCI-Repo/backend/API-Cursos/${curso.Imagen}`;
+
+                    console.log(`Ruta de la imagen para el curso "${curso.Titulo}":`, rutaImagen);
 
                     coursesContainer.innerHTML += `
                         <div class="course-card">
-                            <img src="${curso.Imagen}" alt="${curso.Titulo}">
+                            <img src="${rutaImagen}" alt="${curso.Titulo}" onerror="this.src='default-image.jpg';">
                             <h3>${curso.Titulo}</h3>
                             <p>${curso.Descripcion}</p>
-                            <p><strong>Calificación promedio:</strong> ${promedioCalificacion}</p>
+                            <p><strong>Calificación promedio:</strong> ${curso.Promedio_Calificacion !== undefined ? curso.Promedio_Calificacion.toFixed(2) : 'N/A'}</p>
                             <a href="http://localhost/PWCI-Repo/MisCursos/cursoNA.html?id=${curso.ID_Curso}" class="btn">Ver más</a>
                         </div>
                     `;
