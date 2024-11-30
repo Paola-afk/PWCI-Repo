@@ -97,19 +97,31 @@ function fetchCursos(tipo, containerId) {
                 console.log(`Mostrando ${data.length} cursos para tipo: ${tipo}`);
                 coursesContainer.innerHTML = ''; // Limpia cualquier contenido previo
                 data.forEach(curso => {
-                    // Actualizamos la construcción de la URL de la imagen
+                    // Validar si Promedio_Calificacion es un número válido
+                    let promedioCalificacion = curso.Promedio_Calificacion;
+
+                    // Si Promedio_Calificacion no es un número, asignamos 'N/A'
+                    if (typeof promedioCalificacion !== 'number' || isNaN(promedioCalificacion)) {
+                        promedioCalificacion = 'N/A'; // Si no es número, mostramos 'N/A'
+                    } else {
+                        // Si es un número, usamos toFixed()
+                        promedioCalificacion = promedioCalificacion.toFixed(2);
+                    }
+
+                    console.log(`Promedio de calificación para el curso "${curso.Titulo}": ${promedioCalificacion}`);
+
+                    // Construir la URL completa para la imagen del curso
                     const rutaImagen = curso.Imagen.startsWith('http') 
-                        ? curso.Imagen 
-                        : `http://localhost/PWCI-Repo/backend/API-Cursos/${curso.Imagen}`;
-
-                    console.log(`Ruta de la imagen para el curso "${curso.Titulo}":`, rutaImagen);
-
+                        ? curso.Imagen  // Si ya es una URL completa, usarla tal cual
+                        : `http://localhost/PWCI-Repo/backend/API-Cursos/${curso.Imagen}`;  // Agregar la ruta base si es relativa
+                        console.log(`Ruta de la imagen para el curso "${curso.Titulo}":`, rutaImagen);
+                    // Mostrar los cursos en el contenedor
                     coursesContainer.innerHTML += `
                         <div class="course-card">
-                            <img src="${rutaImagen}" alt="${curso.Titulo}" onerror="this.src='default-image.jpg';">
+                            <img src="${rutaImagen}" alt="${curso.Titulo}" onerror="this.src='https://via.placeholder.com/300x200';">
                             <h3>${curso.Titulo}</h3>
                             <p>${curso.Descripcion}</p>
-                            <p><strong>Calificación promedio:</strong> ${curso.Promedio_Calificacion !== undefined ? curso.Promedio_Calificacion.toFixed(2) : 'N/A'}</p>
+                            <p><strong>Calificación promedio:</strong> ${promedioCalificacion}</p>
                             <a href="http://localhost/PWCI-Repo/MisCursos/cursoNA.html?id=${curso.ID_Curso}" class="btn">Ver más</a>
                         </div>
                     `;
