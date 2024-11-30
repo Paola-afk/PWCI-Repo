@@ -168,10 +168,20 @@ document.addEventListener("DOMContentLoaded", function() {
 async function enviarComentario(event) {
     event.preventDefault();
 
-    const cursoID = 10; // ID del curso (puedes obtenerlo dinámicamente)
+    // Obtener el ID del curso desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const cursoID = urlParams.get('id'); // Captura el parámetro 'id' de la URL
+
+    if (!cursoID) {
+        alert('No se pudo identificar el curso.');
+        return;
+    }
+
+    // Obtener valores del formulario
     const comentario = document.getElementById('nuevoComentario').value.trim();
     const calificacion = document.getElementById('rating').value;
 
+    // Datos a enviar
     const data = {
         cursoID,
         comentario,
@@ -201,5 +211,3 @@ async function enviarComentario(event) {
         alert('Error al enviar el comentario.');
     }
 }
-
-

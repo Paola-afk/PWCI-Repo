@@ -187,7 +187,8 @@
 
     <script>
         document.getElementById("completar-curso-btn").addEventListener("click", function () {
-            const cursoId = new URLSearchParams(window.location.search).get("id");
+            const params = new URLSearchParams(window.location.search);
+                const cursoId = params.get("id");
             
             if (cursoId) {
                 fetch(`../backend/API-Certificados/completarCurso.php?curso_id=${cursoId}`, {

@@ -14,6 +14,9 @@ if (!isset($_SESSION['id_usuario'])) {
 // Obtener datos del cuerpo de la solicitud
 $data = json_decode(file_get_contents("php://input"), true);
 
+// Registro de datos para depuración
+error_log("Datos recibidos en comentario.php: " . json_encode($data));
+
 // Validar que se enviaron los parámetros necesarios
 if (!isset($data['cursoID']) || !isset($data['comentario']) || !isset($data['calificacion'])) {
     echo json_encode(["error" => "Faltan parámetros necesarios."]);
@@ -67,4 +70,5 @@ if ($stmt->execute()) {
 // Cerrar conexión
 $stmt->close();
 $conn->close();
+
 ?>
