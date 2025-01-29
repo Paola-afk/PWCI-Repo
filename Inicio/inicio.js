@@ -111,10 +111,17 @@ function fetchCursos(tipo, containerId) {
                     console.log(`Promedio de calificación para el curso "${curso.Titulo}": ${promedioCalificacion}`);
 
                     // Construir la URL completa para la imagen del curso
-                    const rutaImagen = curso.Imagen.startsWith('http') 
-                        ? curso.Imagen  // Si ya es una URL completa, usarla tal cual
-                        : `http://localhost/PWCI-Repo/backend/API-Cursos/${curso.Imagen}`;  // Agregar la ruta base si es relativa
-                        console.log(`Ruta de la imagen para el curso "${curso.Titulo}":`, rutaImagen);
+                    // Construir la URL completa para la imagen del curso con validaciones
+let rutaImagen = 'https://via.placeholder.com/300x200'; // URL predeterminada
+
+if (curso.Imagen && typeof curso.Imagen === 'string') {
+    rutaImagen = curso.Imagen.startsWith('http')
+        ? curso.Imagen
+        : `http://localhost/PWCI-Repo/backend/API-Cursos/${curso.Imagen}`;
+}
+
+console.log(`Ruta de la imagen para el curso "${curso.Titulo}":`, rutaImagen);
+
                     // Mostrar los cursos en el contenedor
                     coursesContainer.innerHTML += `
                         <div class="course-card">
